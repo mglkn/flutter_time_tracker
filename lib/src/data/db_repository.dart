@@ -12,6 +12,7 @@ abstract class DbDataRepository {
   Future<List<TagWithPomodorosCount>> getTags();
   Future<int> createTag(Tag tag);
   Future<int> removeTag(Tag tag);
+  Future<bool> updateTag(Tag tag);
 
   Future createPomodoro(Goal goal);
 
@@ -100,5 +101,10 @@ class _DbDataRepository implements DbDataRepository {
   @override
   Future<int> removeTag(Tag tag) {
     return _db.tagsDao.remove(tag);
+  }
+
+  @override
+  Future<bool> updateTag(Tag tag) {
+    return _db.tagsDao.modify(tag);
   }
 }
