@@ -105,6 +105,13 @@ class TagsDao extends DatabaseAccessor<AppDatabase> with _$TagsDaoMixin {
 
   Future<int> insert(Tag tag) => into(tags).insert(tag);
   Future<bool> modify(Tag tag) => update(tags).replace(tag);
+  Future<int> remove(Tag tag) {
+    return transaction<int>(() async {
+      await (delete(tags)..where((t) => t.id.equals(tag.id))).go();
+      await (delete(tagsGoals)..where((t) => t.tagId.equals(tag.id))).go();
+      return tag.id;
+    });
+  }
 
   Future setTagsGoalsRelations({int goalId, List<Tag> tags}) {
     return transaction(() async {

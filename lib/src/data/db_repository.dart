@@ -7,10 +7,11 @@ abstract class DbDataRepository {
   Future createGoal({String label, List<Tag> tags});
   Future<List<GoalWithTagsAndPomodorosCount>> getGoals(bool isDone);
   Future<GoalWithTagsAndPomodorosCount> getGoal(int goalId);
-  Future updateGoal({Goal goal, List<Tag> tags});
+  Future<bool> updateGoal({Goal goal, List<Tag> tags});
 
   Future<List<TagWithPomodorosCount>> getTags();
-  Future createTag(Tag tag);
+  Future<int> createTag(Tag tag);
+  Future<int> removeTag(Tag tag);
 
   Future createPomodoro(Goal goal);
 
@@ -77,7 +78,7 @@ class _DbDataRepository implements DbDataRepository {
   }
 
   @override
-  Future createTag(Tag tag) {
+  Future<int> createTag(Tag tag) {
     return _db.tagsDao.insert(tag);
   }
 
@@ -87,11 +88,17 @@ class _DbDataRepository implements DbDataRepository {
   }
 
   @override
-  Future updateGoal({Goal goal, List<Tag> tags}) {
-    return _db.transaction(() async {
-      _db.goalsDao.modify(goal);
+  Future<bool> updateGoal({Goal goal, List<Tag> tags}) {
+    return _db.transaction<bool>(() async {
+      await _db.goalsDao.modify(goal);
+      await _db.tagsDao.setTagsGoalsRelations(goalId: goal.id, tags: tags);
 
-      _db.tagsDao.setTagsGoalsRelations(goalId: goal.id, tags: tags);
+      return true;
     });
+  }
+
+  @override
+  Future<int> removeTag(Tag tag) {
+    return _db.tagsDao.remove(tag);
   }
 }
