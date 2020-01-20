@@ -651,6 +651,165 @@ class $PomodorosTable extends Pomodoros
   }
 }
 
+class TagsGoal extends DataClass implements Insertable<TagsGoal> {
+  final int goalId;
+  final int tagId;
+  TagsGoal({@required this.goalId, @required this.tagId});
+  factory TagsGoal.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    return TagsGoal(
+      goalId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}goal_id']),
+      tagId: intType.mapFromDatabaseResponse(data['${effectivePrefix}tag_id']),
+    );
+  }
+  factory TagsGoal.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return TagsGoal(
+      goalId: serializer.fromJson<int>(json['goalId']),
+      tagId: serializer.fromJson<int>(json['tagId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return <String, dynamic>{
+      'goalId': serializer.toJson<int>(goalId),
+      'tagId': serializer.toJson<int>(tagId),
+    };
+  }
+
+  @override
+  TagsGoalsCompanion createCompanion(bool nullToAbsent) {
+    return TagsGoalsCompanion(
+      goalId:
+          goalId == null && nullToAbsent ? const Value.absent() : Value(goalId),
+      tagId:
+          tagId == null && nullToAbsent ? const Value.absent() : Value(tagId),
+    );
+  }
+
+  TagsGoal copyWith({int goalId, int tagId}) => TagsGoal(
+        goalId: goalId ?? this.goalId,
+        tagId: tagId ?? this.tagId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('TagsGoal(')
+          ..write('goalId: $goalId, ')
+          ..write('tagId: $tagId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(goalId.hashCode, tagId.hashCode));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is TagsGoal &&
+          other.goalId == this.goalId &&
+          other.tagId == this.tagId);
+}
+
+class TagsGoalsCompanion extends UpdateCompanion<TagsGoal> {
+  final Value<int> goalId;
+  final Value<int> tagId;
+  const TagsGoalsCompanion({
+    this.goalId = const Value.absent(),
+    this.tagId = const Value.absent(),
+  });
+  TagsGoalsCompanion.insert({
+    @required int goalId,
+    @required int tagId,
+  })  : goalId = Value(goalId),
+        tagId = Value(tagId);
+  TagsGoalsCompanion copyWith({Value<int> goalId, Value<int> tagId}) {
+    return TagsGoalsCompanion(
+      goalId: goalId ?? this.goalId,
+      tagId: tagId ?? this.tagId,
+    );
+  }
+}
+
+class $TagsGoalsTable extends TagsGoals
+    with TableInfo<$TagsGoalsTable, TagsGoal> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $TagsGoalsTable(this._db, [this._alias]);
+  final VerificationMeta _goalIdMeta = const VerificationMeta('goalId');
+  GeneratedIntColumn _goalId;
+  @override
+  GeneratedIntColumn get goalId => _goalId ??= _constructGoalId();
+  GeneratedIntColumn _constructGoalId() {
+    return GeneratedIntColumn('goal_id', $tableName, false,
+        $customConstraints: 'REFERENCES goals(id)');
+  }
+
+  final VerificationMeta _tagIdMeta = const VerificationMeta('tagId');
+  GeneratedIntColumn _tagId;
+  @override
+  GeneratedIntColumn get tagId => _tagId ??= _constructTagId();
+  GeneratedIntColumn _constructTagId() {
+    return GeneratedIntColumn('tag_id', $tableName, false,
+        $customConstraints: 'REFERENCES tags(id)');
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [goalId, tagId];
+  @override
+  $TagsGoalsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'tags_goals';
+  @override
+  final String actualTableName = 'tags_goals';
+  @override
+  VerificationContext validateIntegrity(TagsGoalsCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.goalId.present) {
+      context.handle(
+          _goalIdMeta, goalId.isAcceptableValue(d.goalId.value, _goalIdMeta));
+    } else if (goalId.isRequired && isInserting) {
+      context.missing(_goalIdMeta);
+    }
+    if (d.tagId.present) {
+      context.handle(
+          _tagIdMeta, tagId.isAcceptableValue(d.tagId.value, _tagIdMeta));
+    } else if (tagId.isRequired && isInserting) {
+      context.missing(_tagIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {goalId, tagId};
+  @override
+  TagsGoal map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return TagsGoal.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(TagsGoalsCompanion d) {
+    final map = <String, Variable>{};
+    if (d.goalId.present) {
+      map['goal_id'] = Variable<int, IntType>(d.goalId.value);
+    }
+    if (d.tagId.present) {
+      map['tag_id'] = Variable<int, IntType>(d.tagId.value);
+    }
+    return map;
+  }
+
+  @override
+  $TagsGoalsTable createAlias(String alias) {
+    return $TagsGoalsTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $GoalsTable _goals;
@@ -659,6 +818,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $TagsTable get tags => _tags ??= $TagsTable(this);
   $PomodorosTable _pomodoros;
   $PomodorosTable get pomodoros => _pomodoros ??= $PomodorosTable(this);
+  $TagsGoalsTable _tagsGoals;
+  $TagsGoalsTable get tagsGoals => _tagsGoals ??= $TagsGoalsTable(this);
   GoalsDao _goalsDao;
   GoalsDao get goalsDao => _goalsDao ??= GoalsDao(this as AppDatabase);
   TagsDao _tagsDao;
@@ -667,7 +828,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   PomodorosDao get pomodorosDao =>
       _pomodorosDao ??= PomodorosDao(this as AppDatabase);
   @override
-  List<TableInfo> get allTables => [goals, tags, pomodoros];
+  List<TableInfo> get allTables => [goals, tags, pomodoros, tagsGoals];
 }
 
 // **************************************************************************
@@ -676,9 +837,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
 
 mixin _$GoalsDaoMixin on DatabaseAccessor<AppDatabase> {
   $GoalsTable get goals => db.goals;
+  $TagsTable get tags => db.tags;
+  $TagsGoalsTable get tagsGoals => db.tagsGoals;
+  $PomodorosTable get pomodoros => db.pomodoros;
 }
 mixin _$TagsDaoMixin on DatabaseAccessor<AppDatabase> {
   $TagsTable get tags => db.tags;
+  $TagsGoalsTable get tagsGoals => db.tagsGoals;
 }
 mixin _$PomodorosDaoMixin on DatabaseAccessor<AppDatabase> {
   $PomodorosTable get pomodoros => db.pomodoros;
