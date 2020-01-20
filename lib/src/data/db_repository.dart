@@ -6,6 +6,7 @@ import 'dto.dart';
 abstract class DbDataRepository {
   Future createGoal({String label, List<Tag> tags});
   Future<List<GoalWithTagsAndPomodorosCount>> getGoals(bool isDone);
+  Future<GoalWithTagsAndPomodorosCount> getGoal(int goalId);
   Future updateGoal({Goal goal, List<Tag> tags});
 
   Future<List<TagWithPomodorosCount>> getTags();
@@ -41,6 +42,21 @@ class _DbDataRepository implements DbDataRepository {
     });
 
     return Future.wait(result);
+  }
+
+  @override
+  Future<GoalWithTagsAndPomodorosCount> getGoal(int goalId) async {
+    final goal = await _db.goalsDao.getOne(goalId);
+
+    final tags = await _db.tagsDao.getAllByGoal(goal);
+
+    final pomodorosCount = await _db.pomodorosDao.getPomodorosCountByGoal(goal);
+
+    return GoalWithTagsAndPomodorosCount(
+      goal: goal,
+      tags: tags,
+      pomodorosCount: pomodorosCount,
+    );
   }
 
   @override

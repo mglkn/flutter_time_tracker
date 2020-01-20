@@ -54,6 +54,9 @@ class GoalsDao extends DatabaseAccessor<AppDatabase> with _$GoalsDaoMixin {
         ))
       .get();
 
+  Future<Goal> getOne(int goalId) =>
+      (select(goals)..where((t) => t.id.equals(goalId))).getSingle();
+
   Future<Goal> getOneById(int goalId) =>
       (select(goals)..where((t) => t.id.equals(goalId))).getSingle();
 
