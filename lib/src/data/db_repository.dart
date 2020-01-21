@@ -1,20 +1,22 @@
 import 'dart:async';
+import 'package:dartz/dartz.dart';
 
 import 'db.dart';
 import 'dto.dart';
 
 abstract class DbDataRepository {
   Future createGoal({String label, List<Tag> tags});
-  Future<List<GoalWithTagsAndPomodorosCount>> getGoals(bool isDone);
-  Future<GoalWithTagsAndPomodorosCount> getGoal(int goalId);
-  Future<bool> updateGoal({Goal goal, List<Tag> tags});
+  Future<Either<Object, List<GoalWithTagsAndPomodorosCount>>> getGoals(
+      bool isDone);
+  Future<Either<Object, GoalWithTagsAndPomodorosCount>> getGoal(int goalId);
+  Future<Either<Object, bool>> updateGoal({Goal goal, List<Tag> tags});
 
-  Future<List<TagWithPomodorosCount>> getTags();
-  Future<int> createTag(Tag tag);
-  Future<int> removeTag(Tag tag);
-  Future<bool> updateTag(Tag tag);
+  Future<Either<Object, List<TagWithPomodorosCount>>> getTags();
+  Future<Either<Object, int>> createTag(Tag tag);
+  Future<Either<Object, int>> removeTag(Tag tag);
+  Future<Either<Object, bool>> updateTag(Tag tag);
 
-  Future createPomodoro(Goal goal);
+  Future<Either<Object, int>> createPomodoro(Goal goal);
 
   factory DbDataRepository.db() => _DbDataRepository();
 }
@@ -27,10 +29,35 @@ class _DbDataRepository implements DbDataRepository {
   final AppDatabase _db = AppDatabase();
 
   @override
-  Future<List<GoalWithTagsAndPomodorosCount>> getGoals(bool isDone) async {
-    List<Goal> goals = await _db.goalsDao.getAll(isDone);
+  Future<Either<Object, List<GoalWithTagsAndPomodorosCount>>> getGoals(
+      bool isDone) {
+    return Task(() async {
+      List<Goal> goals = await _db.goalsDao.getAll(isDone);
 
-    final result = goals.map((Goal goal) async {
+      final result = goals.map((Goal goal) async {
+        final tags = await _db.tagsDao.getAllByGoal(goal);
+
+        final pomodorosCount =
+            await _db.pomodorosDao.getPomodorosCountByGoal(goal);
+
+        return GoalWithTagsAndPomodorosCount(
+          goal: goal,
+          tags: tags,
+          pomodorosCount: pomodorosCount,
+        );
+      });
+
+      return Future.wait(result);
+    }).attempt().run();
+  }
+
+  @override
+  Future<Either<Object, GoalWithTagsAndPomodorosCount>> getGoal(
+    int goalId,
+  ) {
+    return Task(() async {
+      final goal = await _db.goalsDao.getOne(goalId);
+
       final tags = await _db.tagsDao.getAllByGoal(goal);
 
       final pomodorosCount =
@@ -41,70 +68,63 @@ class _DbDataRepository implements DbDataRepository {
         tags: tags,
         pomodorosCount: pomodorosCount,
       );
-    });
-
-    return Future.wait(result);
+    }).attempt().run();
   }
 
   @override
-  Future<GoalWithTagsAndPomodorosCount> getGoal(int goalId) async {
-    final goal = await _db.goalsDao.getOne(goalId);
-
-    final tags = await _db.tagsDao.getAllByGoal(goal);
-
-    final pomodorosCount = await _db.pomodorosDao.getPomodorosCountByGoal(goal);
-
-    return GoalWithTagsAndPomodorosCount(
-      goal: goal,
-      tags: tags,
-      pomodorosCount: pomodorosCount,
-    );
+  Future<Either<Object, int>> createPomodoro(Goal goal) {
+    return Task(() => _db.pomodorosDao.insert(Pomodoro(goalId: goal.id)))
+        .attempt()
+        .run();
   }
 
   @override
-  Future createPomodoro(Goal goal) {
-    return _db.pomodorosDao.insert(Pomodoro(goalId: goal.id));
+  Future<Either<Object, int>> createGoal({String label, List<Tag> tags}) {
+    return Task(() {
+      return _db.transaction(() async {
+        final goalId = await _db.goalsDao.insert(Goal(label: label));
+
+        _db.tagsDao.setTagsGoalsRelations(
+          goalId: goalId,
+          tags: tags,
+        );
+
+        return goalId;
+      });
+    }).attempt().run();
   }
 
   @override
-  Future createGoal({String label, List<Tag> tags}) async {
-    return _db.transaction(() async {
-      final goalId = await _db.goalsDao.insert(Goal(label: label));
-
-      _db.tagsDao.setTagsGoalsRelations(
-        goalId: goalId,
-        tags: tags,
-      );
-    });
+  Future<Either<Object, int>> createTag(Tag tag) {
+    return Task(() => _db.tagsDao.insert(tag)).attempt().run();
   }
 
   @override
-  Future<int> createTag(Tag tag) {
-    return _db.tagsDao.insert(tag);
+  Future<Either<Object, List<TagWithPomodorosCount>>> getTags() {
+    return Task(() => _db.tagsDao.getAll()).attempt().run();
   }
 
   @override
-  Future<List<TagWithPomodorosCount>> getTags() {
-    return _db.tagsDao.getAll();
+  Future<Either<Object, bool>> updateGoal({Goal goal, List<Tag> tags}) {
+    return Task(
+      () => _db.transaction<bool>(
+        () async {
+          final result = await _db.goalsDao.modify(goal);
+          await _db.tagsDao.setTagsGoalsRelations(goalId: goal.id, tags: tags);
+
+          return result;
+        },
+      ),
+    ).attempt().run();
   }
 
   @override
-  Future<bool> updateGoal({Goal goal, List<Tag> tags}) {
-    return _db.transaction<bool>(() async {
-      final result = await _db.goalsDao.modify(goal);
-      await _db.tagsDao.setTagsGoalsRelations(goalId: goal.id, tags: tags);
-
-      return result;
-    });
+  Future<Either<Object, int>> removeTag(Tag tag) {
+    return Task(() => _db.tagsDao.remove(tag)).attempt().run();
   }
 
   @override
-  Future<int> removeTag(Tag tag) {
-    return _db.tagsDao.remove(tag);
-  }
-
-  @override
-  Future<bool> updateTag(Tag tag) {
-    return _db.tagsDao.modify(tag);
+  Future<Either<Object, bool>> updateTag(Tag tag) {
+    return Task(() => _db.tagsDao.modify(tag)).attempt().run();
   }
 }
