@@ -91,10 +91,10 @@ class _DbDataRepository implements DbDataRepository {
   @override
   Future<bool> updateGoal({Goal goal, List<Tag> tags}) {
     return _db.transaction<bool>(() async {
-      await _db.goalsDao.modify(goal);
+      final result = await _db.goalsDao.modify(goal);
       await _db.tagsDao.setTagsGoalsRelations(goalId: goal.id, tags: tags);
 
-      return true;
+      return result;
     });
   }
 
