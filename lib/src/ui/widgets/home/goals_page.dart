@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 
 import '../../../data/dto.dart';
 import '../../../data/db.dart';
+import '../../../store/home_store.dart';
 
 class GoalsPage extends StatefulWidget {
   @override
@@ -42,11 +45,13 @@ class _GoalsPageState extends State<GoalsPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ListView(
-        padding: EdgeInsets.all(20.0),
-        children: <Widget>[
-          ..._listTestGoals.map((g) => GoalTile(g)),
-        ],
+      child: Consumer<HomeStore>(
+        builder: (_, HomeStore store, __) => Observer(
+          builder: (_) => ListView(
+            padding: EdgeInsets.all(20.0),
+            children: store.goals.map((g) => GoalTile(g)).toList(),
+          ),
+        ),
       ),
     );
   }
