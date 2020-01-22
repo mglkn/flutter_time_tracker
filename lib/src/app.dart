@@ -7,7 +7,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       onGenerateRoute: AppRouter.onGenerateRoute,
-      initialRoute: AppRouter.goalsScreen,
+      initialRoute: AppRouter.homeScreen,
       navigatorKey: AppRouter.navigatorKey,
     );
   }

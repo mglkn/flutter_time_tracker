@@ -5,9 +5,7 @@ import '../ui/screens/screens.dart';
 @autoRouter
 class $AppRouter {
   @initial
-  GoalsScreen goalsScreen;
-
-  TagsScreen tagsScreen;
+  HomeScreen homeScreen;
 
   TestScreen testScreen;
 }
