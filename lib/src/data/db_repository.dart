@@ -110,7 +110,11 @@ class _DbDataRepository implements DbDataRepository {
       () => _db.transaction<bool>(
         () async {
           final result = await _db.goalsDao.modify(goal);
-          await _db.tagsDao.setTagsGoalsRelations(goalId: goal.id, tags: tags);
+
+          if (tags != null) {
+            await _db.tagsDao
+                .setTagsGoalsRelations(goalId: goal.id, tags: tags);
+          }
 
           return result;
         },
