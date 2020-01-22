@@ -63,4 +63,11 @@ abstract class _HomeStore with Store {
     await _repo.updateGoal(goal: updatedGoal, tags: null);
     await _getGoals();
   }
+
+  @action
+  Future deleteTag(TagWithPomodorosCount tag) async {
+    await _repo.removeTag(tag.tag);
+    await _getTags();
+    await _getGoals();
+  }
 }
