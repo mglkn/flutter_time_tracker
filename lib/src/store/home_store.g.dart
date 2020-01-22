@@ -74,6 +74,21 @@ mixin _$HomeStore on _HomeStore, Store {
     return _$_getTagsAsyncAction.run(() => super._getTags());
   }
 
+  final _$toggleGoalStatusAsyncAction = AsyncAction('toggleGoalStatus');
+
+  @override
+  Future<dynamic> toggleGoalStatus(GoalWithTagsAndPomodorosCount goal) {
+    return _$toggleGoalStatusAsyncAction
+        .run(() => super.toggleGoalStatus(goal));
+  }
+
+  final _$deleteTagAsyncAction = AsyncAction('deleteTag');
+
+  @override
+  Future<dynamic> deleteTag(TagWithPomodorosCount tag) {
+    return _$deleteTagAsyncAction.run(() => super.deleteTag(tag));
+  }
+
   final _$_HomeStoreActionController = ActionController(name: '_HomeStore');
 
   @override

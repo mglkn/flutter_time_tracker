@@ -21,13 +21,13 @@ abstract class _HomeStore with Store {
   ObservableList<GoalWithTagsAndPomodorosCount> _goals =
       ObservableList<GoalWithTagsAndPomodorosCount>();
 
-  List<GoalWithTagsAndPomodorosCount> get goals => _goals.toList();
+  List<GoalWithTagsAndPomodorosCount> get goals => _goals;
 
   @observable
   ObservableList<TagWithPomodorosCount> _tags =
       ObservableList<TagWithPomodorosCount>();
 
-  List<TagWithPomodorosCount> get tags => _tags.toList();
+  List<TagWithPomodorosCount> get tags => _tags;
 
   @observable
   bool isGoalDoneFlag = false;
