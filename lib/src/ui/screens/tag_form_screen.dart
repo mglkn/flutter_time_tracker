@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/app_localization.dart';
+import '../widgets/forms/forms.dart';
 
 class TagFormScreen extends StatelessWidget {
   @override
@@ -12,9 +13,7 @@ class TagFormScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Center(
-        child: Text('tag form'),
-      ),
+      body: TagForm(),
     );
   }
 }

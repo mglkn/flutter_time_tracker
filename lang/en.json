@@ -15,5 +15,7 @@
     "no_goals": "No goals",
     "no_tags": "No tags",
     "all": "all",
-    "today": "today"
+    "today": "today",
+    "enterTag": "Enter tag",
+    "enterGoal": "Enter goal"
 }
