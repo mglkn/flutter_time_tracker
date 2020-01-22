@@ -13,35 +13,6 @@ class GoalsPage extends StatefulWidget {
 }
 
 class _GoalsPageState extends State<GoalsPage> {
-  final _listTestGoals = [
-    GoalWithTagsAndPomodorosCount(
-      goal: Goal(label: 'first goal'),
-      tags: [
-        Tag(label: 'programming', color: Colors.purple.value),
-        Tag(label: 'dart', color: Colors.blue.value),
-        Tag(label: 'flutter', color: Colors.orange.value),
-      ],
-      pomodorosCount: 11,
-    ),
-    GoalWithTagsAndPomodorosCount(
-      goal: Goal(label: 'second goal'),
-      tags: [
-        Tag(label: 'programming', color: Colors.purple.value),
-        Tag(label: 'algorithms', color: Colors.teal.value),
-        Tag(label: 'swift', color: Colors.red.value),
-      ],
-      pomodorosCount: 122,
-    ),
-    GoalWithTagsAndPomodorosCount(
-      goal: Goal(label: 'third goal'),
-      tags: [
-        Tag(label: 'programming', color: Colors.purple.value),
-        Tag(label: 'javascript', color: Colors.grey.value),
-      ],
-      pomodorosCount: 34,
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Container(
