@@ -1,31 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../data/dto.dart';
-import '../../../data/db.dart';
+import '../../../store/home_store.dart';
 
 class TagsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final _listTestTags = [
-      TagWithPomodorosCount(
-        tag: Tag(label: 'programming', color: Colors.purple.value),
-        pomodorosCount: 25,
-      ),
-      TagWithPomodorosCount(
-        tag: Tag(label: 'dart', color: Colors.blue.value),
-        pomodorosCount: 43,
-      ),
-      TagWithPomodorosCount(
-        tag: Tag(label: 'flutter', color: Colors.orange.value),
-        pomodorosCount: 18,
-      ),
-    ];
-
     return Container(
-      child: ListView(
-        padding: EdgeInsets.all(20.0),
-        children: _listTestTags.map((t) => TagTile(t)).toList(),
+      child: Consumer<HomeStore>(
+        builder: (_, HomeStore store, __) => Observer(
+          builder: (_) => ListView(
+            padding: EdgeInsets.all(20.0),
+            children: store.tags.map((t) => TagTile(t)).toList(),
+          ),
+        ),
       ),
     );
   }
