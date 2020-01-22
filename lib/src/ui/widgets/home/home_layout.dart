@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'goals_view.dart';
 import 'tags_view.dart';
+import '../../../utils/app_localization.dart';
 
 class HomeLayout extends StatefulWidget {
   @override
@@ -59,8 +60,10 @@ class _HomeLayoutState extends State<HomeLayout> {
 
   @override
   Widget build(BuildContext context) {
-    final String titleGoals = 'Goals';
-    final String titleTags = 'Tags';
+    final String titleGoals =
+        AppLocalizations.of(context).translate("goals").toUpperCase();
+    final String titleTags =
+        AppLocalizations.of(context).translate("tags").toUpperCase();
 
     return Scaffold(
       appBar: AppBar(
