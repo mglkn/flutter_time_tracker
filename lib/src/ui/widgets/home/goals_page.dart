@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../data/dto.dart';
 import '../../../data/db.dart';
@@ -58,19 +59,58 @@ class GoalTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        leading: Text(
-          goal.pomodorosCount.toString(),
-          style: TextStyle(
-            fontSize: 18.0,
+    return SlidableWrapper(
+      child: Card(
+        child: ListTile(
+          leading: Text(
+            goal.pomodorosCount.toString(),
+            style: TextStyle(
+              fontSize: 18.0,
+            ),
+          ),
+          title: Text(goal.goal.label),
+          subtitle: Wrap(
+            children: goal.tags.map((t) => TagListTile(t)).toList(),
           ),
         ),
-        title: Text(goal.goal.label),
-        subtitle: Wrap(
-          children: goal.tags.map((t) => TagListTile(t)).toList(),
-        ),
       ),
+    );
+  }
+}
+
+class SlidableWrapper extends StatelessWidget {
+  final Widget child;
+
+  SlidableWrapper({this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Slidable(
+      actionPane: SlidableBehindActionPane(),
+      actionExtentRatio: 0.2,
+      actions: <Widget>[
+        IconSlideAction(
+          caption: 'Edit',
+          color: Colors.transparent,
+          foregroundColor: Colors.black,
+          icon: Icons.done,
+          onTap: () {
+            print("done");
+          },
+        ),
+      ],
+      secondaryActions: <Widget>[
+        IconSlideAction(
+          caption: 'Done',
+          color: Colors.transparent,
+          foregroundColor: Colors.black,
+          icon: Icons.done,
+          onTap: () {
+            print("done");
+          },
+        ),
+      ],
+      child: child,
     );
   }
 }
