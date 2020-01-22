@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'goals_page.dart';
+import 'tags_page.dart';
+
 class HomeLayout extends StatefulWidget {
   @override
   _HomeLayoutState createState() => _HomeLayoutState();
@@ -60,6 +63,10 @@ class _HomeLayoutState extends State<HomeLayout> {
     final String titleTags = 'Tags';
 
     return Scaffold(
+      appBar: AppBar(
+        title: AppBarTitle(_bottomSelectedIndex == 0 ? titleGoals : titleTags),
+        centerTitle: true,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _bottomSelectedIndex,
         onTap: _onBottomNavTapped,
@@ -85,24 +92,13 @@ class _HomeLayoutState extends State<HomeLayout> {
   }
 }
 
-class GoalsPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Text('Goals page'),
-      ),
-    );
-  }
-}
+class AppBarTitle extends StatelessWidget {
+  final String title;
 
-class TagsPage extends StatelessWidget {
+  AppBarTitle(this.title);
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Text('Tags page'),
-      ),
-    );
+    return Text(title);
   }
 }
