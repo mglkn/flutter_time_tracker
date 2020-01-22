@@ -56,4 +56,11 @@ abstract class _HomeStore with Store {
       (tags) => _tags = ObservableList.of(tags),
     );
   }
+
+  @action
+  Future toggleGoalStatus(GoalWithTagsAndPomodorosCount goal) async {
+    final updatedGoal = goal.goal.copyWith(isDone: !goal.goal.isDone);
+    await _repo.updateGoal(goal: updatedGoal, tags: null);
+    await _getGoals();
+  }
 }
