@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   auto_route: ^0.2.1
   moor_flutter: ^2.0.0
   dartz: ^0.8.9
@@ -29,5 +31,8 @@ dev_dependencies:
 
 
 flutter:
-
   uses-material-design: true
+
+  assets:
+    - lang/en.json
+    - lang/ru.json

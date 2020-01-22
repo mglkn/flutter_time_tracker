@@ -1,0 +1,19 @@
+{
+    "goal": "goal",
+    "goals": "goals",
+    "tags": "tags",
+    "newTag": "New tag",
+    "createGoal": "create goal",
+    "createTag": "create tag",
+    "tagLabelLendthError": "Tag should be less than 30 and more than 1",
+    "tagLabelNotMatchError": "Tag should contain only english or russian symbols and numbers",
+    "tagLabelUniqueError": "This tag already exist",
+    "goalLabelLendthError": "Goal should be less than 50 and more than 1",
+    "goalLabelNotMatchError": "Goal should contain only english or russian symbols and numbers",
+    "completed": "completed",
+    "outstanding": "outstanding",
+    "no_goals": "No goals",
+    "no_tags": "No tags",
+    "all": "all",
+    "today": "today"
+}
