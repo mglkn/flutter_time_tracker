@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 
 import '../../../data/dto.dart';
+import '../../../data/db.dart';
 import '../../../store/home_store.dart';
 
-class TagsPage extends StatelessWidget {
+class GoalsView extends StatefulWidget {
+  @override
+  _GoalsViewState createState() => _GoalsViewState();
+}
+
+class _GoalsViewState extends State<GoalsView> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -14,7 +20,7 @@ class TagsPage extends StatelessWidget {
         builder: (_, HomeStore store, __) => Observer(
           builder: (_) => ListView(
             padding: EdgeInsets.all(20.0),
-            children: store.tags.map((t) => TagTile(t)).toList(),
+            children: store.goals.map((g) => GoalTile(g)).toList(),
           ),
         ),
       ),
@@ -22,29 +28,25 @@ class TagsPage extends StatelessWidget {
   }
 }
 
-class TagTile extends StatelessWidget {
-  final TagWithPomodorosCount tag;
+class GoalTile extends StatelessWidget {
+  final GoalWithTagsAndPomodorosCount goal;
 
-  TagTile(this.tag);
+  GoalTile(this.goal);
 
   @override
   Widget build(BuildContext context) {
     return SlidableWrapper(
       child: Card(
-        color: Color(tag.tag.color),
         child: ListTile(
           leading: Text(
-            tag.pomodorosCount.toString(),
+            goal.pomodorosCount.toString(),
             style: TextStyle(
-              color: Colors.white,
-              fontSize: 20.0,
+              fontSize: 18.0,
             ),
           ),
-          title: Text(
-            tag.tag.label,
-            style: TextStyle(
-              color: Colors.white,
-            ),
+          title: Text(goal.goal.label),
+          subtitle: Wrap(
+            children: goal.tags.map((t) => TagListTile(t)).toList(),
           ),
         ),
       ),
@@ -75,16 +77,41 @@ class SlidableWrapper extends StatelessWidget {
       ],
       secondaryActions: <Widget>[
         IconSlideAction(
-          caption: 'Delete',
+          caption: 'Done',
           color: Colors.transparent,
           foregroundColor: Colors.black,
-          icon: Icons.remove_circle_outline,
+          icon: Icons.done,
           onTap: () {
-            print("Delete");
+            print("done");
           },
         ),
       ],
       child: child,
+    );
+  }
+}
+
+class TagListTile extends StatelessWidget {
+  final Tag tag;
+
+  TagListTile(this.tag);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
+      margin: EdgeInsets.only(right: 2.0),
+      decoration: BoxDecoration(
+        color: Color(tag.color),
+        borderRadius: BorderRadius.circular(2.0),
+      ),
+      child: Text(
+        tag.label,
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 10.0,
+        ),
+      ),
     );
   }
 }

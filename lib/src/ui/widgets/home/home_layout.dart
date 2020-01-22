@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'goals_page.dart';
-import 'tags_page.dart';
+import 'goals_view.dart';
+import 'tags_view.dart';
 
 class HomeLayout extends StatefulWidget {
   @override
@@ -83,8 +83,8 @@ class _HomeLayoutState extends State<HomeLayout> {
           controller: _pageController,
           onPageChanged: (index) => _pageChanged(index),
           children: <Widget>[
-            GoalsPage(),
-            TagsPage(),
+            GoalsView(),
+            TagsView(),
           ],
         ),
       ),
