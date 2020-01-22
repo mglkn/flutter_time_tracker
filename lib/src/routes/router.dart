@@ -7,5 +7,6 @@ class $AppRouter {
   @initial
   HomeScreen homeScreen;
 
-  TestScreen testScreen;
+  TagFormScreen tagFormScreen;
+  GoalFormScreen goalFormScreen;
 }

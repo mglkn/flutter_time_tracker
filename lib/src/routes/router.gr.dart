@@ -8,11 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:auto_route/router_utils.dart';
 import 'package:time_tracker/src/ui/screens/home_screen.dart';
-import 'package:time_tracker/src/ui/screens/test_screen.dart';
+import 'package:time_tracker/src/ui/screens/tag_form_screen.dart';
+import 'package:time_tracker/src/ui/screens/goal_form_screen.dart';
 
 class AppRouter {
   static const homeScreen = '/';
-  static const testScreen = '/testScreen';
+  static const tagFormScreen = '/tagFormScreen';
+  static const goalFormScreen = '/goalFormScreen';
   static GlobalKey<NavigatorState> get navigatorKey =>
       getNavigatorKey<AppRouter>();
   static NavigatorState get navigator => navigatorKey.currentState;
@@ -25,29 +27,18 @@ class AppRouter {
           builder: (_) => HomeScreen(),
           settings: settings,
         );
-      case AppRouter.testScreen:
-        if (hasInvalidArgs<TestScreenArguments>(args)) {
-          return misTypedArgsRoute<TestScreenArguments>(args);
-        }
-        final typedArgs = args as TestScreenArguments ?? TestScreenArguments();
+      case AppRouter.tagFormScreen:
         return MaterialPageRoute(
-          builder: (_) => TestScreen(
-              someNum: typedArgs.someNum, someNames: typedArgs.someNames),
+          builder: (_) => TagFormScreen(),
+          settings: settings,
+        );
+      case AppRouter.goalFormScreen:
+        return MaterialPageRoute(
+          builder: (_) => GoalFormScreen(),
           settings: settings,
         );
       default:
         return unknownRoutePage(settings.name);
     }
   }
-}
-
-//**************************************************************************
-// Arguments holder classes
-//***************************************************************************
-
-//TestScreen arguments holder class
-class TestScreenArguments {
-  final int someNum;
-  final List<String> someNames;
-  TestScreenArguments({this.someNum, this.someNames});
 }

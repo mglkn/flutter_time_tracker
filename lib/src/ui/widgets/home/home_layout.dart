@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:time_tracker/src/routes/router.gr.dart';
 
 import 'goals_view.dart';
 import 'tags_view.dart';
@@ -53,7 +54,12 @@ class _HomeLayoutState extends State<HomeLayout> {
       child: Icon(Icons.add),
       elevation: 1.0,
       onPressed: () {
-        print('add some');
+        if (_bottomSelectedIndex == 0) {
+          print('add goals');
+          AppRouter.navigator.pushNamed(AppRouter.goalFormScreen);
+          return;
+        }
+        AppRouter.navigator.pushNamed(AppRouter.tagFormScreen);
       },
     );
   }
