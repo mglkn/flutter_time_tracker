@@ -64,29 +64,34 @@ class GoalsDao extends DatabaseAccessor<AppDatabase> with _$GoalsDaoMixin {
   Future<bool> modify(Goal goal) => update(goals).replace(goal);
 }
 
-@UseDao(tables: [Tags, TagsGoals])
+@UseDao(tables: [Tags, TagsGoals, Pomodoro])
 class TagsDao extends DatabaseAccessor<AppDatabase> with _$TagsDaoMixin {
   TagsDao(AppDatabase db) : super(db);
 
   Future<List<TagWithPomodorosCount>> getAll() async {
-    final queryRow = await customSelectQuery("""
-        SELECT 
-          (tags.id) as id, tags.label as label, tags.color AS color, tags.date AS date,  COUNT(tags.id) as count_pomodoros
-        FROM pomodoros 
-        JOIN tags_goals ON tags_goals.goal_id == pomodoros.goal_id
-        JOIN tags ON tags.id == tags_goals.tag_id
-        GROUP BY tags.id
-        ORDER BY tags.id DESC;
-      """).get();
+    final _tags = await select(tags).get();
 
-    return queryRow
-        .map(
-          (qr) => TagWithPomodorosCount(
-            tag: Tag.fromData(qr.data, db),
-            pomodorosCount: qr.readInt('count_pomodoros'),
-          ),
-        )
-        .toList();
+    return Future.wait(
+      _tags.map(
+        (Tag tag) async {
+          final queryRow = await customSelectQuery(
+            """
+            SELECT COUNT(*) as count_pomodooros 
+            FROM pomodoros
+            JOIN tags_goals ON tags_goals.goal_id == pomodoros.goal_id
+            JOIN tags ON tags.id == tags_goals.tag_id
+            where tags.id = ?
+          """,
+            variables: [Variable.withInt(tag.id)],
+          ).getSingle();
+
+          return TagWithPomodorosCount(
+            tag: tag,
+            pomodorosCount: queryRow.readInt('count_pomodooros'),
+          );
+        },
+      ),
+    );
   }
 
   Future<List<Tag>> getAllByGoal(Goal goal) async {
