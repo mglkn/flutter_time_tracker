@@ -60,18 +60,18 @@ mixin _$HomeStore on _HomeStore, Store {
     }, _$isGoalDoneFlagAtom, name: '${_$isGoalDoneFlagAtom.name}_set');
   }
 
-  final _$_getGoalsAsyncAction = AsyncAction('_getGoals');
+  final _$getGoalsAsyncAction = AsyncAction('getGoals');
 
   @override
-  Future<dynamic> _getGoals() {
-    return _$_getGoalsAsyncAction.run(() => super._getGoals());
+  Future<dynamic> getGoals() {
+    return _$getGoalsAsyncAction.run(() => super.getGoals());
   }
 
-  final _$_getTagsAsyncAction = AsyncAction('_getTags');
+  final _$getTagsAsyncAction = AsyncAction('getTags');
 
   @override
-  Future<dynamic> _getTags() {
-    return _$_getTagsAsyncAction.run(() => super._getTags());
+  Future<dynamic> getTags() {
+    return _$getTagsAsyncAction.run(() => super.getTags());
   }
 
   final _$toggleGoalStatusAsyncAction = AsyncAction('toggleGoalStatus');

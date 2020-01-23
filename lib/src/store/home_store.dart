@@ -13,8 +13,8 @@ abstract class _HomeStore with Store {
   _HomeStore({DbDataRepository repo})
       : _repo = repo,
         assert(repo != null) {
-    _getGoals();
-    _getTags();
+    getGoals();
+    getTags();
   }
 
   @observable
@@ -36,7 +36,7 @@ abstract class _HomeStore with Store {
   void toggleGoalDoneFlag() => isGoalDoneFlag != isGoalDoneFlag;
 
   @action
-  Future _getGoals() async {
+  Future getGoals() async {
     final result = await _repo.getGoals(isGoalDoneFlag);
 
     // TODO: error handle
@@ -47,7 +47,7 @@ abstract class _HomeStore with Store {
   }
 
   @action
-  Future _getTags() async {
+  Future getTags() async {
     final result = await _repo.getTags();
 
     // TODO: error handle
@@ -61,13 +61,13 @@ abstract class _HomeStore with Store {
   Future toggleGoalStatus(GoalWithTagsAndPomodorosCount goal) async {
     final updatedGoal = goal.goal.copyWith(isDone: !goal.goal.isDone);
     await _repo.updateGoal(goal: updatedGoal, tags: null);
-    await _getGoals();
+    await getGoals();
   }
 
   @action
   Future deleteTag(TagWithPomodorosCount tag) async {
     await _repo.removeTag(tag.tag);
-    await _getTags();
-    await _getGoals();
+    await getTags();
+    await getGoals();
   }
 }

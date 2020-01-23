@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:time_tracker/src/utils/app_localization.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+
+import '../../../utils/app_localization.dart';
+import '../../../store/tag_form_store.dart';
 
 class TagForm extends StatelessWidget {
   void _focusReset(BuildContext context) {
@@ -48,10 +52,15 @@ class __InputTextFieldState extends State<_InputTextField> {
   Widget build(BuildContext context) {
     final hintText = AppLocalizations.of(context).translate('enterTag');
 
-    return TextFormField(
-      controller: _controller,
-      keyboardType: TextInputType.text,
-      decoration: InputDecoration(hintText: hintText),
+    return Consumer(
+      builder: (_, TagFormStore store, __) => Observer(
+        builder: (_) => TextFormField(
+          initialValue: store.label,
+          onChanged: store.setLabel,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(hintText: hintText),
+        ),
+      ),
     );
   }
 }
@@ -59,14 +68,17 @@ class __InputTextFieldState extends State<_InputTextField> {
 class _ColorPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialColorPicker(
-      allowShades: false,
-      elevation: 1.0,
-      onMainColorChange: (Color color) {
-        print(color);
-        // store.setColor(color);
-      },
-      // selectedColor: store.color,
+    return Consumer(
+      builder: (_, TagFormStore store, __) => Observer(
+        builder: (_) => MaterialColorPicker(
+          allowShades: false,
+          elevation: 1.0,
+          onMainColorChange: (Color color) {
+            store.setColor(color.value);
+          },
+          selectedColor: Color(store.color),
+        ),
+      ),
     );
   }
 }
