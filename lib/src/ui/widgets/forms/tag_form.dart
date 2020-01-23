@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:time_tracker/src/utils/app_localization.dart';
+import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 class TagForm extends StatelessWidget {
   void _focusReset(BuildContext context) {
@@ -15,14 +16,17 @@ class TagForm extends StatelessWidget {
     return GestureDetector(
       onTap: () => _focusReset(context),
       child: SafeArea(
-        child: Container(
-          padding: EdgeInsets.all(20.0),
-          width: double.infinity,
-          height: double.infinity,
-          child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height * .9,
+            padding: EdgeInsets.all(20.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 _InputTextField(),
+                const SizedBox(height: 20.0),
+                Expanded(child: _ColorPicker()),
               ],
             ),
           ),
@@ -48,6 +52,21 @@ class __InputTextFieldState extends State<_InputTextField> {
       controller: _controller,
       keyboardType: TextInputType.text,
       decoration: InputDecoration(hintText: hintText),
+    );
+  }
+}
+
+class _ColorPicker extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialColorPicker(
+      allowShades: false,
+      elevation: 1.0,
+      onMainColorChange: (Color color) {
+        print(color);
+        // store.setColor(color);
+      },
+      // selectedColor: store.color,
     );
   }
 }
