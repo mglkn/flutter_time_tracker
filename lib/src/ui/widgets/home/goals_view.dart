@@ -35,7 +35,7 @@ class GoalTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SlidableWrapper(
+    return _SlidableWrapper(
       child: Card(
         child: ListTile(
           leading: Text(
@@ -54,10 +54,10 @@ class GoalTile extends StatelessWidget {
   }
 }
 
-class SlidableWrapper extends StatelessWidget {
+class _SlidableWrapper extends StatelessWidget {
   final Widget child;
 
-  SlidableWrapper({this.child});
+  _SlidableWrapper({this.child});
 
   @override
   Widget build(BuildContext context) {
