@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:moor_flutter/moor_flutter.dart';
-import 'package:time_tracker/src/data/dto.dart';
+
+import 'dto.dart';
 
 part 'db.g.dart';
 
@@ -64,7 +65,7 @@ class GoalsDao extends DatabaseAccessor<AppDatabase> with _$GoalsDaoMixin {
   Future<bool> modify(Goal goal) => update(goals).replace(goal);
 }
 
-@UseDao(tables: [Tags, TagsGoals, Pomodoro])
+@UseDao(tables: [Tags, TagsGoals])
 class TagsDao extends DatabaseAccessor<AppDatabase> with _$TagsDaoMixin {
   TagsDao(AppDatabase db) : super(db);
 
