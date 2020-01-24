@@ -59,7 +59,6 @@ class __HomeScreenState extends State<_HomeScreen> {
       elevation: 1.0,
       onPressed: () {
         if (_bottomSelectedIndex == 0) {
-          print('add goals');
           AppRouter.navigator.pushNamed(AppRouter.goalFormScreen);
           return;
         }
