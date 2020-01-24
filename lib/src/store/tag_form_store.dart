@@ -47,5 +47,6 @@ abstract class _TagFormStore with Store {
     );
 
     await homeStore.getTags();
+    await homeStore.getGoals();
   }
 }
