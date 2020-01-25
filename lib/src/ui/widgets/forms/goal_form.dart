@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -40,21 +41,54 @@ class GoalForm extends StatelessWidget {
   }
 }
 
-class _InputTextField extends StatelessWidget {
+class _InputTextField extends StatefulWidget {
+  @override
+  __InputTextFieldState createState() => __InputTextFieldState();
+}
+
+class __InputTextFieldState extends State<_InputTextField> {
+  TextEditingController _controller;
+  Timer _debounce;
+
+  GoalFormStore _store;
+
+  _onFieldChanged() {
+    if (_debounce?.isActive ?? false) _debounce.cancel();
+    _debounce = Timer(
+      const Duration(milliseconds: 500),
+      () {
+        if (_controller.value.text != _store.label)
+          _store.setLabel(_controller.value.text);
+      },
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _store = Provider.of<GoalFormStore>(context);
+    _controller = TextEditingController(text: _store.label);
+    _controller.addListener(_onFieldChanged);
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(_onFieldChanged);
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final hintText = AppLocalizations.of(context).translate('enterGoal');
 
-    return Consumer(
-      builder: (_, GoalFormStore store, __) => Observer(
-        builder: (_) => TextFormField(
-          initialValue: store.label,
-          onChanged: store.setLabel,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            hintText: hintText,
-            errorText: store.errorLabel,
-          ),
+    return Observer(
+      builder: (_) => TextFormField(
+        controller: _controller,
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+          hintText: hintText,
+          errorText: _store.errorLabel,
         ),
       ),
     );
