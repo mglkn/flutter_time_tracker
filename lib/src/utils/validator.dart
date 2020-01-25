@@ -5,6 +5,7 @@ import 'app_localization.dart';
 
 abstract class Validator {
   Future<String> validateTagLabel(String label, [String editingTag]);
+  String validateGoalLabel(String label);
 
   factory Validator.instance({
     DbDataRepository db,
@@ -43,7 +44,8 @@ class _Validator implements Validator {
   static int _minTagLabelLong = 1;
   static int _maxTagLabelLong = 30;
 
-  Future<String> validateTagLabel(String label, [String editingTag]) async {
+  Future<String> validateTagLabel(String label,
+      [String editingLabelTag]) async {
     if (label.length < _minTagLabelLong || label.length > _maxTagLabelLong) {
       return _locale.translate("tagLabelLendthError");
     }
@@ -53,7 +55,7 @@ class _Validator implements Validator {
     }
 
     var existedTag;
-    if (label.length == 0 || label == editingTag) {
+    if (label.length == 0 || label == editingLabelTag) {
       existedTag = null;
     } else {
       existedTag = await _db.getTagByLabel(label);
@@ -61,6 +63,18 @@ class _Validator implements Validator {
 
     if (existedTag != null) {
       return _locale.translate("tagLabelUniqueError");
+    }
+
+    return null;
+  }
+
+  String validateGoalLabel(String label) {
+    if (label.length < 1 || label.length > 50) {
+      return _locale.translate("goalLabelLendthError");
+    }
+
+    if (_isValidTag.hasMatch(label)) {
+      return _locale.translate("goalLabelNotMatchError");
     }
 
     return null;

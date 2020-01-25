@@ -3,6 +3,7 @@ import 'package:mobx/mobx.dart';
 import 'home_store.dart';
 import '../data/db_repository.dart';
 import '../data/dto.dart';
+import '../utils/validator.dart';
 
 part 'goal_form_store.g.dart';
 
@@ -12,19 +13,17 @@ abstract class _GoalFormStore with Store {
   HomeStore homeStore;
   DbDataRepository repo;
   GoalWithTagsAndPomodorosCount goal;
+  Validator validator;
 
   _GoalFormStore({
     this.homeStore,
     this.repo,
     this.goal,
-  })  : assert(homeStore != null),
-        assert(repo != null) {
-    if (goal != null) {
-      _label = goal.goal.label;
-      _selectedTags = ObservableList.of(
-        goal.tags.map((t) => TagWithPomodorosCount(tag: t, pomodorosCount: 0)),
-      );
-    }
+    this.validator,
+  }) {
+    assert(homeStore != null);
+    assert(repo != null);
+    assert(validator != null);
 
     repo.getTags().then(
           (result) => result.fold(
@@ -34,6 +33,16 @@ abstract class _GoalFormStore with Store {
             },
           ),
         );
+
+    if (goal != null) {
+      _label = goal.goal.label;
+      _selectedTags = ObservableList.of(
+        goal.tags.map((t) => TagWithPomodorosCount(tag: t, pomodorosCount: 0)),
+      );
+      return;
+    }
+
+    _label = '';
   }
 
   @action
@@ -47,7 +56,20 @@ abstract class _GoalFormStore with Store {
   String get label => _label;
 
   @action
-  void setLabel(String value) => _label = value;
+  void setLabel(String value) {
+    _label = value;
+    validateLabel();
+  }
+
+  @observable
+  String _errorLabel;
+
+  String get errorLabel => _errorLabel;
+
+  @action
+  void validateLabel() {
+    _errorLabel = validator.validateGoalLabel(_label);
+  }
 
   @observable
   ObservableList<TagWithPomodorosCount> _allTags =
@@ -62,7 +84,16 @@ abstract class _GoalFormStore with Store {
   @computed
   List<TagWithPomodorosCount> get selectedTags => _selectedTags;
 
-  Future doneEditing() async {
+  @computed
+  bool get isFormValid =>
+      _label != '' && (_errorLabel == null || errorLabel?.length == 0);
+
+  Future<bool> doneEditing() async {
+    if (!isFormValid) {
+      validateLabel();
+      return false;
+    }
+
     var result;
     if (goal != null) {
       final updatedGoal = goal.goal.copyWith(label: label);
@@ -83,6 +114,8 @@ abstract class _GoalFormStore with Store {
     );
 
     await homeStore.getGoals();
+
+    return true;
   }
 
   @action

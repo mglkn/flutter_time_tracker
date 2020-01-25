@@ -40,12 +40,7 @@ class GoalForm extends StatelessWidget {
   }
 }
 
-class _InputTextField extends StatefulWidget {
-  @override
-  __InputTextFieldState createState() => __InputTextFieldState();
-}
-
-class __InputTextFieldState extends State<_InputTextField> {
+class _InputTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hintText = AppLocalizations.of(context).translate('enterGoal');
@@ -56,7 +51,10 @@ class __InputTextFieldState extends State<_InputTextField> {
           initialValue: store.label,
           onChanged: store.setLabel,
           keyboardType: TextInputType.text,
-          decoration: InputDecoration(hintText: hintText),
+          decoration: InputDecoration(
+            hintText: hintText,
+            errorText: store.errorLabel,
+          ),
         ),
       ),
     );

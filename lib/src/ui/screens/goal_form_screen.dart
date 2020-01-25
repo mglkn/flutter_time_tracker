@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:time_tracker/src/utils/validator.dart';
 
 import '../../utils/app_localization.dart';
 import '../widgets/forms/forms.dart';
@@ -15,8 +16,8 @@ class GoalFormScreen extends StatelessWidget {
   GoalFormScreen({this.goal});
 
   Future _createGoalHandler(GoalFormStore goalFormStore) async {
-    await goalFormStore.doneEditing();
-    AppRouter.navigator.pop();
+    final shouldReturn = await goalFormStore.doneEditing();
+    if (shouldReturn) AppRouter.navigator.pop();
   }
 
   @override
@@ -29,6 +30,10 @@ class GoalFormScreen extends StatelessWidget {
       homeStore: homeStore,
       repo: DbDataRepository.db(),
       goal: goal,
+      validator: Validator.instance(
+        db: DbDataRepository.db(),
+        locale: AppLocalizations.of(context),
+      ),
     );
 
     return Scaffold(

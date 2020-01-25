@@ -15,6 +15,11 @@ mixin _$GoalFormStore on _GoalFormStore, Store {
   List<TagWithPomodorosCount> get selectedTags => (_$selectedTagsComputed ??=
           Computed<List<TagWithPomodorosCount>>(() => super.selectedTags))
       .value;
+  Computed<bool> _$isFormValidComputed;
+
+  @override
+  bool get isFormValid =>
+      (_$isFormValidComputed ??= Computed<bool>(() => super.isFormValid)).value;
 
   final _$_labelAtom = Atom(name: '_GoalFormStore._label');
 
@@ -31,6 +36,23 @@ mixin _$GoalFormStore on _GoalFormStore, Store {
       super._label = value;
       _$_labelAtom.reportChanged();
     }, _$_labelAtom, name: '${_$_labelAtom.name}_set');
+  }
+
+  final _$_errorLabelAtom = Atom(name: '_GoalFormStore._errorLabel');
+
+  @override
+  String get _errorLabel {
+    _$_errorLabelAtom.context.enforceReadPolicy(_$_errorLabelAtom);
+    _$_errorLabelAtom.reportObserved();
+    return super._errorLabel;
+  }
+
+  @override
+  set _errorLabel(String value) {
+    _$_errorLabelAtom.context.conditionallyRunInAction(() {
+      super._errorLabel = value;
+      _$_errorLabelAtom.reportChanged();
+    }, _$_errorLabelAtom, name: '${_$_errorLabelAtom.name}_set');
   }
 
   final _$_allTagsAtom = Atom(name: '_GoalFormStore._allTags');
@@ -85,6 +107,16 @@ mixin _$GoalFormStore on _GoalFormStore, Store {
     final _$actionInfo = _$_GoalFormStoreActionController.startAction();
     try {
       return super.setLabel(value);
+    } finally {
+      _$_GoalFormStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void validateLabel() {
+    final _$actionInfo = _$_GoalFormStoreActionController.startAction();
+    try {
+      return super.validateLabel();
     } finally {
       _$_GoalFormStoreActionController.endAction(_$actionInfo);
     }
