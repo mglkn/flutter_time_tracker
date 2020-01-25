@@ -95,6 +95,15 @@ class TagSelectorItem extends StatefulWidget {
 class _TagSelectorItemState extends State<TagSelectorItem> {
   bool isTagSelected = false;
 
+  @override
+  void initState() {
+    super.initState();
+    final store = Provider.of<GoalFormStore>(context, listen: false);
+    if (store.isTagSelected(widget.tag)) {
+      isTagSelected = true;
+    }
+  }
+
   void _toggleTagSelection(GoalFormStore store) {
     store.toggleTagSelection(widget.tag);
     setState(() {

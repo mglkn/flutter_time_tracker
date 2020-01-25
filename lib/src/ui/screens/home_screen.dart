@@ -62,7 +62,8 @@ class __HomeScreenState extends State<_HomeScreen> {
       elevation: 1.0,
       onPressed: () {
         if (_bottomSelectedIndex == 0) {
-          AppRouter.navigator.pushNamed(AppRouter.goalFormScreen);
+          AppRouter.navigator
+              .pushNamed(AppRouter.goalFormScreen, arguments: null);
           return;
         }
         AppRouter.navigator.pushNamed(AppRouter.tagFormScreen, arguments: null);

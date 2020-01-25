@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../data/dto.dart';
 import '../../../data/db.dart';
 import '../../../store/home_store.dart';
+import '../../../routes/router.gr.dart';
 
 class GoalsView extends StatefulWidget {
   @override
@@ -76,7 +77,8 @@ class _SlidableWrapper extends StatelessWidget {
             foregroundColor: Colors.black,
             icon: Icons.done,
             onTap: () {
-              print('edit');
+              AppRouter.navigator
+                  .pushNamed(AppRouter.goalFormScreen, arguments: goal);
             },
           ),
         ],

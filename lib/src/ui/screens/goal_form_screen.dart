@@ -7,10 +7,15 @@ import '../../store/goal_form_store.dart';
 import '../../store/home_store.dart';
 import '../../data/db_repository.dart';
 import '../../routes/router.gr.dart';
+import '../../data/dto.dart';
 
 class GoalFormScreen extends StatelessWidget {
+  final GoalWithTagsAndPomodorosCount goal;
+
+  GoalFormScreen({this.goal});
+
   Future _createGoalHandler(GoalFormStore goalFormStore) async {
-    await goalFormStore.createGoal();
+    await goalFormStore.doneEditing();
     AppRouter.navigator.pop();
   }
 
@@ -23,6 +28,7 @@ class GoalFormScreen extends StatelessWidget {
     final goalFormStore = GoalFormStore(
       homeStore: homeStore,
       repo: DbDataRepository.db(),
+      goal: goal,
     );
 
     return Scaffold(

@@ -11,12 +11,21 @@ class GoalFormStore = _GoalFormStore with _$GoalFormStore;
 abstract class _GoalFormStore with Store {
   HomeStore homeStore;
   DbDataRepository repo;
+  GoalWithTagsAndPomodorosCount goal;
 
   _GoalFormStore({
     this.homeStore,
     this.repo,
+    this.goal,
   })  : assert(homeStore != null),
         assert(repo != null) {
+    if (goal != null) {
+      _label = goal.goal.label;
+      _selectedTags = ObservableList.of(
+        goal.tags.map((t) => TagWithPomodorosCount(tag: t, pomodorosCount: 0)),
+      );
+    }
+
     repo.getTags().then(
           (result) => result.fold(
             (error) => print(error),
@@ -50,13 +59,23 @@ abstract class _GoalFormStore with Store {
   ObservableList<TagWithPomodorosCount> _selectedTags =
       ObservableList<TagWithPomodorosCount>();
 
+  @computed
   List<TagWithPomodorosCount> get selectedTags => _selectedTags;
 
-  Future createGoal() async {
-    final result = await repo.createGoal(
-      label: label,
-      tags: selectedTags.map((t) => t.tag).toList(),
-    );
+  Future doneEditing() async {
+    var result;
+    if (goal != null) {
+      final updatedGoal = goal.goal.copyWith(label: label);
+      result = await repo.updateGoal(
+        goal: updatedGoal,
+        tags: selectedTags.map((t) => t.tag).toList(),
+      );
+    } else {
+      result = await repo.createGoal(
+        label: label,
+        tags: selectedTags.map((t) => t.tag).toList(),
+      );
+    }
 
     result.fold(
       (error) => print(error.toString()),

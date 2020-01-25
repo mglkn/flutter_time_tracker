@@ -9,6 +9,13 @@ part of 'goal_form_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$GoalFormStore on _GoalFormStore, Store {
+  Computed<List<TagWithPomodorosCount>> _$selectedTagsComputed;
+
+  @override
+  List<TagWithPomodorosCount> get selectedTags => (_$selectedTagsComputed ??=
+          Computed<List<TagWithPomodorosCount>>(() => super.selectedTags))
+      .value;
+
   final _$_labelAtom = Atom(name: '_GoalFormStore._label');
 
   @override

@@ -38,8 +38,12 @@ class AppRouter {
           settings: settings,
         );
       case AppRouter.goalFormScreen:
+        if (hasInvalidArgs<GoalWithTagsAndPomodorosCount>(args)) {
+          return misTypedArgsRoute<GoalWithTagsAndPomodorosCount>(args);
+        }
+        final typedArgs = args as GoalWithTagsAndPomodorosCount;
         return MaterialPageRoute(
-          builder: (_) => GoalFormScreen(),
+          builder: (_) => GoalFormScreen(goal: typedArgs),
           settings: settings,
         );
       default:
