@@ -36,6 +36,7 @@ class GoalTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _SlidableWrapper(
+      goal: goal,
       child: Card(
         child: ListTile(
           leading: Text(
@@ -56,37 +57,42 @@ class GoalTile extends StatelessWidget {
 
 class _SlidableWrapper extends StatelessWidget {
   final Widget child;
+  final GoalWithTagsAndPomodorosCount goal;
 
-  _SlidableWrapper({this.child});
+  _SlidableWrapper({this.child, this.goal})
+      : assert(child != null),
+        assert(goal != null);
 
   @override
   Widget build(BuildContext context) {
-    return Slidable(
-      actionPane: SlidableBehindActionPane(),
-      actionExtentRatio: 0.2,
-      actions: <Widget>[
-        IconSlideAction(
-          caption: 'Edit',
-          color: Colors.transparent,
-          foregroundColor: Colors.black,
-          icon: Icons.done,
-          onTap: () {
-            print("done");
-          },
-        ),
-      ],
-      secondaryActions: <Widget>[
-        IconSlideAction(
-          caption: 'Done',
-          color: Colors.transparent,
-          foregroundColor: Colors.black,
-          icon: Icons.done,
-          onTap: () {
-            print("done");
-          },
-        ),
-      ],
-      child: child,
+    return Consumer(
+      builder: (_, HomeStore store, __) => Slidable(
+        actionPane: SlidableBehindActionPane(),
+        actionExtentRatio: 0.2,
+        actions: <Widget>[
+          IconSlideAction(
+            caption: 'Edit',
+            color: Colors.transparent,
+            foregroundColor: Colors.black,
+            icon: Icons.done,
+            onTap: () {
+              print('edit');
+            },
+          ),
+        ],
+        secondaryActions: <Widget>[
+          IconSlideAction(
+            caption: 'Done',
+            color: Colors.transparent,
+            foregroundColor: Colors.black,
+            icon: Icons.done,
+            onTap: () {
+              store.toggleGoalStatus(goal);
+            },
+          ),
+        ],
+        child: child,
+      ),
     );
   }
 }
