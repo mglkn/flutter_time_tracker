@@ -65,7 +65,7 @@ class __HomeScreenState extends State<_HomeScreen> {
           AppRouter.navigator.pushNamed(AppRouter.goalFormScreen);
           return;
         }
-        AppRouter.navigator.pushNamed(AppRouter.tagFormScreen);
+        AppRouter.navigator.pushNamed(AppRouter.tagFormScreen, arguments: null);
       },
     );
   }

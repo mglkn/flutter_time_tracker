@@ -92,14 +92,4 @@ mixin _$GoalFormStore on _GoalFormStore, Store {
       _$_GoalFormStoreActionController.endAction(_$actionInfo);
     }
   }
-
-  @override
-  bool isTagSelected(TagWithPomodorosCount tag) {
-    final _$actionInfo = _$_GoalFormStoreActionController.startAction();
-    try {
-      return super.isTagSelected(tag);
-    } finally {
-      _$_GoalFormStoreActionController.endAction(_$actionInfo);
-    }
-  }
 }

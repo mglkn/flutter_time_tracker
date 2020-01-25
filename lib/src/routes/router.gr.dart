@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:auto_route/router_utils.dart';
 import 'package:time_tracker/src/ui/screens/home_screen.dart';
 import 'package:time_tracker/src/ui/screens/tag_form_screen.dart';
+import 'package:time_tracker/src/data/dto.dart';
 import 'package:time_tracker/src/ui/screens/goal_form_screen.dart';
 
 class AppRouter {
@@ -28,8 +29,12 @@ class AppRouter {
           settings: settings,
         );
       case AppRouter.tagFormScreen:
+        if (hasInvalidArgs<TagWithPomodorosCount>(args)) {
+          return misTypedArgsRoute<TagWithPomodorosCount>(args);
+        }
+        final typedArgs = args as TagWithPomodorosCount;
         return MaterialPageRoute(
-          builder: (_) => TagFormScreen(),
+          builder: (_) => TagFormScreen(tag: typedArgs),
           settings: settings,
         );
       case AppRouter.goalFormScreen:

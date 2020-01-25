@@ -11,12 +11,19 @@ class TagFormStore = _TagFormStore with _$TagFormStore;
 abstract class _TagFormStore with Store {
   HomeStore homeStore;
   DbDataRepository repo;
+  Tag tag;
 
   _TagFormStore({
     this.homeStore,
     this.repo,
+    this.tag,
   })  : assert(homeStore != null),
         assert(repo != null) {
+    if (tag != null) {
+      _label = tag.label;
+      _color = tag.color;
+      return;
+    }
     _color = 0xfff44336; // INITIAL RED VALUE
   }
 
@@ -37,9 +44,15 @@ abstract class _TagFormStore with Store {
   void setColor(int value) => _color = value;
 
   Future doneEditing() async {
-    final result = await repo.createTag(
-      Tag(label: label, color: color),
-    );
+    var result;
+    if (tag != null) {
+      final changedTag = tag.copyWith(label: label, color: color);
+      result = await repo.updateTag(changedTag);
+    } else {
+      result = await repo.createTag(
+        Tag(label: label, color: color),
+      );
+    }
 
     result.fold(
       (error) => print(error.toString()),

@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../data/dto.dart';
 import '../../../store/home_store.dart';
+import '../../../routes/router.gr.dart';
 
 class TagsView extends StatelessWidget {
   @override
@@ -76,7 +77,8 @@ class _SlidableWrapper extends StatelessWidget {
             foregroundColor: Colors.black,
             icon: Icons.done,
             onTap: () {
-              print("done");
+              AppRouter.navigator
+                  .pushNamed(AppRouter.tagFormScreen, arguments: tag);
             },
           ),
         ],
