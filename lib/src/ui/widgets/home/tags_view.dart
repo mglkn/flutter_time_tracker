@@ -89,7 +89,6 @@ class _SlidableWrapper extends StatelessWidget {
             foregroundColor: Colors.black,
             icon: Icons.remove_circle_outline,
             onTap: () {
-              print("Delete");
               store.deleteTag(tag);
             },
           ),
