@@ -77,7 +77,6 @@ abstract class _GoalFormStore with Store {
         _selectedTags.where((t) => t.tag.id != tag.tag.id).toList());
   }
 
-  @action
   bool isTagSelected(TagWithPomodorosCount tag) {
     var isTagSelected = false;
     for (final selectedTag in selectedTags) {

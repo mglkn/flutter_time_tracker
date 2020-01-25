@@ -83,35 +83,45 @@ class _TagSelector extends StatelessWidget {
   }
 }
 
-class TagSelectorItem extends StatelessWidget {
+class TagSelectorItem extends StatefulWidget {
   final TagWithPomodorosCount tag;
 
   TagSelectorItem({this.tag}) : assert(tag != null);
 
   @override
+  _TagSelectorItemState createState() => _TagSelectorItemState();
+}
+
+class _TagSelectorItemState extends State<TagSelectorItem> {
+  bool isTagSelected = false;
+
+  void _toggleTagSelection(GoalFormStore store) {
+    store.toggleTagSelection(widget.tag);
+    setState(() {
+      isTagSelected = !isTagSelected;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final _tag = tag.tag;
+    final _tag = widget.tag.tag;
 
     return Consumer(
-      builder: (_, GoalFormStore store, __) => Observer(
-        builder: (_) {
-          return Card(
-            color: Color(_tag.color),
-            child: ListTile(
-              onTap: () => store.toggleTagSelection(tag),
-              title: Text(
-                _tag.label,
-                style: TextStyle(color: Colors.white),
-              ),
-              trailing: store.isTagSelected(tag)
-                  ? Icon(
-                      Icons.done,
-                      color: Colors.white,
-                    )
-                  : Text(''),
-            ),
-          );
-        },
+      builder: (_, GoalFormStore store, __) => Card(
+        color: Color(_tag.color),
+        child: ListTile(
+          onTap: () => _toggleTagSelection(store),
+          title: Text(
+            _tag.label,
+            style: TextStyle(color: Colors.white),
+          ),
+          trailing: isTagSelected
+              ? Icon(
+                  Icons.done,
+                  color: Colors.white,
+                )
+              : Text(''),
+        ),
       ),
     );
   }
