@@ -30,6 +30,7 @@ class TagTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _SlidableWrapper(
+      tag: tag,
       child: Card(
         color: Color(tag.tag.color),
         child: ListTile(
@@ -54,37 +55,45 @@ class TagTile extends StatelessWidget {
 
 class _SlidableWrapper extends StatelessWidget {
   final Widget child;
+  final TagWithPomodorosCount tag;
 
-  _SlidableWrapper({this.child});
+  _SlidableWrapper({
+    this.child,
+    this.tag,
+  })  : assert(tag != null),
+        assert(child != null);
 
   @override
   Widget build(BuildContext context) {
-    return Slidable(
-      actionPane: SlidableBehindActionPane(),
-      actionExtentRatio: 0.2,
-      actions: <Widget>[
-        IconSlideAction(
-          caption: 'Edit',
-          color: Colors.transparent,
-          foregroundColor: Colors.black,
-          icon: Icons.done,
-          onTap: () {
-            print("done");
-          },
-        ),
-      ],
-      secondaryActions: <Widget>[
-        IconSlideAction(
-          caption: 'Delete',
-          color: Colors.transparent,
-          foregroundColor: Colors.black,
-          icon: Icons.remove_circle_outline,
-          onTap: () {
-            print("Delete");
-          },
-        ),
-      ],
-      child: child,
+    return Consumer(
+      builder: (_, HomeStore store, __) => Slidable(
+        actionPane: SlidableBehindActionPane(),
+        actionExtentRatio: 0.2,
+        actions: <Widget>[
+          IconSlideAction(
+            caption: 'Edit',
+            color: Colors.transparent,
+            foregroundColor: Colors.black,
+            icon: Icons.done,
+            onTap: () {
+              print("done");
+            },
+          ),
+        ],
+        secondaryActions: <Widget>[
+          IconSlideAction(
+            caption: 'Delete',
+            color: Colors.transparent,
+            foregroundColor: Colors.black,
+            icon: Icons.remove_circle_outline,
+            onTap: () {
+              print("Delete");
+              store.deleteTag(tag);
+            },
+          ),
+        ],
+        child: child,
+      ),
     );
   }
 }
