@@ -8,6 +8,7 @@ import '../../store/tag_form_store.dart';
 import '../../data/db_repository.dart';
 import '../../routes/router.gr.dart';
 import '../../data/dto.dart';
+import '../../utils/validator.dart';
 
 class TagFormScreen extends StatelessWidget {
   final TagWithPomodorosCount tag;
@@ -15,8 +16,8 @@ class TagFormScreen extends StatelessWidget {
   TagFormScreen({this.tag});
 
   Future _createTagHandler(TagFormStore tagFormStore) async {
-    await tagFormStore.doneEditing();
-    AppRouter.navigator.pop();
+    final bool shouldReturn = await tagFormStore.doneEditing();
+    if (shouldReturn) AppRouter.navigator.pop();
   }
 
   @override
@@ -29,6 +30,10 @@ class TagFormScreen extends StatelessWidget {
       homeStore: homeStore,
       repo: DbDataRepository.db(),
       tag: tag?.tag,
+      validator: Validator.instance(
+        db: DbDataRepository.db(),
+        locale: AppLocalizations.of(context),
+      ),
     );
 
     return Scaffold(

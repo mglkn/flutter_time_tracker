@@ -12,6 +12,8 @@ class TagForm extends StatelessWidget {
 
     if (!currentFocus.hasPrimaryFocus) {
       currentFocus.unfocus();
+      final store = Provider.of<TagFormStore>(context, listen: false);
+      store.validateLabel();
     }
   }
 
@@ -51,7 +53,10 @@ class _InputTextField extends StatelessWidget {
           initialValue: store.label,
           onChanged: store.setLabel,
           keyboardType: TextInputType.text,
-          decoration: InputDecoration(hintText: hintText),
+          decoration: InputDecoration(
+            hintText: hintText,
+            errorText: store.errorLabel,
+          ),
         ),
       ),
     );
