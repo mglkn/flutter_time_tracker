@@ -111,7 +111,7 @@ class TagListTile extends StatelessWidget {
         opacity: store.isGoalDoneFlag ? 0.5 : 1.0,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
-          margin: EdgeInsets.only(right: 2.0),
+          margin: EdgeInsets.only(right: 2.0, bottom: 2.0),
           decoration: BoxDecoration(
             color: Color(tag.color),
             borderRadius: BorderRadius.circular(2.0),
