@@ -40,14 +40,7 @@ class TagForm extends StatelessWidget {
   }
 }
 
-class _InputTextField extends StatefulWidget {
-  @override
-  __InputTextFieldState createState() => __InputTextFieldState();
-}
-
-class __InputTextFieldState extends State<_InputTextField> {
-  TextEditingController _controller = TextEditingController();
-
+class _InputTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hintText = AppLocalizations.of(context).translate('enterTag');
