@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:time_tracker/src/routes/router.gr.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../utils/app_localization.dart';
 import '../../ui/widgets/home/home.dart';
+import '../../store/home_store.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -74,30 +77,45 @@ class __HomeScreenState extends State<_HomeScreen> {
     final String titleTags =
         AppLocalizations.of(context).translate("tags").toUpperCase();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: AppBarTitle(_bottomSelectedIndex == 0 ? titleGoals : titleTags),
-        centerTitle: true,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _bottomSelectedIndex,
-        onTap: _onBottomNavTapped,
-        elevation: 4.0,
-        items: [
-          _buildBottomNavBar(title: titleGoals, icon: Icons.gps_fixed),
-          _buildBottomNavBar(title: titleTags, icon: Icons.local_offer),
-        ],
-      ),
-      floatingActionButton: _buildFloatingActionButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: SafeArea(
-        child: PageView(
-          controller: _pageController,
-          onPageChanged: (index) => _pageChanged(index),
-          children: <Widget>[
-            GoalsView(),
-            TagsView(),
+    final checkedIcon = Icon(Icons.check_box);
+    final uncheckedIcon = Icon(Icons.check_box_outline_blank);
+
+    return Consumer(
+      builder: (_, HomeStore store, __) => Scaffold(
+        appBar: AppBar(
+          title:
+              AppBarTitle(_bottomSelectedIndex == 0 ? titleGoals : titleTags),
+          actions: <Widget>[
+            IconButton(
+              icon: Observer(
+                builder: (_) =>
+                    store.isGoalDoneFlag ? uncheckedIcon : checkedIcon,
+              ),
+              onPressed: () => store.toggleGoalDoneFlag(),
+            ),
           ],
+          centerTitle: true,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _bottomSelectedIndex,
+          onTap: _onBottomNavTapped,
+          elevation: 4.0,
+          items: [
+            _buildBottomNavBar(title: titleGoals, icon: Icons.gps_fixed),
+            _buildBottomNavBar(title: titleTags, icon: Icons.local_offer),
+          ],
+        ),
+        floatingActionButton: _buildFloatingActionButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        body: SafeArea(
+          child: PageView(
+            controller: _pageController,
+            onPageChanged: (index) => _pageChanged(index),
+            children: <Widget>[
+              GoalsView(),
+              TagsView(),
+            ],
+          ),
         ),
       ),
     );

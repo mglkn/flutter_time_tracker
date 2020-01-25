@@ -82,7 +82,7 @@ class _SlidableWrapper extends StatelessWidget {
         ],
         secondaryActions: <Widget>[
           IconSlideAction(
-            caption: 'Done',
+            caption: store.isGoalDoneFlag ? 'Undone' : 'Done',
             color: Colors.transparent,
             foregroundColor: Colors.black,
             icon: Icons.done,
@@ -104,18 +104,23 @@ class TagListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
-      margin: EdgeInsets.only(right: 2.0),
-      decoration: BoxDecoration(
-        color: Color(tag.color),
-        borderRadius: BorderRadius.circular(2.0),
-      ),
-      child: Text(
-        tag.label,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 10.0,
+    return Consumer(
+      builder: (_, HomeStore store, __) => Opacity(
+        opacity: store.isGoalDoneFlag ? 0.5 : 1.0,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
+          margin: EdgeInsets.only(right: 2.0),
+          decoration: BoxDecoration(
+            color: Color(tag.color),
+            borderRadius: BorderRadius.circular(2.0),
+          ),
+          child: Text(
+            tag.label,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 10.0,
+            ),
+          ),
         ),
       ),
     );

@@ -33,7 +33,10 @@ abstract class _HomeStore with Store {
   bool isGoalDoneFlag = false;
 
   @action
-  void toggleGoalDoneFlag() => isGoalDoneFlag != isGoalDoneFlag;
+  void toggleGoalDoneFlag() {
+    isGoalDoneFlag = !isGoalDoneFlag;
+    getGoals();
+  }
 
   @action
   Future getGoals() async {
