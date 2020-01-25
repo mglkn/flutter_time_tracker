@@ -12,6 +12,7 @@ abstract class DbDataRepository {
   Future<Either<Object, bool>> updateGoal({Goal goal, List<Tag> tags});
 
   Future<Either<Object, List<TagWithPomodorosCount>>> getTags();
+  Future<Tag> getTagByLabel(String label);
   Future<Either<Object, int>> createTag(Tag tag);
   Future<Either<Object, int>> removeTag(Tag tag);
   Future<Either<Object, bool>> updateTag(Tag tag);
@@ -130,5 +131,10 @@ class _DbDataRepository implements DbDataRepository {
   @override
   Future<Either<Object, bool>> updateTag(Tag tag) {
     return Task(() => _db.tagsDao.modify(tag)).attempt().run();
+  }
+
+  @override
+  Future<Tag> getTagByLabel(String label) {
+    return _db.tagsDao.getByLabel(label);
   }
 }
