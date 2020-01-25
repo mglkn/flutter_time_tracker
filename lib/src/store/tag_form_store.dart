@@ -36,7 +36,7 @@ abstract class _TagFormStore with Store {
   @action
   void setColor(int value) => _color = value;
 
-  Future createTag() async {
+  Future doneEditing() async {
     final result = await repo.createTag(
       Tag(label: label, color: color),
     );

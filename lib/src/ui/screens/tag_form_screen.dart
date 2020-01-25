@@ -10,7 +10,7 @@ import '../../routes/router.gr.dart';
 
 class TagFormScreen extends StatelessWidget {
   Future _createTagHandler(TagFormStore tagFormStore) async {
-    await tagFormStore.createTag();
+    await tagFormStore.doneEditing();
     AppRouter.navigator.pop();
   }
 
