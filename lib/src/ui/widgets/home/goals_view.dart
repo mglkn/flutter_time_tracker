@@ -34,12 +34,18 @@ class GoalTile extends StatelessWidget {
 
   GoalTile(this.goal);
 
+  void _navigateToGoal() {
+    AppRouter.navigator
+        .pushNamed(AppRouter.goalScreen, arguments: this.goal.goal.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return _SlidableWrapper(
       goal: goal,
       child: Card(
         child: ListTile(
+          onTap: _navigateToGoal,
           leading: Text(
             goal.pomodorosCount.toString(),
             style: TextStyle(
