@@ -35,8 +35,7 @@ class GoalTile extends StatelessWidget {
   GoalTile(this.goal);
 
   void _navigateToGoal() {
-    AppRouter.navigator
-        .pushNamed(AppRouter.goalScreen, arguments: this.goal.goal.id);
+    AppRouter.navigator.pushNamed(AppRouter.goalScreen, arguments: this.goal);
   }
 
   @override

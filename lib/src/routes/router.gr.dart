@@ -49,12 +49,12 @@ class AppRouter {
           settings: settings,
         );
       case AppRouter.goalScreen:
-        if (hasInvalidArgs<int>(args)) {
-          return misTypedArgsRoute<int>(args);
+        if (hasInvalidArgs<GoalWithTagsAndPomodorosCount>(args)) {
+          return misTypedArgsRoute<GoalWithTagsAndPomodorosCount>(args);
         }
-        final typedArgs = args as int;
+        final typedArgs = args as GoalWithTagsAndPomodorosCount;
         return MaterialPageRoute(
-          builder: (_) => GoalScreen(goalId: typedArgs),
+          builder: (_) => GoalScreen(goal: typedArgs),
           settings: settings,
         );
       default:
