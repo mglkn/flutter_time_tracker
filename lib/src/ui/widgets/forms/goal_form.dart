@@ -57,8 +57,8 @@ class __InputTextFieldState extends State<_InputTextField> {
     _debounce = Timer(
       const Duration(milliseconds: 500),
       () {
-        if (_controller.value.text != _store.label)
-          _store.setLabel(_controller.value.text);
+        if (_controller.value.text.trim() != _store.label)
+          _store.setLabel(_controller.value.text.trim());
       },
     );
   }
