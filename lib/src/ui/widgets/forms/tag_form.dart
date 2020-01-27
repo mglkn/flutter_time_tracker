@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:provider/provider.dart';
@@ -42,7 +43,43 @@ class TagForm extends StatelessWidget {
   }
 }
 
-class _InputTextField extends StatelessWidget {
+class _InputTextField extends StatefulWidget {
+  @override
+  __InputTextFieldState createState() => __InputTextFieldState();
+}
+
+class __InputTextFieldState extends State<_InputTextField> {
+  TextEditingController _controller;
+  Timer _debounce;
+
+  TagFormStore _store;
+
+  _onFieldChanged() {
+    if (_debounce?.isActive ?? false) _debounce.cancel();
+    _debounce = Timer(
+      const Duration(milliseconds: 500),
+      () {
+        if (_controller.value.text != _store.label)
+          _store.setLabel(_controller.value.text);
+      },
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _store = Provider.of<TagFormStore>(context);
+    _controller = TextEditingController(text: _store.label);
+    _controller.addListener(_onFieldChanged);
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(_onFieldChanged);
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final hintText = AppLocalizations.of(context).translate('enterTag');
@@ -50,8 +87,7 @@ class _InputTextField extends StatelessWidget {
     return Consumer(
       builder: (_, TagFormStore store, __) => Observer(
         builder: (_) => TextFormField(
-          initialValue: store.label,
-          onChanged: store.setLabel,
+          controller: _controller,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             hintText: hintText,
