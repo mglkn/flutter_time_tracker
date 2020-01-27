@@ -11,11 +11,13 @@ import 'package:time_tracker/src/ui/screens/home_screen.dart';
 import 'package:time_tracker/src/ui/screens/tag_form_screen.dart';
 import 'package:time_tracker/src/data/dto.dart';
 import 'package:time_tracker/src/ui/screens/goal_form_screen.dart';
+import 'package:time_tracker/src/ui/screens/goal_screen.dart';
 
 class AppRouter {
   static const homeScreen = '/';
   static const tagFormScreen = '/tagFormScreen';
   static const goalFormScreen = '/goalFormScreen';
+  static const goalScreen = '/goalScreen';
   static GlobalKey<NavigatorState> get navigatorKey =>
       getNavigatorKey<AppRouter>();
   static NavigatorState get navigator => navigatorKey.currentState;
@@ -44,6 +46,11 @@ class AppRouter {
         final typedArgs = args as GoalWithTagsAndPomodorosCount;
         return MaterialPageRoute(
           builder: (_) => GoalFormScreen(goal: typedArgs),
+          settings: settings,
+        );
+      case AppRouter.goalScreen:
+        return MaterialPageRoute(
+          builder: (_) => GoalScreen(),
           settings: settings,
         );
       default:

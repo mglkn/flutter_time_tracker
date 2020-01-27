@@ -6,7 +6,7 @@ import '../ui/screens/screens.dart';
 class $AppRouter {
   @initial
   HomeScreen homeScreen;
-
   TagFormScreen tagFormScreen;
   GoalFormScreen goalFormScreen;
+  GoalScreen goalScreen;
 }
