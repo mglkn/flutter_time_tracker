@@ -12,7 +12,7 @@ class Goal extends DataClass implements Insertable<Goal> {
   final bool isDone;
   final DateTime date;
   final String label;
-  Goal({this.id, this.isDone, @required this.date, @required this.label});
+  Goal({this.id, this.isDone, this.date, @required this.label});
   factory Goal.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -106,10 +106,9 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
   GoalsCompanion.insert({
     this.id = const Value.absent(),
     this.isDone = const Value.absent(),
-    @required DateTime date,
+    this.date = const Value.absent(),
     @required String label,
-  })  : date = Value(date),
-        label = Value(label);
+  }) : label = Value(label);
   GoalsCompanion copyWith(
       {Value<int> id,
       Value<bool> isDone,
@@ -154,7 +153,7 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
     return GeneratedDateTimeColumn(
       'date',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -242,11 +241,7 @@ class Tag extends DataClass implements Insertable<Tag> {
   final String label;
   final DateTime date;
   final int color;
-  Tag(
-      {this.id,
-      @required this.label,
-      @required this.date,
-      @required this.color});
+  Tag({this.id, @required this.label, this.date, @required this.color});
   factory Tag.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -338,10 +333,9 @@ class TagsCompanion extends UpdateCompanion<Tag> {
   TagsCompanion.insert({
     this.id = const Value.absent(),
     @required String label,
-    @required DateTime date,
+    this.date = const Value.absent(),
     @required int color,
   })  : label = Value(label),
-        date = Value(date),
         color = Value(color);
   TagsCompanion copyWith(
       {Value<int> id,
@@ -387,7 +381,7 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, Tag> {
     return GeneratedDateTimeColumn(
       'date',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -477,7 +471,7 @@ class Pomodoro extends DataClass implements Insertable<Pomodoro> {
   final int id;
   final DateTime date;
   final int goalId;
-  Pomodoro({this.id, @required this.date, @required this.goalId});
+  Pomodoro({this.id, this.date, @required this.goalId});
   factory Pomodoro.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -557,10 +551,9 @@ class PomodorosCompanion extends UpdateCompanion<Pomodoro> {
   });
   PomodorosCompanion.insert({
     this.id = const Value.absent(),
-    @required DateTime date,
+    this.date = const Value.absent(),
     @required int goalId,
-  })  : date = Value(date),
-        goalId = Value(goalId);
+  }) : goalId = Value(goalId);
   PomodorosCompanion copyWith(
       {Value<int> id, Value<DateTime> date, Value<int> goalId}) {
     return PomodorosCompanion(
@@ -593,7 +586,7 @@ class $PomodorosTable extends Pomodoros
     return GeneratedDateTimeColumn(
       'date',
       $tableName,
-      false,
+      true,
     );
   }
 

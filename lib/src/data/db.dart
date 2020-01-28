@@ -8,14 +8,14 @@ part 'db.g.dart';
 class Goals extends Table {
   IntColumn get id => integer().nullable().autoIncrement()();
   BoolColumn get isDone => boolean().nullable().withDefault(Constant(false))();
-  DateTimeColumn get date => dateTime()();
+  DateTimeColumn get date => dateTime().nullable()();
   TextColumn get label => text().withLength(min: 1, max: 100)();
 }
 
 class Tags extends Table {
   IntColumn get id => integer().nullable().autoIncrement()();
   TextColumn get label => text().withLength(min: 1, max: 100)();
-  DateTimeColumn get date => dateTime()();
+  DateTimeColumn get date => dateTime().nullable()();
   IntColumn get color => integer()();
 }
 
@@ -29,7 +29,7 @@ class TagsGoals extends Table {
 
 class Pomodoros extends Table {
   IntColumn get id => integer().nullable().autoIncrement()();
-  DateTimeColumn get date => dateTime()();
+  DateTimeColumn get date => dateTime().nullable()();
   IntColumn get goalId => integer().customConstraint("REFERENCES goals(id)")();
 
   @override
