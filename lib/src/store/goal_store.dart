@@ -15,24 +15,30 @@ abstract class _GoalStore with Store {
   _GoalStore({
     @required Goal goal,
     @required DbDataRepository db,
-  })  : _goal = goal,
-        _db = db,
-        assert(goal != null),
-        assert(db != null) {
-    _db.getPomodorosByGoal(goal).then((result) {
-      result.fold(
-        (error) => print(error.toString()),
-        (pomodoros) {
-          final now = DateTime.now();
-          final today = DateTime(now.year, now.month, now.day);
-          _todayPomodorosCount = pomodoros.where((p) {
-            return p.date.isAfter(today);
-          }).length;
+  }) {
+    assert(goal != null);
+    assert(db != null);
 
-          _allPomodorosCount = pomodoros.length;
-        },
-      );
-    });
+    _goal = goal;
+    _db = db;
+
+    _db.getPomodorosByGoal(goal).then(
+          (result) => result.fold(
+            (error) => print(error.toString()),
+            _setPomodoros,
+          ),
+        );
+  }
+
+  @action
+  void _setPomodoros(List<Pomodoro> pomodoros) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    _todayPomodorosCount = pomodoros.where((p) {
+      return p.date.isAfter(today);
+    }).length;
+
+    _allPomodorosCount = pomodoros.length;
   }
 
   String get label => _goal.label;
