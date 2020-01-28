@@ -19,6 +19,7 @@ dependencies:
   flutter_mobx: ^0.3.6
   provider: ^4.0.2
   flutter_material_color_picker: ^1.0.5
+  audioplayers: ^0.14.0
 
   cupertino_icons: ^0.1.2
 
@@ -37,3 +38,4 @@ flutter:
   assets:
     - lang/en.json
     - lang/ru.json
+    - assets/audio/
