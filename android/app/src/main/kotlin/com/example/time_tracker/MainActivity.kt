@@ -17,7 +17,7 @@ class MainActivity: FlutterActivity() {
             val count = arguments as Int
 
             if (sink != null) {
-                timer = object : CountDownTimer(count.toLong() * 1000, 1000) {
+                timer = object : CountDownTimer(count.toLong() * 1000, 450) {
                     override fun onFinish() {
                         sink.success(0)
                         timer.cancel()
