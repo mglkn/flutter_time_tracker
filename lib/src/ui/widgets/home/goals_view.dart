@@ -34,8 +34,13 @@ class GoalTile extends StatelessWidget {
 
   GoalTile(this.goal);
 
-  void _navigateToGoal() {
-    AppRouter.navigator.pushNamed(AppRouter.goalScreen, arguments: this.goal);
+  void _navigateToGoal(BuildContext context) async {
+    await AppRouter.navigator
+        .pushNamed(AppRouter.goalScreen, arguments: this.goal);
+
+    HomeStore store = Provider.of<HomeStore>(context, listen: false);
+    await store.getGoals();
+    await store.getTags();
   }
 
   @override
@@ -44,7 +49,7 @@ class GoalTile extends StatelessWidget {
       goal: goal,
       child: Card(
         child: ListTile(
-          onTap: _navigateToGoal,
+          onTap: () => _navigateToGoal(context),
           leading: Text(
             goal.pomodorosCount.toString(),
             style: TextStyle(
