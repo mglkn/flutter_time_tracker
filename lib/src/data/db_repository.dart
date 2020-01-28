@@ -18,6 +18,7 @@ abstract class DbDataRepository {
   Future<Either<Object, bool>> updateTag(Tag tag);
 
   Future<Either<Object, int>> createPomodoro(Goal goal);
+  Future<Either<Object, List<Pomodoro>>> getPomodorosByGoal(Goal goal);
 
   factory DbDataRepository.db() => _DbDataRepository();
 }
@@ -74,9 +75,9 @@ class _DbDataRepository implements DbDataRepository {
 
   @override
   Future<Either<Object, int>> createPomodoro(Goal goal) {
-    return Task(() => _db.pomodorosDao.insert(Pomodoro(goalId: goal.id)))
-        .attempt()
-        .run();
+    return Task(
+      () => _db.pomodorosDao.insert(Pomodoro(goalId: goal.id)),
+    ).attempt().run();
   }
 
   @override
@@ -136,5 +137,10 @@ class _DbDataRepository implements DbDataRepository {
   @override
   Future<Tag> getTagByLabel(String label) {
     return _db.tagsDao.getByLabel(label);
+  }
+
+  @override
+  Future<Either<Object, List<Pomodoro>>> getPomodorosByGoal(Goal goal) {
+    return Task(() => _db.pomodorosDao.getAllByGoal(goal.id)).attempt().run();
   }
 }
