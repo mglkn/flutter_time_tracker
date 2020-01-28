@@ -18,7 +18,38 @@ abstract class _GoalStore with Store {
   })  : _goal = goal,
         _db = db,
         assert(goal != null),
-        assert(db != null);
+        assert(db != null) {
+    _db.getPomodorosByGoal(goal).then((result) {
+      result.fold(
+        (error) => print(error.toString()),
+        (pomodoros) {
+          final now = DateTime.now();
+          final today = DateTime(now.year, now.month, now.day);
+          _todayPomodorosCount = pomodoros.where((p) {
+            return p.date.isAfter(today);
+          }).length;
+
+          _allPomodorosCount = pomodoros.length;
+        },
+      );
+    });
+  }
 
   String get label => _goal.label;
+
+  @observable
+  int _todayPomodorosCount;
+
+  int get todayPomodorosCount => _todayPomodorosCount;
+
+  @observable
+  int _allPomodorosCount;
+
+  int get allPomodorosCount => _allPomodorosCount;
+
+  @action
+  Future addPomodoro() async {
+    (await _db.createPomodoro(_goal))
+        .fold((error) => print(error), (_) => print('pomodoro created'));
+  }
 }
