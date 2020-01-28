@@ -8,16 +8,14 @@ part 'db.g.dart';
 class Goals extends Table {
   IntColumn get id => integer().nullable().autoIncrement()();
   BoolColumn get isDone => boolean().nullable().withDefault(Constant(false))();
-  DateTimeColumn get date =>
-      dateTime().nullable().withDefault(Constant(DateTime.now()))();
+  DateTimeColumn get date => dateTime()();
   TextColumn get label => text().withLength(min: 1, max: 100)();
 }
 
 class Tags extends Table {
   IntColumn get id => integer().nullable().autoIncrement()();
   TextColumn get label => text().withLength(min: 1, max: 100)();
-  DateTimeColumn get date =>
-      dateTime().nullable().withDefault(Constant(DateTime.now()))();
+  DateTimeColumn get date => dateTime()();
   IntColumn get color => integer()();
 }
 
@@ -31,8 +29,7 @@ class TagsGoals extends Table {
 
 class Pomodoros extends Table {
   IntColumn get id => integer().nullable().autoIncrement()();
-  DateTimeColumn get date =>
-      dateTime().nullable().withDefault(Constant(DateTime.now()))();
+  DateTimeColumn get date => dateTime()();
   IntColumn get goalId => integer().customConstraint("REFERENCES goals(id)")();
 
   @override
@@ -61,7 +58,9 @@ class GoalsDao extends DatabaseAccessor<AppDatabase> with _$GoalsDaoMixin {
   Future<Goal> getOneById(int goalId) =>
       (select(goals)..where((t) => t.id.equals(goalId))).getSingle();
 
-  Future<int> insert(Goal goal) => into(goals).insert(goal);
+  Future<int> insert(Goal goal) => into(goals).insert(
+        goal.copyWith(date: DateTime.now()),
+      );
   Future<bool> modify(Goal goal) => update(goals).replace(goal);
 }
 
@@ -109,7 +108,9 @@ class TagsDao extends DatabaseAccessor<AppDatabase> with _$TagsDaoMixin {
     return result.map((TypedResult tr) => tr.readTable(tags)).toList();
   }
 
-  Future<int> insert(Tag tag) => into(tags).insert(tag);
+  Future<int> insert(Tag tag) => into(tags).insert(
+        tag.copyWith(date: DateTime.now()),
+      );
   Future<bool> modify(Tag tag) => update(tags).replace(tag);
   Future<Tag> getByLabel(String label) =>
       (select(tags)..where((t) => t.label.equals(label))).getSingle();
@@ -148,7 +149,13 @@ class PomodorosDao extends DatabaseAccessor<AppDatabase>
     return queryRow.readInt('count');
   }
 
-  Future insert(Pomodoro pomodoro) => into(pomodoros).insert(pomodoro);
+  Future<int> insert(Pomodoro pomodoro) => into(pomodoros).insert(
+        pomodoro.copyWith(date: DateTime.now()),
+      );
+  Future<List<Pomodoro>> getAllByGoal(
+    int goalId,
+  ) =>
+      (select(pomodoros)..where((t) => t.goalId.equals(goalId))).get();
 }
 
 @UseMoor(
