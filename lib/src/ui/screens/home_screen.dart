@@ -102,11 +102,16 @@ class __HomeScreenState extends State<_HomeScreen> {
         ),
       ),
       actions: <Widget>[
-        IconButton(
-          icon: Observer(
-            builder: (_) => store.isGoalDoneFlag ? uncheckedIcon : checkedIcon,
-          ),
-          onPressed: () => store.toggleGoalDoneFlag(),
+        Observer(
+          builder: (_) => store.pageIndex == 0
+              ? IconButton(
+                  icon: Observer(
+                    builder: (_) =>
+                        store.isGoalDoneFlag ? uncheckedIcon : checkedIcon,
+                  ),
+                  onPressed: () => store.toggleGoalDoneFlag(),
+                )
+              : Container(),
         ),
       ],
       centerTitle: true,
