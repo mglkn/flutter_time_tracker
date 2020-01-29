@@ -18,8 +18,6 @@ class _HomeScreen extends StatefulWidget {
 }
 
 class __HomeScreenState extends State<_HomeScreen> {
-  int _bottomSelectedIndex = 0;
-
   PageController _pageController = PageController(
     keepPage: true,
     initialPage: 0,
@@ -31,14 +29,8 @@ class __HomeScreenState extends State<_HomeScreen> {
     super.dispose();
   }
 
-  _pageChanged(int index) {
-    setState(() {
-      _bottomSelectedIndex = index;
-    });
-  }
-
-  _onBottomNavTapped(int index) {
-    _bottomSelectedIndex = index;
+  _onBottomNavTapped({int index, HomeStore store}) {
+    store.setPageIndex(index);
     _pageController.animateToPage(
       index,
       duration: const Duration(milliseconds: 300),
@@ -57,11 +49,12 @@ class __HomeScreenState extends State<_HomeScreen> {
   }
 
   FloatingActionButton _buildFloatingActionButton() {
+    final HomeStore store = Provider.of<HomeStore>(context, listen: false);
     return FloatingActionButton(
       child: Icon(Icons.add),
       elevation: 1.0,
       onPressed: () {
-        if (_bottomSelectedIndex == 0) {
+        if (store.pageIndex == 0) {
           AppRouter.navigator
               .pushNamed(AppRouter.goalFormScreen, arguments: null);
           return;
@@ -73,6 +66,27 @@ class __HomeScreenState extends State<_HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return Consumer(
+      builder: (_, HomeStore store, __) => Scaffold(
+        appBar: _buildAppBar(store),
+        bottomNavigationBar: _buildBottomNavigationBar(store),
+        floatingActionButton: _buildFloatingActionButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        body: SafeArea(
+          child: PageView(
+            controller: _pageController,
+            onPageChanged: (index) => store.setPageIndex(index),
+            children: <Widget>[
+              GoalsView(),
+              TagsView(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  AppBar _buildAppBar(HomeStore store) {
     final String titleGoals =
         AppLocalizations.of(context).translate("goals").toUpperCase();
     final String titleTags =
@@ -81,43 +95,42 @@ class __HomeScreenState extends State<_HomeScreen> {
     final checkedIcon = Icon(Icons.check_box);
     final uncheckedIcon = Icon(Icons.check_box_outline_blank);
 
-    return Consumer(
-      builder: (_, HomeStore store, __) => Scaffold(
-        appBar: AppBar(
-          title:
-              AppBarTitle(_bottomSelectedIndex == 0 ? titleGoals : titleTags),
-          actions: <Widget>[
-            IconButton(
-              icon: Observer(
-                builder: (_) =>
-                    store.isGoalDoneFlag ? uncheckedIcon : checkedIcon,
-              ),
-              onPressed: () => store.toggleGoalDoneFlag(),
-            ),
-          ],
-          centerTitle: true,
+    return AppBar(
+      title: Observer(
+        builder: (_) => AppBarTitle(
+          store.pageIndex == 0 ? titleGoals : titleTags,
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _bottomSelectedIndex,
-          onTap: _onBottomNavTapped,
-          elevation: 4.0,
-          items: [
-            _buildBottomNavBar(title: titleGoals, icon: Icons.gps_fixed),
-            _buildBottomNavBar(title: titleTags, icon: Icons.local_offer),
-          ],
-        ),
-        floatingActionButton: _buildFloatingActionButton(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: SafeArea(
-          child: PageView(
-            controller: _pageController,
-            onPageChanged: (index) => _pageChanged(index),
-            children: <Widget>[
-              GoalsView(),
-              TagsView(),
-            ],
+      ),
+      actions: <Widget>[
+        IconButton(
+          icon: Observer(
+            builder: (_) => store.isGoalDoneFlag ? uncheckedIcon : checkedIcon,
           ),
+          onPressed: () => store.toggleGoalDoneFlag(),
         ),
+      ],
+      centerTitle: true,
+    );
+  }
+
+  Widget _buildBottomNavigationBar(HomeStore store) {
+    final String titleGoals =
+        AppLocalizations.of(context).translate("goals").toUpperCase();
+    final String titleTags =
+        AppLocalizations.of(context).translate("tags").toUpperCase();
+
+    return Observer(
+      builder: (_) => BottomNavigationBar(
+        currentIndex: store.pageIndex,
+        onTap: (index) => _onBottomNavTapped(
+          index: index,
+          store: store,
+        ),
+        elevation: 4.0,
+        items: [
+          _buildBottomNavBar(title: titleGoals, icon: Icons.gps_fixed),
+          _buildBottomNavBar(title: titleTags, icon: Icons.local_offer),
+        ],
       ),
     );
   }

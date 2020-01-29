@@ -38,6 +38,14 @@ abstract class _HomeStore with Store {
     getGoals();
   }
 
+  @observable
+  int _pageIndex = 0;
+
+  int get pageIndex => _pageIndex;
+
+  @action
+  void setPageIndex(int newIndex) => _pageIndex = newIndex;
+
   @action
   Future getGoals() async {
     final result = await _repo.getGoals(isGoalDoneFlag);

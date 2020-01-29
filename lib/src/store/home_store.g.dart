@@ -60,6 +60,23 @@ mixin _$HomeStore on _HomeStore, Store {
     }, _$isGoalDoneFlagAtom, name: '${_$isGoalDoneFlagAtom.name}_set');
   }
 
+  final _$_pageIndexAtom = Atom(name: '_HomeStore._pageIndex');
+
+  @override
+  int get _pageIndex {
+    _$_pageIndexAtom.context.enforceReadPolicy(_$_pageIndexAtom);
+    _$_pageIndexAtom.reportObserved();
+    return super._pageIndex;
+  }
+
+  @override
+  set _pageIndex(int value) {
+    _$_pageIndexAtom.context.conditionallyRunInAction(() {
+      super._pageIndex = value;
+      _$_pageIndexAtom.reportChanged();
+    }, _$_pageIndexAtom, name: '${_$_pageIndexAtom.name}_set');
+  }
+
   final _$getGoalsAsyncAction = AsyncAction('getGoals');
 
   @override
@@ -96,6 +113,16 @@ mixin _$HomeStore on _HomeStore, Store {
     final _$actionInfo = _$_HomeStoreActionController.startAction();
     try {
       return super.toggleGoalDoneFlag();
+    } finally {
+      _$_HomeStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setPageIndex(int newIndex) {
+    final _$actionInfo = _$_HomeStoreActionController.startAction();
+    try {
+      return super.setPageIndex(newIndex);
     } finally {
       _$_HomeStoreActionController.endAction(_$actionInfo);
     }
