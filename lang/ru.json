@@ -17,5 +17,9 @@
     "all": "все",
     "today": "сегодня",
     "enterTag": "Введите метку",
-    "enterGoal": "Введите цель"
+    "enterGoal": "Введите цель",
+    "escapeGoalTitle": "Вы уверены?",
+    "escapeGoalContent": "Таймер будет прерван",
+    "yes": "Да",
+    "no": "Нет"
 }

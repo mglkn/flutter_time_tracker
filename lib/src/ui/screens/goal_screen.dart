@@ -6,6 +6,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import '../../data/dto.dart';
 import '../../data/db_repository.dart';
 import '../../store/goal_store.dart';
+import '../../utils/app_localization.dart';
 
 class GoalScreen extends StatelessWidget {
   final GoalWithTagsAndPomodorosCount goal;
@@ -134,18 +135,26 @@ class _EscapePreventerWrapper extends StatelessWidget {
       return showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text("Are you shure?"),
-          content: Text("You pomodoro time will be lost"),
+          title: Text(
+            AppLocalizations.of(context).translate('escapeGoalTitle'),
+          ),
+          content: Text(
+            AppLocalizations.of(context).translate('escapeGoalContent'),
+          ),
           actions: <Widget>[
             FlatButton(
-              child: Text("YES"),
+              child: Text(
+                AppLocalizations.of(context).translate('yes'),
+              ),
               onPressed: () {
                 store.cleanTimer();
                 Navigator.of(context).pop(true);
               },
             ),
             FlatButton(
-              child: Text("NO"),
+              child: Text(
+                AppLocalizations.of(context).translate('no'),
+              ),
               onPressed: () => Navigator.of(context).pop(false),
             ),
           ],
