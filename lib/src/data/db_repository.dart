@@ -86,7 +86,7 @@ class _DbDataRepository implements DbDataRepository {
       return _db.transaction(() async {
         final goalId = await _db.goalsDao.insert(Goal(label: label));
 
-        _db.tagsDao.setTagsGoalsRelations(
+        await _db.tagsDao.setTagsGoalsRelations(
           goalId: goalId,
           tags: tags,
         );
