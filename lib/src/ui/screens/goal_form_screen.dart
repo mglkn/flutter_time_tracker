@@ -20,6 +20,14 @@ class GoalFormScreen extends StatelessWidget {
     if (shouldReturn) AppRouter.navigator.pop();
   }
 
+  void _focusReset(BuildContext context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final title =
@@ -36,18 +44,21 @@ class GoalFormScreen extends StatelessWidget {
       ),
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        centerTitle: true,
-      ),
-      body: Provider(
-        create: (_) => goalFormStore,
-        child: GoalForm(),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.done),
-        onPressed: () => _createGoalHandler(goalFormStore),
+    return GestureDetector(
+      onTap: () => _focusReset(context),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(title),
+          centerTitle: true,
+        ),
+        body: Provider(
+          create: (_) => goalFormStore,
+          child: GoalForm(),
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.done),
+          onPressed: () => _createGoalHandler(goalFormStore),
+        ),
       ),
     );
   }

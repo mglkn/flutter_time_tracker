@@ -8,33 +8,22 @@ import '../../../store/goal_form_store.dart';
 import '../../../data/dto.dart';
 
 class GoalForm extends StatelessWidget {
-  void _focusReset(BuildContext context) {
-    FocusScopeNode currentFocus = FocusScope.of(context);
-
-    if (!currentFocus.hasPrimaryFocus) {
-      currentFocus.unfocus();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => _focusReset(context),
-      child: SafeArea(
-        child: Container(
-          height: MediaQuery.of(context).size.height * .9,
-          padding: EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              _InputTextField(),
-              const SizedBox(height: 20.0),
-              Expanded(
-                child: _TagSelector(),
-              ),
-            ],
-          ),
+    return SafeArea(
+      child: Container(
+        height: MediaQuery.of(context).size.height * .9,
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            _InputTextField(),
+            const SizedBox(height: 20.0),
+            Expanded(
+              child: _TagSelector(),
+            ),
+          ],
         ),
       ),
     );

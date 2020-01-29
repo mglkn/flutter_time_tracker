@@ -8,34 +8,21 @@ import '../../../utils/app_localization.dart';
 import '../../../store/tag_form_store.dart';
 
 class TagForm extends StatelessWidget {
-  void _focusReset(BuildContext context) {
-    FocusScopeNode currentFocus = FocusScope.of(context);
-
-    if (!currentFocus.hasPrimaryFocus) {
-      currentFocus.unfocus();
-      final store = Provider.of<TagFormStore>(context, listen: false);
-      store.validateLabel();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => _focusReset(context),
-      child: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            height: MediaQuery.of(context).size.height * .9,
-            padding: EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                _InputTextField(),
-                const SizedBox(height: 20.0),
-                Expanded(child: _ColorPicker()),
-              ],
-            ),
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height * .9,
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              _InputTextField(),
+              const SizedBox(height: 20.0),
+              Expanded(child: _ColorPicker()),
+            ],
           ),
         ),
       ),
