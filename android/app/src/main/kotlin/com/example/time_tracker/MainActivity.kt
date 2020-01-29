@@ -15,22 +15,24 @@ class MainActivity: FlutterActivity() {
     private val handler = object : EventChannel.StreamHandler {
         override fun onListen(arguments: Any?, sink: EventChannel.EventSink?) {
             val count = arguments as Int
+            var time = count
 
             if (sink != null) {
-                timer = object : CountDownTimer(count.toLong() * 1000, 450) {
+                timer = object : CountDownTimer(count.toLong() * 1000, 250) {
                     override fun onFinish() {
                         sink.success(0)
                         timer.cancel()
                     }
 
                     override fun onTick(millisUntilFinished: Long) {
-                        val secondsRemaining = millisUntilFinished / 1000
-                        sink.success(secondsRemaining)
+                        val secondsRemaining = (millisUntilFinished / 1000).toInt()
+                        if (secondsRemaining != time) {
+                            time = secondsRemaining
+                            sink.success(time)
+                        }
                     }
                 }
                 timer.start()
-            } else {
-                // todo throw error
             }
         }
 
