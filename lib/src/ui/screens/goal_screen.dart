@@ -19,7 +19,9 @@ class GoalScreen extends StatelessWidget {
         db: DbDataRepository.db(),
         goal: goal.goal,
       ),
-      child: _GoalScreen(),
+      child: _EscapePreventerWrapper(
+        child: _GoalScreen(),
+      ),
     );
   }
 }
@@ -82,7 +84,13 @@ class _TimerClock extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (_, GoalStore store, __) => Observer(
-        builder: (_) => Text('time...'),
+        builder: (_) => Text(
+          store.time,
+          style: TextStyle(
+            fontSize: 30.0,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
       ),
     );
   }
@@ -92,12 +100,67 @@ class _TimerActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(
-      builder: (_, GoalStore store, __) => Observer(
-        builder: (_) => IconButton(
-          icon: Icon(Icons.play_arrow),
-          onPressed: () {},
+      builder: (_, GoalStore store, __) => IconButton(
+        icon: Observer(
+          builder: (_) {
+            return Icon(_getIcon(store.timerState));
+          },
         ),
+        onPressed: store.doTimerAction,
       ),
+    );
+  }
+
+  IconData _getIcon(ETimerState timerState) {
+    if (timerState == ETimerState.RUN) {
+      return Icons.pause;
+    }
+
+    return Icons.play_arrow;
+  }
+}
+
+class _EscapePreventerWrapper extends StatelessWidget {
+  final Widget child;
+
+  _EscapePreventerWrapper({
+    @required this.child,
+  }) : assert(child != null);
+
+  Future<bool> _onWillPop(BuildContext context) {
+    GoalStore store = Provider.of<GoalStore>(context, listen: false);
+
+    if (store.timerState != ETimerState.READY) {
+      return showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Are you shure?"),
+          content: Text("You pomodoro time will be lost"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("YES"),
+              onPressed: () {
+                store.cleanTimer();
+                Navigator.of(context).pop(true);
+              },
+            ),
+            FlatButton(
+              child: Text("NO"),
+              onPressed: () => Navigator.of(context).pop(false),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Future.value(true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () => _onWillPop(context),
+      child: child,
     );
   }
 }
