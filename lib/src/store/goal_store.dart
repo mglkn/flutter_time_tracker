@@ -109,7 +109,6 @@ abstract class _GoalStore with Store {
 
   @action
   setTime(int newTime) {
-    print('set time $newTime');
     _time = newTime;
     if (newTime == 0) {
       _doneTimer();
