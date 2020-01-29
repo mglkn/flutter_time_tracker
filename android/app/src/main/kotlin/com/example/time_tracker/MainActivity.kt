@@ -20,7 +20,6 @@ class MainActivity: FlutterActivity() {
             if (sink != null) {
                 timer = object : CountDownTimer(count.toLong() * 1000, 250) {
                     override fun onFinish() {
-                        sink.success(0)
                         timer.cancel()
                     }
 
