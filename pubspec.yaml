@@ -39,3 +39,15 @@ flutter:
     - lang/en.json
     - lang/ru.json
     - assets/audio/
+
+  fonts:
+    - family: FiraSans
+      fonts:
+        - asset: assets/fonts/Fira_Sans/FiraSans-Regular.ttf
+
+    - family: FiraSansCondensed
+      fonts:
+        - asset: assets/fonts/Fira_Sans_Condensed/FiraSansCondensed-Light.ttf
+        - asset: assets/fonts/Fira_Sans_Condensed/FiraSansCondensed-SemiBoldItalic.ttf
+          style: italic
+  

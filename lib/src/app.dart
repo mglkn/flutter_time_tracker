@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import './routes/router.gr.dart';
 import './utils/app_localization.dart';
+import './utils/theme.dart';
 
 class App extends StatelessWidget {
   @override
@@ -34,6 +35,9 @@ class App extends StatelessWidget {
       onGenerateRoute: AppRouter.onGenerateRoute,
       initialRoute: AppRouter.homeScreen,
       navigatorKey: AppRouter.navigatorKey,
+
+      // Theme
+      theme: getGolbalTheme(context),
     );
   }
 }
