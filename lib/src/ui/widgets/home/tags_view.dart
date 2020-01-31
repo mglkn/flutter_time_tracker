@@ -16,7 +16,7 @@ class TagsView extends StatelessWidget {
       child: Consumer<HomeStore>(
         builder: (_, HomeStore store, __) => Observer(
           builder: (_) => ListView(
-            padding: EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(30.0),
             children: store.tags.map((t) => TagTile(t)).toList(),
           ),
         ),
