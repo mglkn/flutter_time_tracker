@@ -8,6 +8,7 @@ import '../../../data/db.dart';
 import '../../../store/home_store.dart';
 import '../../../routes/router.gr.dart';
 import '../../../utils/theme.dart';
+import '../../../utils/app_icons.dart';
 
 class GoalsView extends StatefulWidget {
   @override
@@ -58,7 +59,7 @@ class _Tile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              _TilePomodoroCount(goal.pomodorosCount),
+              _TilePomodorosCount(goal.pomodorosCount),
               _TileContent(
                 label: goal.goal.label,
                 tags: goal.tags,
@@ -114,20 +115,40 @@ class _SlidableWrapper extends StatelessWidget {
   }
 }
 
-class _TilePomodoroCount extends StatelessWidget {
+class _TilePomodorosCount extends StatelessWidget {
   final int pomodoroCount;
 
-  _TilePomodoroCount(this.pomodoroCount) : assert(pomodoroCount != null);
+  _TilePomodorosCount(this.pomodoroCount) : assert(pomodoroCount != null);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 60.0,
-      child: Center(
-        child: Text(
-          pomodoroCount.toString(),
-          style: Theme.of(context).textTheme.subtitle,
-        ),
+      height: 60.0,
+      child: Stack(
+        children: <Widget>[
+          Center(
+            child: Icon(
+              AppIcons.pomodoro,
+              color: Colors.red[400],
+              size: 55.0,
+            ),
+          ),
+          Center(
+            child: Text(
+              pomodoroCount.toString(),
+              style: Theme.of(context).textTheme.subtitle.copyWith(
+                shadows: [
+                  BoxShadow(
+                    color: Colors.white,
+                    blurRadius: 5.0,
+                    spreadRadius: 5.0,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
