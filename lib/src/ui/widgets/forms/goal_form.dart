@@ -6,6 +6,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import '../../../utils/app_localization.dart';
 import '../../../store/goal_form_store.dart';
 import '../../../data/dto.dart';
+import '../../../utils/theme.dart';
 
 class GoalForm extends StatelessWidget {
   @override
@@ -71,13 +72,18 @@ class __InputTextFieldState extends State<_InputTextField> {
   Widget build(BuildContext context) {
     final hintText = AppLocalizations.of(context).translate('enterGoal');
 
-    return Observer(
-      builder: (_) => TextFormField(
-        controller: _controller,
-        keyboardType: TextInputType.text,
-        decoration: InputDecoration(
-          hintText: hintText,
-          errorText: _store.errorLabel,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 5.0),
+      child: Observer(
+        builder: (_) => TextFormField(
+          controller: _controller,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.grey[400],
+            hintText: hintText,
+            errorText: _store.errorLabel,
+          ),
         ),
       ),
     );

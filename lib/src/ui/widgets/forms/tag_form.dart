@@ -71,14 +71,19 @@ class __InputTextFieldState extends State<_InputTextField> {
   Widget build(BuildContext context) {
     final hintText = AppLocalizations.of(context).translate('enterTag');
 
-    return Consumer(
-      builder: (_, TagFormStore store, __) => Observer(
-        builder: (_) => TextFormField(
-          controller: _controller,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            hintText: hintText,
-            errorText: store.errorLabel,
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: Consumer(
+        builder: (_, TagFormStore store, __) => Observer(
+          builder: (_) => TextFormField(
+            controller: _controller,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.grey[400],
+              hintText: hintText,
+              errorText: store.errorLabel,
+            ),
           ),
         ),
       ),
