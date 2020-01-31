@@ -114,6 +114,7 @@ abstract class _GoalFormStore with Store {
     );
 
     await homeStore.getGoals();
+    await homeStore.getTags();
 
     return true;
   }
