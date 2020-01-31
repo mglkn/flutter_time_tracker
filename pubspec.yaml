@@ -50,4 +50,8 @@ flutter:
         - asset: assets/fonts/Fira_Sans_Condensed/FiraSansCondensed-Light.ttf
         - asset: assets/fonts/Fira_Sans_Condensed/FiraSansCondensed-SemiBoldItalic.ttf
           style: italic
+    
+    - family:  AppIcons
+      fonts:
+      - asset: assets/fonts/AppIcons.ttf
   
