@@ -30,8 +30,9 @@ class GoalFormScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _titleKey = goal != null ? 'editGoal' : 'createGoal';
     final title =
-        AppLocalizations.of(context).translate("createGoal").toUpperCase();
+        AppLocalizations.of(context).translate(_titleKey).toUpperCase();
 
     final HomeStore homeStore = Provider.of<HomeStore>(context, listen: false);
     final goalFormStore = GoalFormStore(

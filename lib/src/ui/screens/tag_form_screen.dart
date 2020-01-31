@@ -30,8 +30,9 @@ class TagFormScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _titleKey = tag != null ? 'editTag' : 'createTag';
     final title =
-        AppLocalizations.of(context).translate("createTag").toUpperCase();
+        AppLocalizations.of(context).translate(_titleKey).toUpperCase();
 
     final HomeStore homeStore = Provider.of<HomeStore>(context, listen: false);
     final tagFormStore = TagFormStore(
