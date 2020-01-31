@@ -7,6 +7,7 @@ import '../../../data/dto.dart';
 import '../../../store/home_store.dart';
 import '../../../routes/router.gr.dart';
 import '../../../utils/theme.dart';
+import '../../../utils/app_icons.dart';
 
 class TagsView extends StatelessWidget {
   @override
@@ -34,24 +35,24 @@ class TagTile extends StatelessWidget {
     return _SlidableWrapper(
       tag: tag,
       child: Container(
-        // color: Color(tag.tag.color),
-        margin: EdgeInsets.only(bottom: 15.0),
+        margin: EdgeInsets.only(bottom: 10.0),
         decoration: tileDecoration.copyWith(
           color: Color(tag.tag.color),
         ),
-        child: ListTile(
-          leading: Text(
-            tag.pomodorosCount.toString(),
-            style: Theme.of(context).textTheme.subtitle.copyWith(
-                  color: Colors.white,
-                ),
-          ),
-          title: Text(
-            tag.tag.label,
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            _PomodorosCount(tag),
+            Text(
+              tag.tag.label,
+              style: Theme.of(context).textTheme.title.copyWith(
+                    fontSize: 18.0,
+                    color: Colors.white,
+                  ),
+            )
+          ],
         ),
       ),
     );
@@ -98,6 +99,45 @@ class _SlidableWrapper extends StatelessWidget {
           ),
         ],
         child: child,
+      ),
+    );
+  }
+}
+
+class _PomodorosCount extends StatelessWidget {
+  final TagWithPomodorosCount tag;
+
+  _PomodorosCount(this.tag) : assert(tag != null);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 60.0,
+      height: 60.0,
+      child: Stack(
+        children: <Widget>[
+          Center(
+            child: Icon(
+              AppIcons.pomodoro,
+              size: 55.0,
+              color: Colors.white,
+            ),
+          ),
+          Center(
+            child: Text(
+              tag.pomodorosCount.toString(),
+              style: Theme.of(context).textTheme.subtitle.copyWith(
+                shadows: [
+                  BoxShadow(
+                    color: Colors.grey[400],
+                    blurRadius: 5.0,
+                    spreadRadius: 5.0,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
