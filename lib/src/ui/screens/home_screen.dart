@@ -69,6 +69,7 @@ class __HomeScreenState extends State<_HomeScreen> {
     return Consumer(
       builder: (_, HomeStore store, __) => Scaffold(
         appBar: _buildAppBar(store),
+        backgroundColor: Theme.of(context).backgroundColor,
         bottomNavigationBar: _buildBottomNavigationBar(store),
         floatingActionButton: _buildFloatingActionButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -101,6 +102,7 @@ class __HomeScreenState extends State<_HomeScreen> {
           store.pageIndex == 0 ? titleGoals : titleTags,
         ),
       ),
+      // backgroundColor: Colors.transparent,
       actions: <Widget>[
         Observer(
           builder: (_) => store.pageIndex == 0
@@ -126,12 +128,14 @@ class __HomeScreenState extends State<_HomeScreen> {
 
     return Observer(
       builder: (_) => BottomNavigationBar(
+        backgroundColor: Theme.of(context).backgroundColor,
         currentIndex: store.pageIndex,
         onTap: (index) => _onBottomNavTapped(
           index: index,
           store: store,
         ),
         elevation: 4.0,
+        iconSize: 26.0,
         items: [
           _buildBottomNavBar(title: titleGoals, icon: Icons.gps_fixed),
           _buildBottomNavBar(title: titleTags, icon: Icons.local_offer),
@@ -148,6 +152,11 @@ class AppBarTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(title);
+    return Text(
+      title,
+      style: Theme.of(context).textTheme.title.copyWith(
+            letterSpacing: 12.0,
+          ),
+    );
   }
 }

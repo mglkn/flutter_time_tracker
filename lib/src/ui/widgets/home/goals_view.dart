@@ -7,6 +7,7 @@ import '../../../data/dto.dart';
 import '../../../data/db.dart';
 import '../../../store/home_store.dart';
 import '../../../routes/router.gr.dart';
+import '../../../utils/theme.dart';
 
 class GoalsView extends StatefulWidget {
   @override
@@ -20,8 +21,8 @@ class _GoalsViewState extends State<GoalsView> {
       child: Consumer<HomeStore>(
         builder: (_, HomeStore store, __) => Observer(
           builder: (_) => ListView(
-            padding: EdgeInsets.all(20.0),
-            children: store.goals.map((g) => GoalTile(g)).toList(),
+            padding: EdgeInsets.all(30.0),
+            children: store.goals.map((g) => _Tile(g)).toList(),
           ),
         ),
       ),
@@ -29,12 +30,12 @@ class _GoalsViewState extends State<GoalsView> {
   }
 }
 
-class GoalTile extends StatelessWidget {
+class _Tile extends StatelessWidget {
   final GoalWithTagsAndPomodorosCount goal;
 
-  GoalTile(this.goal);
+  _Tile(this.goal);
 
-  void _navigateToGoal(BuildContext context) async {
+  Future _navigateToGoal(BuildContext context) async {
     await AppRouter.navigator
         .pushNamed(AppRouter.goalScreen, arguments: this.goal);
 
@@ -47,18 +48,22 @@ class GoalTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return _SlidableWrapper(
       goal: goal,
-      child: Card(
-        child: ListTile(
-          onTap: () => _navigateToGoal(context),
-          leading: Text(
-            goal.pomodorosCount.toString(),
-            style: TextStyle(
-              fontSize: 18.0,
-            ),
-          ),
-          title: Text(goal.goal.label),
-          subtitle: Wrap(
-            children: goal.tags.map((t) => TagListTile(t)).toList(),
+      child: GestureDetector(
+        onTap: () => _navigateToGoal(context),
+        child: Container(
+          padding: EdgeInsets.fromLTRB(0.0, 12.0, 15.0, 12.0),
+          margin: EdgeInsets.only(bottom: 15.0),
+          decoration: tileDecoration,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              _TilePomodoroCount(goal.pomodorosCount),
+              _TileContent(
+                label: goal.goal.label,
+                tags: goal.tags,
+              ),
+            ],
           ),
         ),
       ),
@@ -109,30 +114,84 @@ class _SlidableWrapper extends StatelessWidget {
   }
 }
 
-class TagListTile extends StatelessWidget {
+class _TilePomodoroCount extends StatelessWidget {
+  final int pomodoroCount;
+
+  _TilePomodoroCount(this.pomodoroCount) : assert(pomodoroCount != null);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 60.0,
+      child: Center(
+        child: Text(
+          pomodoroCount.toString(),
+          style: Theme.of(context).textTheme.subtitle,
+        ),
+      ),
+    );
+  }
+}
+
+class _TileContent extends StatelessWidget {
+  final String label;
+  final List<Tag> tags;
+
+  _TileContent({this.label, this.tags})
+      : assert(label != null),
+        assert(tags != null);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // TODO: move magic numbers to constants
+      // 60 - padding ListView
+      // 60 - width pomodoroCount
+      // 15 - right padding TileContent?
+      // 2 - tile border
+      width: MediaQuery.of(context).size.width - 60.0 - 60.0 - 15.0 - 2.0,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            label,
+            style: Theme.of(context).textTheme.title.copyWith(
+                  fontSize: 18.0,
+                  fontFamily: 'FiraSans',
+                ),
+          ),
+          SizedBox(height: 5.0),
+          Wrap(
+            children: tags.map((t) => _TagListTile(t)).toList(),
+            spacing: 2.0,
+            runSpacing: 2.0,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TagListTile extends StatelessWidget {
   final Tag tag;
 
-  TagListTile(this.tag);
+  _TagListTile(this.tag);
 
   @override
   Widget build(BuildContext context) {
     return Consumer(
-      builder: (_, HomeStore store, __) => Opacity(
-        opacity: store.isGoalDoneFlag ? 0.5 : 1.0,
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
-          margin: EdgeInsets.only(right: 2.0, bottom: 2.0),
-          decoration: BoxDecoration(
-            color: Color(tag.color),
-            borderRadius: BorderRadius.circular(2.0),
-          ),
-          child: Text(
-            tag.label,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 10.0,
-            ),
-          ),
+      builder: (_, HomeStore store, __) => Container(
+        padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
+        decoration: BoxDecoration(
+          color: Color(tag.color),
+          borderRadius: BorderRadius.circular(2.0),
+        ),
+        child: Text(
+          tag.label,
+          style: Theme.of(context).textTheme.title.copyWith(
+                fontSize: 11.0,
+                color: Colors.white,
+              ),
         ),
       ),
     );

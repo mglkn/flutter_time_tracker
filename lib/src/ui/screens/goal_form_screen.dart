@@ -48,9 +48,10 @@ class GoalFormScreen extends StatelessWidget {
       onTap: () => _focusReset(context),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(title),
+          title: _AppBarTitle(title),
           centerTitle: true,
         ),
+        backgroundColor: Theme.of(context).backgroundColor,
         body: Provider(
           create: (_) => goalFormStore,
           child: GoalForm(),
@@ -60,6 +61,22 @@ class GoalFormScreen extends StatelessWidget {
           onPressed: () => _createGoalHandler(goalFormStore),
         ),
       ),
+    );
+  }
+}
+
+class _AppBarTitle extends StatelessWidget {
+  final String title;
+
+  _AppBarTitle(this.title);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: Theme.of(context).textTheme.title.copyWith(
+            letterSpacing: 10.0,
+          ),
     );
   }
 }

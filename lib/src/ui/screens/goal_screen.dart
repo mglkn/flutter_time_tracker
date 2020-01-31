@@ -33,7 +33,10 @@ class _GoalScreen extends StatelessWidget {
     return Consumer(
       builder: (_, GoalStore store, __) => Scaffold(
         appBar: AppBar(
-          title: Text(store.label),
+          title: Text(
+            store.label,
+            style: Theme.of(context).textTheme.title,
+          ),
           centerTitle: true,
         ),
         body: Column(

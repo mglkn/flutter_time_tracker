@@ -6,6 +6,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import '../../../data/dto.dart';
 import '../../../store/home_store.dart';
 import '../../../routes/router.gr.dart';
+import '../../../utils/theme.dart';
 
 class TagsView extends StatelessWidget {
   @override
@@ -32,15 +33,18 @@ class TagTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return _SlidableWrapper(
       tag: tag,
-      child: Card(
-        color: Color(tag.tag.color),
+      child: Container(
+        // color: Color(tag.tag.color),
+        margin: EdgeInsets.only(bottom: 15.0),
+        decoration: tileDecoration.copyWith(
+          color: Color(tag.tag.color),
+        ),
         child: ListTile(
           leading: Text(
             tag.pomodorosCount.toString(),
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20.0,
-            ),
+            style: Theme.of(context).textTheme.subtitle.copyWith(
+                  color: Colors.white,
+                ),
           ),
           title: Text(
             tag.tag.label,

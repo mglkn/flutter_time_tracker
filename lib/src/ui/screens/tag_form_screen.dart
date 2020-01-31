@@ -48,9 +48,10 @@ class TagFormScreen extends StatelessWidget {
       onTap: () => _focusReset(context),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(title),
+          title: _AppBarTitle(title),
           centerTitle: true,
         ),
+        backgroundColor: Theme.of(context).backgroundColor,
         body: Provider(
           create: (_) => tagFormStore,
           child: TagForm(),
@@ -60,6 +61,22 @@ class TagFormScreen extends StatelessWidget {
           onPressed: () => _createTagHandler(tagFormStore),
         ),
       ),
+    );
+  }
+}
+
+class _AppBarTitle extends StatelessWidget {
+  final String title;
+
+  _AppBarTitle(this.title);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: Theme.of(context).textTheme.title.copyWith(
+            letterSpacing: 10.0,
+          ),
     );
   }
 }
