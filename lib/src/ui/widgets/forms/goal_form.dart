@@ -6,7 +6,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import '../../../utils/app_localization.dart';
 import '../../../store/goal_form_store.dart';
 import '../../../data/dto.dart';
-import '../../../utils/theme.dart';
 
 class GoalForm extends StatelessWidget {
   @override
@@ -97,6 +96,7 @@ class _TagSelector extends StatelessWidget {
       builder: (_, GoalFormStore store, __) => Observer(
         builder: (_) {
           return ListView.builder(
+            padding: EdgeInsets.symmetric(horizontal: 5.0),
             itemCount: store.allTags.length,
             itemBuilder: (_, index) => Container(
               child: TagSelectorItem(
@@ -143,20 +143,40 @@ class _TagSelectorItemState extends State<TagSelectorItem> {
     final _tag = widget.tag.tag;
 
     return Consumer(
-      builder: (_, GoalFormStore store, __) => Card(
-        color: Color(_tag.color),
-        child: ListTile(
+      builder: (_, GoalFormStore store, __) => Container(
+        child: GestureDetector(
           onTap: () => _toggleTagSelection(store),
-          title: Text(
-            _tag.label,
-            style: TextStyle(color: Colors.white),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+            margin: EdgeInsets.only(bottom: 5.0),
+            decoration: BoxDecoration(
+              color: Color(_tag.color),
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 5.0),
+                  child: Text(
+                    _tag.label,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                Container(
+                  child: isTagSelected
+                      ? Icon(
+                          Icons.radio_button_checked,
+                          color: Colors.white,
+                        )
+                      : Icon(
+                          Icons.radio_button_unchecked,
+                          color: Colors.white,
+                        ),
+                ),
+              ],
+            ),
           ),
-          trailing: isTagSelected
-              ? Icon(
-                  Icons.done,
-                  color: Colors.white,
-                )
-              : Text(''),
         ),
       ),
     );
