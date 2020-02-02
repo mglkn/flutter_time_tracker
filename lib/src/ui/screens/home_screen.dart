@@ -69,7 +69,6 @@ class __HomeScreenState extends State<_HomeScreen> {
     return Consumer(
       builder: (_, HomeStore store, __) => Scaffold(
         appBar: _buildAppBar(store),
-        backgroundColor: Theme.of(context).backgroundColor,
         bottomNavigationBar: _buildBottomNavigationBar(store),
         floatingActionButton: _buildFloatingActionButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

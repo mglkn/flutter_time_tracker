@@ -52,7 +52,6 @@ class GoalFormScreen extends StatelessWidget {
           title: _AppBarTitle(title),
           centerTitle: true,
         ),
-        backgroundColor: Theme.of(context).backgroundColor,
         body: Provider(
           create: (_) => goalFormStore,
           child: GoalForm(),

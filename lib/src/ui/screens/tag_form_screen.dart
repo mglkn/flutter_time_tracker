@@ -52,7 +52,6 @@ class TagFormScreen extends StatelessWidget {
           title: _AppBarTitle(title),
           centerTitle: true,
         ),
-        backgroundColor: Theme.of(context).backgroundColor,
         body: Provider(
           create: (_) => tagFormStore,
           child: TagForm(),

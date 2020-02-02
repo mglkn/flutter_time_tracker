@@ -12,6 +12,7 @@ ThemeData getGolbalTheme(BuildContext context) {
     accentColor: Color(mainColor),
     primaryColor: Color(mainColor),
     backgroundColor: const Color(backgroundColor),
+    scaffoldBackgroundColor: const Color(backgroundColor),
     appBarTheme: AppBarTheme(
       elevation: 0.0,
       color: const Color(backgroundColor),
