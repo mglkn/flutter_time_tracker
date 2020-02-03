@@ -7,6 +7,8 @@ import '../../data/dto.dart';
 import '../../data/db_repository.dart';
 import '../../store/goal_store.dart';
 import '../../utils/app_localization.dart';
+import '../../utils/app_icons.dart';
+import '../../utils/theme.dart';
 
 class GoalScreen extends StatelessWidget {
   final GoalWithTagsAndPomodorosCount goal;
@@ -60,11 +62,86 @@ class _Pomodoros extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Observer(
-            builder: (_) => Text('all ${store.allPomodorosCount}'),
+            builder: (_) => _PomodoroTile(
+              label: 'all',
+              pomodorosCount: store.allPomodorosCount,
+            ),
           ),
           Observer(
-            builder: (_) => Text('today ${store.todayPomodorosCount}'),
+            builder: (_) => _PomodoroTile(
+              label: 'today',
+              pomodorosCount: store.todayPomodorosCount,
+            ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PomodoroTile extends StatelessWidget {
+  final int pomodorosCount;
+  final String label;
+
+  _PomodoroTile({
+    this.pomodorosCount,
+    this.label,
+  });
+  // : assert(pomodorosCount != null),
+  //       assert(label != null);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 125.0,
+      width: 125.0,
+      decoration: tileDecoration.copyWith(
+        color: Colors.red[400],
+      ),
+      child: Stack(
+        children: <Widget>[
+          Align(
+            alignment: Alignment(0, -.5),
+            child: Icon(
+              AppIcons.pomodoro,
+              color: Colors.white,
+              size: 90.0,
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
+                  decoration: BoxDecoration(
+                    color: Colors.red[400],
+                    borderRadius: BorderRadius.circular(3.0),
+                  ),
+                  child: Text(
+                    pomodorosCount.toString().toUpperCase(),
+                    // 310.toString(),
+                    style: Theme.of(context).textTheme.subtitle.copyWith(
+                          fontSize: 30.0,
+                          color: Colors.white,
+                        ),
+                  ),
+                ),
+                const SizedBox(height: 15.0),
+                Text(
+                  label.toUpperCase(),
+                  style: Theme.of(context).textTheme.body1.copyWith(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
