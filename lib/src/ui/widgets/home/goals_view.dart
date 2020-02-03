@@ -127,11 +127,12 @@ class _TilePomodorosCount extends StatelessWidget {
       height: 60.0,
       child: Stack(
         children: <Widget>[
-          Center(
+          Align(
+            alignment: Alignment(0, -.2),
             child: Icon(
               AppIcons.pomodoro,
               color: Colors.red[400],
-              size: 55.0,
+              size: 36.0,
             ),
           ),
           Center(
