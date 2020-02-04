@@ -99,6 +99,14 @@ abstract class _GoalStore with Store {
     return '$minutes : $seconds';
   }
 
+  double get ratioTime {
+    final full = _timerStage == ETimerStage.WORK
+        ? 1500
+        : _timerStage == ETimerStage.REST ? 300 : 900;
+
+    return 1.0 - _time / full;
+  }
+
   @observable
   ETimerState _timerState = ETimerState.READY;
   ETimerState get timerState => _timerState;
@@ -164,12 +172,14 @@ abstract class _GoalStore with Store {
           _timerStage = ETimerStage.REST;
           _time = _getTime(_timerStage);
           _player.play("done.mp3");
+          doTimerAction();
           break;
         }
         _workCount = 0;
         _timerStage = ETimerStage.LONG_REST;
         _time = _getTime(_timerStage);
         _player.play("done.mp3");
+        doTimerAction();
         break;
       case ETimerStage.REST:
         _timerStage = ETimerStage.WORK;

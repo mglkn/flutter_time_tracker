@@ -23,5 +23,7 @@
     "escapeGoalTitle": "Вы уверены?",
     "escapeGoalContent": "Таймер будет прерван",
     "yes": "Да",
-    "no": "Нет"
+    "no": "Нет",
+    "work": "работа",
+    "rest": "перерыв"
 }

@@ -23,5 +23,7 @@
     "escapeGoalTitle": "Are you shure?",
     "escapeGoalContent": "You pomodoro time will be lost",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "work": "work",
+    "rest": "rest"
 }

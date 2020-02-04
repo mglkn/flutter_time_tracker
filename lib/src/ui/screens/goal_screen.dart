@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -41,20 +42,23 @@ class _GoalScreen extends StatelessWidget {
           ),
           centerTitle: true,
         ),
-        body: Column(
-          children: <Widget>[
-            const SizedBox(height: 50.0),
-            _Pomodoros(),
-            const SizedBox(height: 50.0),
-            _Timer(),
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              const SizedBox(height: 20.0),
+              _PomodorosDisplay(),
+              const SizedBox(height: 50.0),
+              _Timer(),
+              const SizedBox(height: 20.0),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class _Pomodoros extends StatelessWidget {
+class _PomodorosDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(
@@ -63,13 +67,13 @@ class _Pomodoros extends StatelessWidget {
         children: <Widget>[
           Observer(
             builder: (_) => _PomodoroTile(
-              label: 'all',
+              label: AppLocalizations.of(context).translate('all'),
               pomodorosCount: store.allPomodorosCount,
             ),
           ),
           Observer(
             builder: (_) => _PomodoroTile(
-              label: 'today',
+              label: AppLocalizations.of(context).translate('today'),
               pomodorosCount: store.todayPomodorosCount,
             ),
           ),
@@ -86,9 +90,8 @@ class _PomodoroTile extends StatelessWidget {
   _PomodoroTile({
     this.pomodorosCount,
     this.label,
-  });
-  // : assert(pomodorosCount != null),
-  //       assert(label != null);
+  })  : assert(pomodorosCount != null),
+        assert(label != null);
 
   @override
   Widget build(BuildContext context) {
@@ -148,59 +151,6 @@ class _PomodoroTile extends StatelessWidget {
   }
 }
 
-class _Timer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        _TimerClock(),
-        _TimerActions(),
-      ],
-    );
-  }
-}
-
-class _TimerClock extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Consumer(
-      builder: (_, GoalStore store, __) => Observer(
-        builder: (_) => Text(
-          store.time,
-          style: TextStyle(
-            fontSize: 30.0,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _TimerActions extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Consumer(
-      builder: (_, GoalStore store, __) => IconButton(
-        icon: Observer(
-          builder: (_) {
-            return Icon(_getIcon(store.timerState));
-          },
-        ),
-        onPressed: store.doTimerAction,
-      ),
-    );
-  }
-
-  IconData _getIcon(ETimerState timerState) {
-    if (timerState == ETimerState.RUN) {
-      return Icons.pause;
-    }
-
-    return Icons.play_arrow;
-  }
-}
-
 class _EscapePreventerWrapper extends StatelessWidget {
   final Widget child;
 
@@ -251,5 +201,204 @@ class _EscapePreventerWrapper extends StatelessWidget {
       onWillPop: () => _onWillPop(context),
       child: child,
     );
+  }
+}
+
+const double timerSize = 220.0;
+
+class _Timer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(
+      builder: (_, GoalStore store, __) => GestureDetector(
+        onTap: store.doTimerAction,
+        child: Stack(
+          children: <Widget>[
+            _TimerMeta(),
+            _TimerBorderPaint(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _TimerMeta extends StatelessWidget {
+  Color _getColor({ETimerStage stage, int opacity}) {
+    if (stage == ETimerStage.WORK) {
+      return Colors.red[opacity];
+    }
+    return Colors.green[opacity];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(
+      builder: (_, GoalStore store, __) => Observer(
+        builder: (_) => Container(
+          height: timerSize,
+          width: timerSize,
+          decoration: tileDecoration.copyWith(
+            color: _getColor(
+              stage: store.timerStage,
+              opacity: 300,
+            ),
+            borderRadius: BorderRadius.circular(timerSize / 2),
+          ),
+          child: Stack(
+            children: <Widget>[
+              _TimerMetaStateAction(),
+              _TimerInfo(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TimerMetaStateAction extends StatelessWidget {
+  IconData _getIcon(ETimerState timerState) {
+    if (timerState == ETimerState.RUN) {
+      return Icons.pause;
+    }
+
+    return Icons.play_arrow;
+  }
+
+  Color _getColor({ETimerStage stage, int opacity}) {
+    if (stage == ETimerStage.WORK) {
+      return Colors.red[opacity];
+    }
+    return Colors.green[opacity];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(
+      builder: (_, GoalStore store, __) => Container(
+        width: timerSize,
+        height: timerSize,
+        child: Center(
+          child: Observer(
+            builder: (_) => Icon(
+              _getIcon(store.timerState),
+              color: _getColor(stage: store.timerStage, opacity: 400),
+              size: timerSize * 0.7,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TimerInfo extends StatelessWidget {
+  String _getStage(ETimerStage stage) {
+    if (stage == ETimerStage.WORK) {
+      return 'work';
+    }
+    return 'rest';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(
+      builder: (_, GoalStore store, __) => Container(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Observer(
+              builder: (_) => Text(
+                store.time,
+                style: Theme.of(context)
+                    .textTheme
+                    .title
+                    .copyWith(color: Colors.white),
+              ),
+            ),
+            const SizedBox(height: 10.0),
+            Text(
+              AppLocalizations.of(context)
+                  .translate(_getStage(store.timerStage)),
+              style: Theme.of(context).textTheme.body1.copyWith(
+                    color: Colors.white,
+                    fontSize: 25.0,
+                  ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _TimerBorderPaint extends StatelessWidget {
+  Color _getColor({ETimerStage stage, int opacity}) {
+    if (stage == ETimerStage.WORK) {
+      return Colors.red[opacity];
+    }
+    return Colors.green[opacity];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(
+      builder: (_, GoalStore store, __) => Container(
+        width: timerSize,
+        height: timerSize,
+        child: Observer(
+          builder: (_) => CustomPaint(
+            painter: _TimerPainter(
+              bgColor: _getColor(
+                stage: store.timerStage,
+                opacity: 600,
+              ),
+              color: _getColor(
+                stage: store.timerStage,
+                opacity: 200,
+              ),
+              tickTimer: store.ratioTime,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TimerPainter extends CustomPainter {
+  final Color bgColor;
+  final Color color;
+  final double tickTimer;
+
+  _TimerPainter({
+    this.bgColor,
+    this.color,
+    this.tickTimer,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = bgColor
+      ..strokeWidth = 4.0
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke;
+
+    canvas.drawCircle(size.center(Offset.zero), size.width / 2.0, paint);
+    paint.color = color;
+
+    double progress = (1.0 - tickTimer) * 2 * math.pi;
+    canvas.drawArc(Offset.zero & size, math.pi * 1.5, -progress, false, paint);
+  }
+
+  @override
+  bool shouldRepaint(_TimerPainter old) {
+    // return animation.value != old.animation.value ||
+    return tickTimer != old.tickTimer ||
+        color != old.color ||
+        bgColor != old.bgColor;
   }
 }
