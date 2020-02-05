@@ -68,13 +68,13 @@ class _PomodorosDisplay extends StatelessWidget {
           Observer(
             builder: (_) => _PomodoroTile(
               label: AppLocalizations.of(context).translate('all'),
-              pomodorosCount: store.allPomodorosCount,
+              pomodorosCount: store.allPomodorosCount ?? 0,
             ),
           ),
           Observer(
             builder: (_) => _PomodoroTile(
               label: AppLocalizations.of(context).translate('today'),
-              pomodorosCount: store.todayPomodorosCount,
+              pomodorosCount: store.todayPomodorosCount ?? 0,
             ),
           ),
         ],
@@ -165,8 +165,13 @@ class _EscapePreventerWrapper extends StatelessWidget {
       return showDialog(
         context: context,
         builder: (_) => AlertDialog(
+          backgroundColor: Theme.of(context).backgroundColor,
           title: Text(
             AppLocalizations.of(context).translate('escapeGoalTitle'),
+            style: Theme.of(context).textTheme.body1.copyWith(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 30.0,
+                ),
           ),
           content: Text(
             AppLocalizations.of(context).translate('escapeGoalContent'),
@@ -174,7 +179,10 @@ class _EscapePreventerWrapper extends StatelessWidget {
           actions: <Widget>[
             FlatButton(
               child: Text(
-                AppLocalizations.of(context).translate('yes'),
+                AppLocalizations.of(context).translate('yes').toUpperCase(),
+                style: Theme.of(context).textTheme.body1.copyWith(
+                      fontSize: 20.0,
+                    ),
               ),
               onPressed: () {
                 store.cleanTimer();
@@ -183,7 +191,10 @@ class _EscapePreventerWrapper extends StatelessWidget {
             ),
             FlatButton(
               child: Text(
-                AppLocalizations.of(context).translate('no'),
+                AppLocalizations.of(context).translate('no').toUpperCase(),
+                style: Theme.of(context).textTheme.body1.copyWith(
+                      fontSize: 20.0,
+                    ),
               ),
               onPressed: () => Navigator.of(context).pop(false),
             ),
