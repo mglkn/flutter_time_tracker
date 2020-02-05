@@ -332,7 +332,8 @@ class _TimerInfo extends StatelessWidget {
             const SizedBox(height: 10.0),
             Text(
               AppLocalizations.of(context)
-                  .translate(_getStage(store.timerStage)),
+                  .translate(_getStage(store.timerStage))
+                  .toUpperCase(),
               style: Theme.of(context).textTheme.body1.copyWith(
                     color: Colors.white,
                     fontSize: 25.0,
