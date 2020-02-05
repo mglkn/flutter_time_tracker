@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
 import 'package:mobx/mobx.dart';
 import 'package:audioplayers/audio_cache.dart';
@@ -26,9 +27,12 @@ const int COUNT_WORK_LONG_REST_BEFORE = 4;
 class GoalStore = _GoalStore with _$GoalStore;
 
 abstract class _GoalStore with Store {
+  static const channel = const MethodChannel('time_tracker/wake_lock');
+
   Goal _goal;
   DbDataRepository _db;
   StreamSubscription<int> _tickerSubscription;
+  StreamSubscription<int> _releaseWakeLockTimerSubscription;
 
   final Ticker _ticker = Ticker();
   final AudioCache _player = new AudioCache(prefix: 'audio/');
@@ -128,14 +132,18 @@ abstract class _GoalStore with Store {
   doTimerAction() {
     switch (_timerState) {
       case ETimerState.RUN:
+        _startReleaseWakeLockTimer();
         _timerState = ETimerState.PAUSE;
         _pauseTimer();
         break;
       case ETimerState.PAUSE:
+        _startReleaseWakeLockTimer();
+        _accureWakeLock();
         _timerState = ETimerState.RUN;
         _resumeTimer();
         break;
       case ETimerState.READY:
+        _accureWakeLock();
         _timerState = ETimerState.RUN;
         _startTimer(_getTime(_timerStage));
         break;
@@ -164,6 +172,7 @@ abstract class _GoalStore with Store {
   @action
   void _doneTimer() {
     _timerState = ETimerState.READY;
+    _startReleaseWakeLockTimer();
     switch (_timerStage) {
       case ETimerStage.WORK:
         _addPomodoro();
@@ -205,5 +214,24 @@ abstract class _GoalStore with Store {
       default:
         return 1500;
     }
+  }
+
+  Future _accureWakeLock() {
+    _releaseWakeLockTimerSubscription?.cancel();
+    return channel.invokeMethod('accureWakeLock');
+  }
+
+  Future _releaseWakeLock() {
+    return channel.invokeMethod('releaseWakeLock');
+  }
+
+  _startReleaseWakeLockTimer() {
+    _releaseWakeLockTimerSubscription?.cancel();
+    _releaseWakeLockTimerSubscription =
+        _ticker.tick(ticks: 10).listen((int time) {
+      if (time == 0) {
+        _releaseWakeLock();
+      }
+    });
   }
 }

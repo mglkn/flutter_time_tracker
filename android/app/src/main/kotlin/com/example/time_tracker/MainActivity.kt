@@ -1,48 +1,41 @@
 package com.example.time_tracker
 
-import android.os.CountDownTimer
+import android.content.Context
+import android.os.PowerManager
 import androidx.annotation.NonNull;
-import io.flutter.Log
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.plugin.common.EventChannel
+import io.flutter.plugin.common.MethodCall
+import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 
 class MainActivity: FlutterActivity() {
-    private val EVENT_CHANNEL_NAME = "time_tracker/ticker"
-    private lateinit var timer : CountDownTimer
+    private val WAKE_LOCK_CHANNEL_NAME = "time_tracker/wake_lock"
 
-    private val handler = object : EventChannel.StreamHandler {
-        override fun onListen(arguments: Any?, sink: EventChannel.EventSink?) {
-            val count = arguments as Int
-            var time = count
-
-            if (sink != null) {
-                timer = object : CountDownTimer(count.toLong() * 1000, 250) {
-                    override fun onFinish() {
-                        timer.cancel()
-                    }
-
-                    override fun onTick(millisUntilFinished: Long) {
-                        val secondsRemaining = (millisUntilFinished / 1000).toInt()
-                        if (secondsRemaining != time) {
-                            time = secondsRemaining
-                            sink.success(time)
-                        }
-                    }
-                }
-                timer.start()
-            }
-        }
-
-        override fun onCancel(arguments: Any?) {
-            timer.cancel()
-        }
-    }
+    private lateinit var wakeLock: PowerManager.WakeLock
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         GeneratedPluginRegistrant.registerWith(flutterEngine);
-        val eventChannel = EventChannel(flutterEngine.dartExecutor.binaryMessenger, EVENT_CHANNEL_NAME)
-        eventChannel.setStreamHandler(handler)
+
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, WAKE_LOCK_CHANNEL_NAME)
+                .setMethodCallHandler(object: MethodChannel.MethodCallHandler {
+                    override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
+                        if (call.method.equals("accureWakeLock")) accureWakeLock()
+                        if (call.method.equals("releaseWakeLock")) releaseWakeLock()
+                    }
+                })
+
+    }
+
+    fun accureWakeLock() {
+        val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
+        wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "time_tracker:wakelock")
+        wakeLock.acquire();
+    }
+
+    fun releaseWakeLock() {
+        if (wakeLock?.isHeld) {
+            wakeLock.release()
+        }
     }
 }
