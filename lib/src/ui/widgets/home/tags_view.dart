@@ -80,7 +80,7 @@ class _SlidableWrapper extends StatelessWidget {
             caption: 'Edit',
             color: Colors.transparent,
             foregroundColor: Colors.black,
-            icon: Icons.done,
+            icon: Icons.edit,
             onTap: () {
               AppRouter.navigator
                   .pushNamed(AppRouter.tagFormScreen, arguments: tag);
