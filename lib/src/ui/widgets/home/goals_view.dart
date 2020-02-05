@@ -52,7 +52,7 @@ class _Tile extends StatelessWidget {
       child: GestureDetector(
         onTap: () => _navigateToGoal(context),
         child: Container(
-          padding: EdgeInsets.fromLTRB(0.0, 12.0, 15.0, 12.0),
+          padding: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
           margin: EdgeInsets.only(bottom: 15.0),
           decoration: tileDecoration,
           child: Row(
@@ -125,27 +125,34 @@ class _TilePomodorosCount extends StatelessWidget {
     return Container(
       width: 60.0,
       height: 60.0,
+      margin: EdgeInsets.only(right: 5.0),
+      decoration: BoxDecoration(
+        color: Colors.red[400],
+        borderRadius: BorderRadius.circular(5.0),
+      ),
       child: Stack(
         children: <Widget>[
           Align(
             alignment: Alignment(0, -.2),
             child: Icon(
               AppIcons.pomodoro,
-              color: Colors.red[400],
-              size: 36.0,
+              color: Colors.white,
+              size: 42.0,
             ),
           ),
-          Center(
-            child: Text(
-              pomodoroCount.toString(),
-              style: Theme.of(context).textTheme.subtitle.copyWith(
-                shadows: [
-                  BoxShadow(
-                    color: Colors.white,
-                    blurRadius: 5.0,
-                    spreadRadius: 5.0,
-                  ),
-                ],
+          Align(
+            alignment: Alignment(0, .2),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 2.0),
+              decoration: BoxDecoration(
+                color: Colors.red[400],
+              ),
+              child: Text(
+                pomodoroCount.toString(),
+                style: Theme.of(context)
+                    .textTheme
+                    .subtitle
+                    .copyWith(color: Colors.white),
               ),
             ),
           ),
