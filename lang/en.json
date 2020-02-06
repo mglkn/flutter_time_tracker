@@ -25,5 +25,7 @@
     "yes": "Yes",
     "no": "No",
     "work": "work",
-    "rest": "rest"
+    "rest": "rest",
+    "done": "done",
+    "ongoing": "ongoing"
 }

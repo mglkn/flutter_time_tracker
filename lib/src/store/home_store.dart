@@ -7,6 +7,11 @@ part 'home_store.g.dart';
 
 class HomeStore = _HomeStore with _$HomeStore;
 
+enum EGoalStatus {
+  DONE,
+  ONGOING,
+}
+
 abstract class _HomeStore with Store {
   final DbDataRepository _repo;
 
@@ -30,11 +35,14 @@ abstract class _HomeStore with Store {
   List<TagWithPomodorosCount> get tags => _tags;
 
   @observable
-  bool isGoalDoneFlag = false;
+  EGoalStatus _goalStatus = EGoalStatus.ONGOING;
+
+  bool get isGoalDone => _goalStatus == EGoalStatus.DONE;
 
   @action
-  void toggleGoalDoneFlag() {
-    isGoalDoneFlag = !isGoalDoneFlag;
+  void setGoalStatus(EGoalStatus goalStatus) {
+    if (goalStatus == _goalStatus) return;
+    _goalStatus = goalStatus;
     getGoals();
   }
 
@@ -48,7 +56,7 @@ abstract class _HomeStore with Store {
 
   @action
   Future getGoals() async {
-    final result = await _repo.getGoals(isGoalDoneFlag);
+    final result = await _repo.getGoals(isGoalDone);
 
     // TODO: error handle
     result.fold(

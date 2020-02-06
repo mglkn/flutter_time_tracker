@@ -53,10 +53,11 @@ class __HomeScreenState extends State<_HomeScreen> {
     return FloatingActionButton(
       child: Icon(Icons.add),
       elevation: 1.0,
-      onPressed: () {
+      onPressed: () async {
         if (store.pageIndex == 0) {
-          AppRouter.navigator
+          await AppRouter.navigator
               .pushNamed(AppRouter.goalFormScreen, arguments: null);
+          store.setGoalStatus(EGoalStatus.ONGOING);
           return;
         }
         AppRouter.navigator.pushNamed(AppRouter.tagFormScreen, arguments: null);
@@ -66,6 +67,10 @@ class __HomeScreenState extends State<_HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final done = AppLocalizations.of(context).translate('done').toUpperCase();
+    final ongoing =
+        AppLocalizations.of(context).translate('ongoing').toUpperCase();
+
     return Consumer(
       builder: (_, HomeStore store, __) => Scaffold(
         appBar: _buildAppBar(store),
@@ -77,7 +82,15 @@ class __HomeScreenState extends State<_HomeScreen> {
             controller: _pageController,
             onPageChanged: (index) => store.setPageIndex(index),
             children: <Widget>[
-              GoalsView(),
+              Column(
+                children: <Widget>[
+                  Observer(
+                    builder: (_) =>
+                        store.isGoalDone ? Text('$done') : Text('$ongoing'),
+                  ),
+                  Expanded(child: GoalsView()),
+                ],
+              ),
               TagsView(),
             ],
           ),
@@ -92,28 +105,14 @@ class __HomeScreenState extends State<_HomeScreen> {
     final String titleTags =
         AppLocalizations.of(context).translate("tags").toUpperCase();
 
-    final checkedIcon = Icon(Icons.check_box);
-    final uncheckedIcon = Icon(Icons.check_box_outline_blank);
-
     return AppBar(
       title: Observer(
         builder: (_) => AppBarTitle(
           store.pageIndex == 0 ? titleGoals : titleTags,
         ),
       ),
-      // backgroundColor: Colors.transparent,
       actions: <Widget>[
-        Observer(
-          builder: (_) => store.pageIndex == 0
-              ? IconButton(
-                  icon: Observer(
-                    builder: (_) =>
-                        store.isGoalDoneFlag ? uncheckedIcon : checkedIcon,
-                  ),
-                  onPressed: () => store.toggleGoalDoneFlag(),
-                )
-              : Container(),
-        ),
+        store.pageIndex == 0 ? _FilterPopupMenuButton() : Container(),
       ],
       centerTitle: true,
     );
@@ -156,6 +155,36 @@ class AppBarTitle extends StatelessWidget {
       style: Theme.of(context).textTheme.title.copyWith(
             letterSpacing: 12.0,
           ),
+    );
+  }
+}
+
+class _FilterPopupMenuButton extends StatelessWidget {
+  String _getStatusLabel(EGoalStatus status) {
+    return status.toString().split('.').last.toLowerCase();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final choices = <EGoalStatus>[EGoalStatus.DONE, EGoalStatus.ONGOING];
+    return Consumer(
+      builder: (_, HomeStore store, __) => PopupMenuButton<EGoalStatus>(
+        onSelected: store.setGoalStatus,
+        icon: Icon(Icons.filter_list),
+        elevation: 2.0,
+        itemBuilder: (_) => choices
+            .map(
+              (EGoalStatus choice) => PopupMenuItem<EGoalStatus>(
+                child: Text(
+                  AppLocalizations.of(context)
+                      .translate(_getStatusLabel(choice))
+                      .toUpperCase(),
+                ),
+                value: choice,
+              ),
+            )
+            .toList(),
+      ),
     );
   }
 }

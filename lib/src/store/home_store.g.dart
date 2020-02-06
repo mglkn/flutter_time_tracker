@@ -43,21 +43,21 @@ mixin _$HomeStore on _HomeStore, Store {
     }, _$_tagsAtom, name: '${_$_tagsAtom.name}_set');
   }
 
-  final _$isGoalDoneFlagAtom = Atom(name: '_HomeStore.isGoalDoneFlag');
+  final _$_goalStatusAtom = Atom(name: '_HomeStore._goalStatus');
 
   @override
-  bool get isGoalDoneFlag {
-    _$isGoalDoneFlagAtom.context.enforceReadPolicy(_$isGoalDoneFlagAtom);
-    _$isGoalDoneFlagAtom.reportObserved();
-    return super.isGoalDoneFlag;
+  EGoalStatus get _goalStatus {
+    _$_goalStatusAtom.context.enforceReadPolicy(_$_goalStatusAtom);
+    _$_goalStatusAtom.reportObserved();
+    return super._goalStatus;
   }
 
   @override
-  set isGoalDoneFlag(bool value) {
-    _$isGoalDoneFlagAtom.context.conditionallyRunInAction(() {
-      super.isGoalDoneFlag = value;
-      _$isGoalDoneFlagAtom.reportChanged();
-    }, _$isGoalDoneFlagAtom, name: '${_$isGoalDoneFlagAtom.name}_set');
+  set _goalStatus(EGoalStatus value) {
+    _$_goalStatusAtom.context.conditionallyRunInAction(() {
+      super._goalStatus = value;
+      _$_goalStatusAtom.reportChanged();
+    }, _$_goalStatusAtom, name: '${_$_goalStatusAtom.name}_set');
   }
 
   final _$_pageIndexAtom = Atom(name: '_HomeStore._pageIndex');
@@ -109,10 +109,10 @@ mixin _$HomeStore on _HomeStore, Store {
   final _$_HomeStoreActionController = ActionController(name: '_HomeStore');
 
   @override
-  void toggleGoalDoneFlag() {
+  void setGoalStatus(EGoalStatus goalStatus) {
     final _$actionInfo = _$_HomeStoreActionController.startAction();
     try {
-      return super.toggleGoalDoneFlag();
+      return super.setGoalStatus(goalStatus);
     } finally {
       _$_HomeStoreActionController.endAction(_$actionInfo);
     }

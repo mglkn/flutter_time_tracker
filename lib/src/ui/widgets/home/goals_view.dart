@@ -100,7 +100,7 @@ class _SlidableWrapper extends StatelessWidget {
         ],
         secondaryActions: <Widget>[
           IconSlideAction(
-            caption: store.isGoalDoneFlag ? 'Undone' : 'Done',
+            caption: store.isGoalDone ? 'Undone' : 'Done',
             color: Colors.transparent,
             foregroundColor: Colors.black,
             icon: Icons.done,
