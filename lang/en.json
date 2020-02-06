@@ -32,5 +32,6 @@
     "notags": "There are no tags yet.",
     "doEdit": "Edit",
     "doDone": "Done",
-    "doResume": "Resume"
+    "doResume": "Resume",
+    "doDelete": "Delete",
 }

@@ -82,13 +82,16 @@ class _SlidableWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final edit = AppLocalizations.of(context).translate('doEdit');
+    final delete = AppLocalizations.of(context).translate('doDelete');
+
     return Consumer(
       builder: (_, HomeStore store, __) => Slidable(
         actionPane: SlidableBehindActionPane(),
         actionExtentRatio: 0.2,
         actions: <Widget>[
           IconSlideAction(
-            caption: 'Edit',
+            caption: edit,
             color: Colors.transparent,
             foregroundColor: Colors.black,
             icon: Icons.edit,
@@ -100,7 +103,7 @@ class _SlidableWrapper extends StatelessWidget {
         ],
         secondaryActions: <Widget>[
           IconSlideAction(
-            caption: 'Delete',
+            caption: delete,
             color: Colors.transparent,
             foregroundColor: Colors.black,
             icon: Icons.remove_circle_outline,
