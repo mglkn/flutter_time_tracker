@@ -65,7 +65,7 @@ class _Tile extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
           margin: EdgeInsets.only(bottom: 15.0),
-          decoration: tileDecoration,
+          decoration: goal.goal.isDone ? doneTileDecoration : tileDecoration,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -74,6 +74,7 @@ class _Tile extends StatelessWidget {
               _TileContent(
                 label: goal.goal.label,
                 tags: goal.tags,
+                isDone: goal.goal.isDone,
               ),
             ],
           ),
@@ -180,10 +181,12 @@ class _TilePomodorosCount extends StatelessWidget {
 class _TileContent extends StatelessWidget {
   final String label;
   final List<Tag> tags;
+  final bool isDone;
 
-  _TileContent({this.label, this.tags})
+  _TileContent({this.label, this.tags, this.isDone})
       : assert(label != null),
-        assert(tags != null);
+        assert(tags != null),
+        assert(isDone != null);
 
   @override
   Widget build(BuildContext context) {
@@ -193,7 +196,9 @@ class _TileContent extends StatelessWidget {
       // 60 - width pomodoroCount
       // 15 - right padding TileContent?
       // 2 - tile border
-      width: MediaQuery.of(context).size.width - 60.0 - 60.0 - 15.0 - 2.0,
+      // 5.0 - this padding
+      padding: EdgeInsets.only(left: 5.0),
+      width: MediaQuery.of(context).size.width - 60.0 - 60.0 - 15.0 - 2.0 - 5.0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -202,6 +207,7 @@ class _TileContent extends StatelessWidget {
             style: Theme.of(context).textTheme.title.copyWith(
                   fontSize: 18.0,
                   fontFamily: 'FiraSans',
+                  decoration: isDone ? TextDecoration.lineThrough : null,
                 ),
           ),
           SizedBox(height: 5.0),

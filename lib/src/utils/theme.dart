@@ -55,15 +55,38 @@ BoxDecoration tileDecoration = BoxDecoration(
   boxShadow: [
     BoxShadow(
       color: Colors.grey[500],
-      offset: Offset(5.0, 5.0),
-      blurRadius: 15.0,
+      offset: Offset(3.0, 3.0),
+      blurRadius: 10.0,
       spreadRadius: 1.0,
     ),
     BoxShadow(
       color: Colors.white,
-      offset: Offset(-5.0, -5.0),
-      blurRadius: 15.0,
+      offset: Offset(-3.0, -3.0),
+      blurRadius: 10.0,
       spreadRadius: 1.0,
+    ),
+  ],
+);
+
+BoxDecoration doneTileDecoration = BoxDecoration(
+  color: const Color(backgroundColor),
+  borderRadius: BorderRadius.circular(7.0),
+  border: Border.all(
+    width: 1.0,
+    color: Colors.grey[200],
+  ),
+  boxShadow: [
+    BoxShadow(
+      color: Colors.grey[500],
+      offset: Offset(1.0, 1.0),
+      blurRadius: 5.0,
+      spreadRadius: .3,
+    ),
+    BoxShadow(
+      color: Colors.white,
+      offset: Offset(-1.0, -1.0),
+      blurRadius: 5.0,
+      spreadRadius: .3,
     ),
   ],
 );
