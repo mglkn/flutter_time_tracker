@@ -9,6 +9,7 @@ import '../../../store/home_store.dart';
 import '../../../routes/router.gr.dart';
 import '../../../utils/theme.dart';
 import '../../../utils/app_icons.dart';
+import '../../../utils/app_localization.dart';
 
 class GoalsView extends StatefulWidget {
   @override
@@ -21,10 +22,20 @@ class _GoalsViewState extends State<GoalsView> {
     return Container(
       child: Consumer<HomeStore>(
         builder: (_, HomeStore store, __) => Observer(
-          builder: (_) => ListView(
-            padding: EdgeInsets.all(30.0),
-            children: store.goals.map((g) => _Tile(g)).toList(),
-          ),
+          builder: (_) => store.goals.length == 0
+              ? Center(
+                  child: Text(
+                    AppLocalizations.of(context).translate('nogoals'),
+                    style: Theme.of(context)
+                        .textTheme
+                        .body1
+                        .copyWith(fontSize: 26.0, color: Colors.grey[500]),
+                  ),
+                )
+              : ListView(
+                  padding: EdgeInsets.all(30.0),
+                  children: store.goals.map((g) => _Tile(g)).toList(),
+                ),
         ),
       ),
     );

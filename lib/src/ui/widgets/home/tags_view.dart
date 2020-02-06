@@ -8,6 +8,7 @@ import '../../../store/home_store.dart';
 import '../../../routes/router.gr.dart';
 import '../../../utils/theme.dart';
 import '../../../utils/app_icons.dart';
+import '../../../utils/app_localization.dart';
 
 class TagsView extends StatelessWidget {
   @override
@@ -15,10 +16,20 @@ class TagsView extends StatelessWidget {
     return Container(
       child: Consumer<HomeStore>(
         builder: (_, HomeStore store, __) => Observer(
-          builder: (_) => ListView(
-            padding: EdgeInsets.all(30.0),
-            children: store.tags.map((t) => TagTile(t)).toList(),
-          ),
+          builder: (_) => store.tags.length == 0
+              ? Center(
+                  child: Text(
+                    AppLocalizations.of(context).translate('notags'),
+                    style: Theme.of(context)
+                        .textTheme
+                        .body1
+                        .copyWith(fontSize: 26.0, color: Colors.grey[500]),
+                  ),
+                )
+              : ListView(
+                  padding: EdgeInsets.all(30.0),
+                  children: store.tags.map((t) => TagTile(t)).toList(),
+                ),
         ),
       ),
     );

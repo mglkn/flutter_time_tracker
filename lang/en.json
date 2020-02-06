@@ -27,5 +27,7 @@
     "work": "work",
     "rest": "rest",
     "done": "done",
-    "ongoing": "ongoing"
+    "ongoing": "ongoing",
+    "nogoals": "There are no goals yet.",
+    "notags": "There are no tags yet."
 }
