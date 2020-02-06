@@ -112,7 +112,7 @@ class __HomeScreenState extends State<_HomeScreen> {
         ),
       ),
       actions: <Widget>[
-        store.pageIndex == 0 ? _FilterPopupMenuButton() : Container(),
+        _FilterPopupMenuButton(),
       ],
       centerTitle: true,
     );
@@ -168,22 +168,26 @@ class _FilterPopupMenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final choices = <EGoalStatus>[EGoalStatus.DONE, EGoalStatus.ONGOING];
     return Consumer(
-      builder: (_, HomeStore store, __) => PopupMenuButton<EGoalStatus>(
-        onSelected: store.setGoalStatus,
-        icon: Icon(Icons.filter_list),
-        elevation: 2.0,
-        itemBuilder: (_) => choices
-            .map(
-              (EGoalStatus choice) => PopupMenuItem<EGoalStatus>(
-                child: Text(
-                  AppLocalizations.of(context)
-                      .translate(_getStatusLabel(choice))
-                      .toUpperCase(),
-                ),
-                value: choice,
+      builder: (_, HomeStore store, __) => Observer(
+        builder: (_) => store.pageIndex > 0
+            ? Container()
+            : PopupMenuButton<EGoalStatus>(
+                onSelected: store.setGoalStatus,
+                icon: Icon(Icons.filter_list),
+                elevation: 2.0,
+                itemBuilder: (_) => choices
+                    .map(
+                      (EGoalStatus choice) => PopupMenuItem<EGoalStatus>(
+                        child: Text(
+                          AppLocalizations.of(context)
+                              .translate(_getStatusLabel(choice))
+                              .toUpperCase(),
+                        ),
+                        value: choice,
+                      ),
+                    )
+                    .toList(),
               ),
-            )
-            .toList(),
       ),
     );
   }
