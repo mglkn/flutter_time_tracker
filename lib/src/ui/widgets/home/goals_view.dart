@@ -61,7 +61,7 @@ class _Tile extends StatelessWidget {
     return _SlidableWrapper(
       goal: goal,
       child: GestureDetector(
-        onTap: () => _navigateToGoal(context),
+        onTap: goal.goal.isDone ? null : () => _navigateToGoal(context),
         child: Container(
           padding: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
           margin: EdgeInsets.only(bottom: 15.0),
