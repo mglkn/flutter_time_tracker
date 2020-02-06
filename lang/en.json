@@ -29,5 +29,8 @@
     "done": "done",
     "ongoing": "ongoing",
     "nogoals": "There are no goals yet.",
-    "notags": "There are no tags yet."
+    "notags": "There are no tags yet.",
+    "doEdit": "Edit",
+    "doDone": "Done",
+    "doResume": "Resume"
 }

@@ -93,13 +93,17 @@ class _SlidableWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final edit = AppLocalizations.of(context).translate('doEdit');
+    final done = AppLocalizations.of(context).translate('doDone');
+    final resume = AppLocalizations.of(context).translate('doResume');
+
     return Consumer(
       builder: (_, HomeStore store, __) => Slidable(
         actionPane: SlidableBehindActionPane(),
         actionExtentRatio: 0.2,
         actions: <Widget>[
           IconSlideAction(
-            caption: 'Edit',
+            caption: edit,
             color: Colors.transparent,
             foregroundColor: Colors.black,
             icon: Icons.edit,
@@ -111,7 +115,7 @@ class _SlidableWrapper extends StatelessWidget {
         ],
         secondaryActions: <Widget>[
           IconSlideAction(
-            caption: store.isGoalDone ? 'Undone' : 'Done',
+            caption: store.isGoalDone ? resume : done,
             color: Colors.transparent,
             foregroundColor: Colors.black,
             icon: Icons.done,
