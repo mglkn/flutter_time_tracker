@@ -10,6 +10,17 @@ import '../../../../utils/theme.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_localization.dart';
 
+const listViewPadding = 30.0;
+const tilePomodoroCountSize = 60.0;
+const tilePadding = 5.0;
+const tileContentLeftPadding = 5.0;
+const tileBorder = 1.0;
+const tileContentWidthDiff = (listViewPadding * 2) +
+    tilePomodoroCountSize +
+    tileContentLeftPadding +
+    (tilePadding * 2) +
+    (tileBorder * 2);
+
 class GoalTile extends StatelessWidget {
   final GoalWithTagsAndPomodorosCount goal;
 
@@ -31,9 +42,15 @@ class GoalTile extends StatelessWidget {
       child: GestureDetector(
         onTap: goal.goal.isDone ? null : () => _navigateToGoal(context),
         child: Container(
-          padding: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
-          margin: EdgeInsets.only(bottom: 15.0),
-          decoration: goal.goal.isDone ? doneTileDecoration : tileDecoration,
+          padding: EdgeInsets.all(tilePadding),
+          margin: EdgeInsets.only(bottom: 10.0),
+          decoration:
+              (goal.goal.isDone ? doneTileDecoration : tileDecoration).copyWith(
+            border: Border.all(
+              width: tileBorder,
+              color: Colors.grey[200],
+            ),
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -107,8 +124,8 @@ class _TilePomodorosCount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 60.0,
-      height: 60.0,
+      width: tilePomodoroCountSize,
+      height: tilePomodoroCountSize,
       margin: EdgeInsets.only(right: 5.0),
       decoration: BoxDecoration(
         color: Colors.red[400],
@@ -159,14 +176,8 @@ class _TileContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // TODO: move magic numbers to constants
-      // 60 - padding ListView
-      // 60 - width pomodoroCount
-      // 15 - right padding TileContent?
-      // 2 - tile border
-      // 5.0 - this padding
-      padding: EdgeInsets.only(left: 5.0),
-      width: MediaQuery.of(context).size.width - 60.0 - 60.0 - 15.0 - 2.0 - 5.0,
+      padding: EdgeInsets.only(left: tileContentLeftPadding),
+      width: MediaQuery.of(context).size.width - tileContentWidthDiff,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
