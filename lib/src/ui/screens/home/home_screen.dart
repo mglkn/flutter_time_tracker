@@ -107,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       actions: <Widget>[
-        _FilterPopupMenuButton(),
+        FilterPopupMenuButton(),
       ],
       centerTitle: true,
     );
@@ -133,56 +133,6 @@ class _HomeScreenState extends State<HomeScreen> {
           _buildBottomNavBar(title: titleGoals, icon: Icons.gps_fixed),
           _buildBottomNavBar(title: titleTags, icon: Icons.local_offer),
         ],
-      ),
-    );
-  }
-}
-
-class AppBarTitle extends StatelessWidget {
-  final String title;
-
-  AppBarTitle(this.title);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: Theme.of(context).textTheme.title.copyWith(
-            letterSpacing: 12.0,
-          ),
-    );
-  }
-}
-
-class _FilterPopupMenuButton extends StatelessWidget {
-  String _getStatusLabel(EGoalStatus status) {
-    return status.toString().split('.').last.toLowerCase();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final choices = <EGoalStatus>[EGoalStatus.DONE, EGoalStatus.ONGOING];
-    return Consumer(
-      builder: (_, HomeStore store, __) => Observer(
-        builder: (_) => store.pageIndex > 0
-            ? Container()
-            : PopupMenuButton<EGoalStatus>(
-                onSelected: store.setGoalStatus,
-                icon: Icon(Icons.filter_list),
-                elevation: 2.0,
-                itemBuilder: (_) => choices
-                    .map(
-                      (EGoalStatus choice) => PopupMenuItem<EGoalStatus>(
-                        child: Text(
-                          AppLocalizations.of(context)
-                              .translate(_getStatusLabel(choice))
-                              .toUpperCase(),
-                        ),
-                        value: choice,
-                      ),
-                    )
-                    .toList(),
-              ),
       ),
     );
   }
