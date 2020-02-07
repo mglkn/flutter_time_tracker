@@ -4,8 +4,8 @@ import 'package:flutter_material_color_picker/flutter_material_color_picker.dart
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-import '../../../utils/app_localization.dart';
-import '../../../store/tag_form_store.dart';
+import '../../../../utils/app_localization.dart';
+import '../../../../store/tag_form_store.dart';
 
 class TagForm extends StatelessWidget {
   @override

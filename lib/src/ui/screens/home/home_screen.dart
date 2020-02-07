@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../utils/app_localization.dart';
-import '../../../ui/widgets/home/home.dart';
 import '../../../store/home_store.dart';
 import '../../../routes/router.gr.dart';
+import 'widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   @override

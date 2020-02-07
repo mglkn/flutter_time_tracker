@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-import '../../../utils/app_localization.dart';
-import '../../../store/goal_form_store.dart';
-import '../../../data/dto.dart';
+import '../../../../utils/app_localization.dart';
+import '../../../../store/goal_form_store.dart';
+import '../../../../data/dto.dart';
 
 class GoalForm extends StatelessWidget {
   @override

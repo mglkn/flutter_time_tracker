@@ -3,13 +3,13 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
-import '../../../data/dto.dart';
-import '../../../data/db.dart';
-import '../../../store/home_store.dart';
-import '../../../routes/router.gr.dart';
-import '../../../utils/theme.dart';
-import '../../../utils/app_icons.dart';
-import '../../../utils/app_localization.dart';
+import '../../../../data/dto.dart';
+import '../../../../data/db.dart';
+import '../../../../store/home_store.dart';
+import '../../../../routes/router.gr.dart';
+import '../../../../utils/theme.dart';
+import '../../../../utils/app_icons.dart';
+import '../../../../utils/app_localization.dart';
 
 class GoalsView extends StatefulWidget {
   @override

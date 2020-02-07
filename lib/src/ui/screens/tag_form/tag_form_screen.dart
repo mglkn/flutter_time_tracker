@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/app_localization.dart';
-import '../../widgets/forms/forms.dart';
 import '../../../store/home_store.dart';
 import '../../../store/tag_form_store.dart';
 import '../../../data/db_repository.dart';
 import '../../../routes/router.gr.dart';
 import '../../../data/dto.dart';
 import '../../../utils/validator.dart';
+import 'widgets/widgets.dart';
 
 class TagFormScreen extends StatelessWidget {
   final TagWithPomodorosCount tag;
