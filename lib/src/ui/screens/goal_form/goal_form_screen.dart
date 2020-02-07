@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/src/utils/validator.dart';
 
-import '../../utils/app_localization.dart';
-import '../widgets/forms/forms.dart';
-import '../../store/goal_form_store.dart';
-import '../../store/home_store.dart';
-import '../../data/db_repository.dart';
-import '../../routes/router.gr.dart';
-import '../../data/dto.dart';
+import '../../../utils/app_localization.dart';
+import '../../widgets/forms/forms.dart';
+import '../../../store/goal_form_store.dart';
+import '../../../store/home_store.dart';
+import '../../../data/db_repository.dart';
+import '../../../routes/router.gr.dart';
+import '../../../data/dto.dart';
 
 class GoalFormScreen extends StatelessWidget {
   final GoalWithTagsAndPomodorosCount goal;

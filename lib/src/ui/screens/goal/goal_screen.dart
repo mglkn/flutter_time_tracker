@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-import '../../data/dto.dart';
-import '../../data/db_repository.dart';
-import '../../store/goal_store.dart';
-import '../../utils/app_localization.dart';
-import '../../utils/app_icons.dart';
-import '../../utils/theme.dart';
+import '../../../data/dto.dart';
+import '../../../data/db_repository.dart';
+import '../../../store/goal_store.dart';
+import '../../../utils/app_localization.dart';
+import '../../../utils/app_icons.dart';
+import '../../../utils/theme.dart';
 
 class GoalScreen extends StatelessWidget {
   final GoalWithTagsAndPomodorosCount goal;

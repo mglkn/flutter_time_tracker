@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:time_tracker/src/routes/router.gr.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-import '../../utils/app_localization.dart';
-import '../../ui/widgets/home/home.dart';
-import '../../store/home_store.dart';
+import '../../../utils/app_localization.dart';
+import '../../../ui/widgets/home/home.dart';
+import '../../../store/home_store.dart';
+import '../../../routes/router.gr.dart';
 
 class HomeScreen extends StatelessWidget {
   @override

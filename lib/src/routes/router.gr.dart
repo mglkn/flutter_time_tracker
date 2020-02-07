@@ -7,11 +7,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:auto_route/router_utils.dart';
-import 'package:time_tracker/src/ui/screens/home_screen.dart';
-import 'package:time_tracker/src/ui/screens/tag_form_screen.dart';
+import 'package:time_tracker/src/ui/screens/home/home_screen.dart';
+import 'package:time_tracker/src/ui/screens/tag_form/tag_form_screen.dart';
 import 'package:time_tracker/src/data/dto.dart';
-import 'package:time_tracker/src/ui/screens/goal_form_screen.dart';
-import 'package:time_tracker/src/ui/screens/goal_screen.dart';
+import 'package:time_tracker/src/ui/screens/goal_form/goal_form_screen.dart';
+import 'package:time_tracker/src/ui/screens/goal/goal_screen.dart';
 
 class AppRouter {
   static const homeScreen = '/';
