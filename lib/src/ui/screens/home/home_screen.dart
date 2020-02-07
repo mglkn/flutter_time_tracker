@@ -7,17 +7,12 @@ import '../../../store/home_store.dart';
 import '../../../routes/router.gr.dart';
 import 'widgets/widgets.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  Widget build(BuildContext context) => _HomeScreen();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreen extends StatefulWidget {
-  @override
-  __HomeScreenState createState() => __HomeScreenState();
-}
-
-class __HomeScreenState extends State<_HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   PageController _pageController = PageController(
     keepPage: true,
     initialPage: 0,
