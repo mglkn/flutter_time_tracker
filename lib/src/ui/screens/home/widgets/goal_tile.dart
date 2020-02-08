@@ -129,7 +129,7 @@ class _TilePomodorosCount extends StatelessWidget {
       margin: EdgeInsets.only(right: 5.0),
       decoration: BoxDecoration(
         color: Colors.red[400],
-        borderRadius: BorderRadius.circular(5.0),
+        borderRadius: BorderRadius.circular(3.0),
       ),
       child: Stack(
         children: <Widget>[
