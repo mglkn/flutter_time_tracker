@@ -17,8 +17,8 @@ class Timer extends StatelessWidget {
         onTap: store.doTimerAction,
         child: Stack(
           children: <Widget>[
-            _TimerMeta(),
-            _TimerBorderPaint(),
+            _Timer(),
+            _TimerDynamicBorder(),
           ],
         ),
       ),
@@ -26,7 +26,7 @@ class Timer extends StatelessWidget {
   }
 }
 
-class _TimerMeta extends StatelessWidget {
+class _Timer extends StatelessWidget {
   Color _getColor({ETimerStage stage, int opacity}) {
     if (stage == ETimerStage.WORK) {
       return Colors.red[opacity];
@@ -50,8 +50,8 @@ class _TimerMeta extends StatelessWidget {
           ),
           child: Stack(
             children: <Widget>[
-              _TimerMetaStateAction(),
-              _TimerInfo(),
+              _TimerStateAction(),
+              _TimerClock(),
             ],
           ),
         ),
@@ -60,7 +60,7 @@ class _TimerMeta extends StatelessWidget {
   }
 }
 
-class _TimerMetaStateAction extends StatelessWidget {
+class _TimerStateAction extends StatelessWidget {
   IconData _getIcon(ETimerState timerState) {
     if (timerState == ETimerState.RUN) {
       return Icons.pause;
@@ -96,7 +96,7 @@ class _TimerMetaStateAction extends StatelessWidget {
   }
 }
 
-class _TimerInfo extends StatelessWidget {
+class _TimerClock extends StatelessWidget {
   String _getStage(ETimerStage stage) {
     if (stage == ETimerStage.WORK) {
       return 'work';
@@ -138,7 +138,7 @@ class _TimerInfo extends StatelessWidget {
   }
 }
 
-class _TimerBorderPaint extends StatelessWidget {
+class _TimerDynamicBorder extends StatelessWidget {
   Color _getColor({ETimerStage stage, int opacity}) {
     if (stage == ETimerStage.WORK) {
       return Colors.red[opacity];
