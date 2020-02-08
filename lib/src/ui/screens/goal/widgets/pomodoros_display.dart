@@ -87,21 +87,9 @@ class _TileInfo extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
-            decoration: BoxDecoration(
-              color: Colors.red[400],
-              borderRadius: BorderRadius.circular(3.0),
-            ),
-            child: Text(
-              pomodorosCount.toString(),
-              style: Theme.of(context)
-                  .textTheme
-                  .subtitle
-                  .copyWith(fontSize: 30.0, color: Colors.white),
-            ),
-          ),
+          _TileInfoCount(pomodorosCount),
           const SizedBox(height: 15.0),
+          // label
           Text(
             label.toUpperCase(),
             style: Theme.of(context).textTheme.body1.copyWith(
@@ -111,6 +99,30 @@ class _TileInfo extends StatelessWidget {
                 ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _TileInfoCount extends StatelessWidget {
+  final int pomodorosCount;
+
+  _TileInfoCount(this.pomodorosCount);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
+      decoration: BoxDecoration(
+        color: Colors.red[400],
+        borderRadius: BorderRadius.circular(3.0),
+      ),
+      child: Text(
+        pomodorosCount.toString(),
+        style: Theme.of(context)
+            .textTheme
+            .subtitle
+            .copyWith(fontSize: 30.0, color: Colors.white),
       ),
     );
   }
