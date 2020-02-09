@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:simple_animations/simple_animations.dart';
 
 import '../../../../store/goal_store.dart';
 import '../../../../utils/app_localization.dart';
@@ -18,6 +19,7 @@ class PomodorosDisplay extends StatelessWidget {
             builder: (_) => _PomodoroTile(
               label: AppLocalizations.of(context).translate('all'),
               pomodorosCount: store.allPomodorosCount ?? 0,
+              delay: const Duration(milliseconds: 500),
             ),
           ),
           Observer(
@@ -32,27 +34,68 @@ class PomodorosDisplay extends StatelessWidget {
   }
 }
 
-class _PomodoroTile extends StatelessWidget {
+class _PomodoroTile extends StatefulWidget {
   final int pomodorosCount;
   final String label;
+  final Duration delay;
 
   _PomodoroTile({
     this.pomodorosCount,
     this.label,
+    this.delay = const Duration(milliseconds: 0),
   })  : assert(pomodorosCount != null),
         assert(label != null);
 
   @override
+  __PomodoroTileState createState() => __PomodoroTileState();
+}
+
+class __PomodoroTileState extends State<_PomodoroTile> {
+  var _isAnimationForward = false;
+  final _duration = const Duration(milliseconds: 500);
+
+  Future _animate() async {
+    await Future.delayed(widget.delay);
+    setState(() {
+      _isAnimationForward = true;
+    });
+    await Future.delayed(_duration);
+    setState(() {
+      _isAnimationForward = false;
+    });
+  }
+
+  @override
+  void didUpdateWidget(_PomodoroTile oldWidget) {
+    if (oldWidget.pomodorosCount != widget.pomodorosCount &&
+        oldWidget.pomodorosCount != 0) {
+      _animate();
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 125.0,
-      width: 125.0,
-      decoration: tileDecoration.copyWith(color: Colors.red[400]),
-      child: Stack(
-        children: <Widget>[
-          _PomodoroIcon(),
-          _TileInfo(label: label, pomodorosCount: pomodorosCount),
-        ],
+    return ControlledAnimation(
+      playback:
+          _isAnimationForward ? Playback.PLAY_FORWARD : Playback.PLAY_REVERSE,
+      tween: Tween(begin: 1.0, end: 1.1),
+      duration: _duration,
+      curve: Curves.elasticIn,
+      builder: (_, value) => Transform.scale(
+        scale: value,
+        child: Container(
+          height: 125.0,
+          width: 125.0,
+          decoration: tileDecoration.copyWith(color: Colors.red[400]),
+          child: Stack(
+            children: <Widget>[
+              _PomodoroIcon(),
+              _TileInfo(
+                  label: widget.label, pomodorosCount: widget.pomodorosCount),
+            ],
+          ),
+        ),
       ),
     );
   }
