@@ -164,6 +164,7 @@ abstract class _GoalStore with Store {
 
   void cleanTimer() {
     _tickerSubscription?.cancel();
+    _releaseWakeLock();
   }
 
   @action
