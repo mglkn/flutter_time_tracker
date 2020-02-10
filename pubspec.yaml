@@ -46,11 +46,20 @@ flutter:
     - family: FiraSans
       fonts:
         - asset: assets/fonts/Fira_Sans/FiraSans-Regular.ttf
-
-    - family: FiraSansCondensed
-      fonts:
-        - asset: assets/fonts/Fira_Sans_Condensed/FiraSansCondensed-Light.ttf
-        - asset: assets/fonts/Fira_Sans_Condensed/FiraSansCondensed-SemiBoldItalic.ttf
+        - asset: assets/fonts/Fira_Sans/FiraSans-Light.ttf
+        - asset: assets/fonts/Fira_Sans/FiraSans-LightItalic.ttf
+        - asset: assets/fonts/Fira_Sans/FiraSans-ExtraLight.ttf
+        - asset: assets/fonts/Fira_Sans/FiraSans-ExtraLightItalic.ttf
+        - asset: assets/fonts/Fira_Sans/FiraSans-Medium.ttf
+        - asset: assets/fonts/Fira_Sans/FiraSans-MediumItalic.ttf
+        - asset: assets/fonts/Fira_Sans/FiraSans-SemiBold.ttf
+        - asset: assets/fonts/Fira_Sans/FiraSans-SemiBoldItalic.ttf
+        - asset: assets/fonts/Fira_Sans/FiraSans-Black.ttf
+        - asset: assets/fonts/Fira_Sans/FiraSans-BlackItalic.ttf
+        - asset: assets/fonts/Fira_Sans/FiraSans-Bold.ttf
+        - asset: assets/fonts/Fira_Sans/FiraSans-BoldItalic.ttf
+        - asset: assets/fonts/Fira_Sans/FiraSans-Thin.ttf
+        - asset: assets/fonts/Fira_Sans/FiraSans-ThinItalic.ttf
           style: italic
     
     - family:  AppIcons
