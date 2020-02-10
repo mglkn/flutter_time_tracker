@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:simple_animations/simple_animations.dart';
 
 import '../../../../store/goal_store.dart';
 import '../../../../utils/app_localization.dart';
@@ -10,16 +11,43 @@ import '../../../../utils/theme.dart';
 const double timerSize = 220.0;
 
 class Timer extends StatelessWidget {
+  final tween = MultiTrackTween([
+    Track('color_main').add(
+      Duration(milliseconds: 300),
+      ColorTween(begin: Colors.red[300], end: Colors.green[300]),
+    ),
+    Track('color_dark').add(
+      Duration(milliseconds: 300),
+      ColorTween(begin: Colors.red[600], end: Colors.green[300]),
+    ),
+    Track('color_light').add(
+      Duration(milliseconds: 300),
+      ColorTween(begin: Colors.red[200], end: Colors.green[200]),
+    ),
+  ]);
+
   @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (_, GoalStore store, __) => GestureDetector(
         onTap: store.doTimerAction,
-        child: Stack(
-          children: <Widget>[
-            _Timer(),
-            _TimerDynamicBorder(),
-          ],
+        child: Observer(
+          builder: (_) => ControlledAnimation(
+            playback: store.timerStage == ETimerStage.WORK
+                ? Playback.PLAY_REVERSE
+                : Playback.PLAY_FORWARD,
+            duration: const Duration(milliseconds: 300),
+            tween: tween,
+            builder: (_, animation) => Stack(
+              children: <Widget>[
+                _Timer(animation['color_main']),
+                _TimerDynamicBorder(
+                  colorDark: animation['color_dark'],
+                  colorLight: animation['color_light'],
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -27,12 +55,9 @@ class Timer extends StatelessWidget {
 }
 
 class _Timer extends StatelessWidget {
-  Color _getColor({ETimerStage stage, int opacity}) {
-    if (stage == ETimerStage.WORK) {
-      return Colors.red[opacity];
-    }
-    return Colors.green[opacity];
-  }
+  final Color colorMain;
+
+  _Timer(this.colorMain);
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +67,7 @@ class _Timer extends StatelessWidget {
           height: timerSize,
           width: timerSize,
           decoration: tileDecoration.copyWith(
-            color: _getColor(
-              stage: store.timerStage,
-              opacity: 300,
-            ),
+            color: colorMain,
             borderRadius: BorderRadius.circular(timerSize / 2),
           ),
           child: Stack(
@@ -69,13 +91,6 @@ class _TimerStateAction extends StatelessWidget {
     return Icons.play_arrow;
   }
 
-  Color _getColor({ETimerStage stage, int opacity}) {
-    if (stage == ETimerStage.WORK) {
-      return Colors.red[opacity];
-    }
-    return Colors.green[opacity];
-  }
-
   @override
   Widget build(BuildContext context) {
     return Consumer(
@@ -86,7 +101,7 @@ class _TimerStateAction extends StatelessWidget {
           child: Observer(
             builder: (_) => Icon(
               _getIcon(store.timerState),
-              color: _getColor(stage: store.timerStage, opacity: 400),
+              color: Theme.of(context).backgroundColor,
               size: timerSize * 0.7,
             ),
           ),
@@ -115,10 +130,11 @@ class _TimerClock extends StatelessWidget {
             Observer(
               builder: (_) => Text(
                 store.time,
-                style: Theme.of(context)
-                    .textTheme
-                    .title
-                    .copyWith(color: Colors.white),
+                style: Theme.of(context).textTheme.title.copyWith(
+                      color: Colors.black,
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.w500,
+                    ),
               ),
             ),
             const SizedBox(height: 10.0),
@@ -127,7 +143,7 @@ class _TimerClock extends StatelessWidget {
                   .translate(_getStage(store.timerStage))
                   .toUpperCase(),
               style: Theme.of(context).textTheme.body1.copyWith(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 25.0,
                   ),
             )
@@ -139,12 +155,13 @@ class _TimerClock extends StatelessWidget {
 }
 
 class _TimerDynamicBorder extends StatelessWidget {
-  Color _getColor({ETimerStage stage, int opacity}) {
-    if (stage == ETimerStage.WORK) {
-      return Colors.red[opacity];
-    }
-    return Colors.green[opacity];
-  }
+  final Color colorDark;
+  final Color colorLight;
+
+  _TimerDynamicBorder({
+    this.colorLight,
+    this.colorDark,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -155,14 +172,8 @@ class _TimerDynamicBorder extends StatelessWidget {
         child: Observer(
           builder: (_) => CustomPaint(
             painter: _TimerPainter(
-              bgColor: _getColor(
-                stage: store.timerStage,
-                opacity: 600,
-              ),
-              color: _getColor(
-                stage: store.timerStage,
-                opacity: 200,
-              ),
+              bgColor: colorDark,
+              color: colorLight,
               tickTimer: store.ratioTime,
             ),
           ),
