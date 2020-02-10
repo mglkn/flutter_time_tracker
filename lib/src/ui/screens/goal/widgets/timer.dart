@@ -125,15 +125,15 @@ class _TimerClock extends StatelessWidget {
       builder: (_, GoalStore store, __) => Container(
         width: double.infinity,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Observer(
               builder: (_) => Text(
                 store.time,
                 style: Theme.of(context).textTheme.title.copyWith(
-                      color: Colors.black,
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).backgroundColor,
+                      fontSize: 34.0,
+                      fontWeight: FontWeight.w300,
                     ),
               ),
             ),
@@ -143,8 +143,8 @@ class _TimerClock extends StatelessWidget {
                   .translate(_getStage(store.timerStage))
                   .toUpperCase(),
               style: Theme.of(context).textTheme.body1.copyWith(
-                    color: Colors.black,
-                    fontSize: 25.0,
+                    color: Theme.of(context).backgroundColor,
+                    fontSize: 28.0,
                   ),
             )
           ],
