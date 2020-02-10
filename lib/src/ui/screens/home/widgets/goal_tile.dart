@@ -181,13 +181,15 @@ class _TileContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            label,
-            style: Theme.of(context).textTheme.title.copyWith(
-                  fontSize: 18.0,
-                  fontFamily: 'FiraSans',
-                  decoration: isDone ? TextDecoration.lineThrough : null,
-                ),
+          Hero(
+            tag: 'goal_title_$label',
+            child: Text(
+              label,
+              style: Theme.of(context).textTheme.title.copyWith(
+                    fontSize: 20.0,
+                    decoration: isDone ? TextDecoration.lineThrough : null,
+                  ),
+            ),
           ),
           SizedBox(height: 5.0),
           Wrap(
