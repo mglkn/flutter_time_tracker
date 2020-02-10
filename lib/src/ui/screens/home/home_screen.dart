@@ -13,6 +13,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  double pagePosition = 0.0;
+
   PageController _pageController = PageController(
     keepPage: true,
     initialPage: 0,
@@ -22,6 +24,13 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     _pageController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController
+        .addListener(() => setState(() => pagePosition = _pageController.page));
   }
 
   _onBottomNavTapped({int index, HomeStore store}) {
@@ -101,10 +110,10 @@ class _HomeScreenState extends State<HomeScreen> {
         AppLocalizations.of(context).translate("tags").toUpperCase();
 
     return AppBar(
-      title: Observer(
-        builder: (_) => AppBarTitle(
-          store.pageIndex == 0 ? titleGoals : titleTags,
-        ),
+      title: AppBarTitle(
+        titleGoals: titleGoals,
+        titleTags: titleTags,
+        pagePosition: pagePosition,
       ),
       actions: <Widget>[
         FilterPopupMenuButton(),

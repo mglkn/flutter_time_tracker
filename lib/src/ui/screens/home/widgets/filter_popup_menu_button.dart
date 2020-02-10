@@ -16,7 +16,7 @@ class FilterPopupMenuButton extends StatelessWidget {
     return Consumer(
       builder: (_, HomeStore store, __) => Observer(
         builder: (_) => store.pageIndex > 0
-            ? Container()
+            ? SizedBox(width: 50.0)
             : PopupMenuButton<EGoalStatus>(
                 onSelected: store.setGoalStatus,
                 icon: Icon(Icons.filter_list),
