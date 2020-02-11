@@ -77,6 +77,23 @@ mixin _$HomeStore on _HomeStore, Store {
     }, _$_pageIndexAtom, name: '${_$_pageIndexAtom.name}_set');
   }
 
+  final _$_dbErrorAtom = Atom(name: '_HomeStore._dbError');
+
+  @override
+  String get _dbError {
+    _$_dbErrorAtom.context.enforceReadPolicy(_$_dbErrorAtom);
+    _$_dbErrorAtom.reportObserved();
+    return super._dbError;
+  }
+
+  @override
+  set _dbError(String value) {
+    _$_dbErrorAtom.context.conditionallyRunInAction(() {
+      super._dbError = value;
+      _$_dbErrorAtom.reportChanged();
+    }, _$_dbErrorAtom, name: '${_$_dbErrorAtom.name}_set');
+  }
+
   final _$getGoalsAsyncAction = AsyncAction('getGoals');
 
   @override

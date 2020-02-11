@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../../store/goal_form_store.dart';
 import '../../../../data/dto.dart';
+import '../../../../utils/app_localization.dart';
 
 class TagSelector extends StatelessWidget {
   @override
@@ -11,6 +12,19 @@ class TagSelector extends StatelessWidget {
     return Consumer(
       builder: (_, GoalFormStore store, __) => Observer(
         builder: (_) {
+          if (store.dbError.length > 0) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  AppLocalizations.of(context).translate('dbError'),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 20.0),
+                Text(store.dbError),
+              ],
+            );
+          }
           return ListView.builder(
             padding: EdgeInsets.symmetric(horizontal: 5.0),
             itemCount: store.allTags.length,

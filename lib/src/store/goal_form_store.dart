@@ -27,7 +27,7 @@ abstract class _GoalFormStore with Store {
 
     repo.getTags().then(
           (result) => result.fold(
-            (error) => print(error),
+            (error) => _dbError = error.toString(),
             (tags) {
               _setTags(tags);
             },
@@ -44,6 +44,11 @@ abstract class _GoalFormStore with Store {
 
     _label = '';
   }
+
+  @observable
+  String _dbError = "";
+
+  String get dbError => _dbError;
 
   @action
   void _setTags(tags) {
@@ -109,14 +114,16 @@ abstract class _GoalFormStore with Store {
     }
 
     result.fold(
-      (error) => print(error.toString()),
-      (_) => print('created done'),
+      (error) => _dbError = error.toString(),
+      (_) async {
+        await homeStore.getGoals();
+        await homeStore.getTags();
+      },
     );
 
-    await homeStore.getGoals();
-    await homeStore.getTags();
+    await Future.delayed(const Duration(milliseconds: 100));
 
-    return true;
+    return _dbError.length > 0 ? false : true;
   }
 
   @action

@@ -54,9 +54,7 @@ class _DbDataRepository implements DbDataRepository {
   }
 
   @override
-  Future<Either<Object, GoalWithTagsAndPomodorosCount>> getGoal(
-    int goalId,
-  ) {
+  Future<Either<Object, GoalWithTagsAndPomodorosCount>> getGoal(int goalId) {
     return Task(() async {
       final goal = await _db.goalsDao.getOne(goalId);
 

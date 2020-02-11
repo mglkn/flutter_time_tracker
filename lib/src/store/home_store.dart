@@ -54,13 +54,17 @@ abstract class _HomeStore with Store {
   @action
   void setPageIndex(int newIndex) => _pageIndex = newIndex;
 
+  @observable
+  String _dbError = "";
+
+  String get dbError => _dbError;
+
   @action
   Future getGoals() async {
     final result = await _repo.getGoals(isGoalDone);
 
-    // TODO: error handle
     result.fold(
-      (error) => print(error),
+      (error) => _dbError = error.toString(),
       (goals) => _goals = ObservableList.of(goals),
     );
   }
@@ -69,9 +73,8 @@ abstract class _HomeStore with Store {
   Future getTags() async {
     final result = await _repo.getTags();
 
-    // TODO: error handle
     result.fold(
-      (error) => print(error),
+      (error) => _dbError = error.toString(),
       (tags) => _tags = ObservableList.of(tags),
     );
   }

@@ -21,6 +21,23 @@ mixin _$GoalFormStore on _GoalFormStore, Store {
   bool get isFormValid =>
       (_$isFormValidComputed ??= Computed<bool>(() => super.isFormValid)).value;
 
+  final _$_dbErrorAtom = Atom(name: '_GoalFormStore._dbError');
+
+  @override
+  String get _dbError {
+    _$_dbErrorAtom.context.enforceReadPolicy(_$_dbErrorAtom);
+    _$_dbErrorAtom.reportObserved();
+    return super._dbError;
+  }
+
+  @override
+  set _dbError(String value) {
+    _$_dbErrorAtom.context.conditionallyRunInAction(() {
+      super._dbError = value;
+      _$_dbErrorAtom.reportChanged();
+    }, _$_dbErrorAtom, name: '${_$_dbErrorAtom.name}_set');
+  }
+
   final _$_labelAtom = Atom(name: '_GoalFormStore._label');
 
   @override

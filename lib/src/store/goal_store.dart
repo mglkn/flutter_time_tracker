@@ -46,11 +46,16 @@ abstract class _GoalStore with Store {
 
     _db.getPomodorosByGoal(goal).then(
           (result) => result.fold(
-            (error) => print(error.toString()),
+            (error) => _dbError = error.toString(),
             _setPomodoros,
           ),
         );
   }
+
+  @observable
+  String _dbError = "";
+
+  String get dbError => _dbError;
 
   @action
   void _setPomodoros(List<Pomodoro> pomodoros) {
@@ -77,8 +82,10 @@ abstract class _GoalStore with Store {
 
   @action
   Future _addPomodoro() async {
-    (await _db.createPomodoro(_goal))
-        .fold((error) => print(error), (_) => print('pomodoro created'));
+    (await _db.createPomodoro(_goal)).fold(
+      (error) => _dbError = error.toString(),
+      (_) => print('pomodoro created'),
+    );
 
     _todayPomodorosCount++;
     _allPomodorosCount++;

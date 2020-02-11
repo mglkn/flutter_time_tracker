@@ -33,5 +33,6 @@
     "doEdit": "Edit",
     "doDone": "Done",
     "doResume": "Resume",
-    "doDelete": "Delete"
+    "doDelete": "Delete",
+    "dbError": "Error occured with db working. Try reload app."
 }

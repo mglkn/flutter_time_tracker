@@ -33,6 +33,11 @@ abstract class _TagFormStore with Store {
   }
 
   @observable
+  String _dbError = "";
+
+  String get dbError => _dbError;
+
+  @observable
   String _label;
 
   String get label => _label;
@@ -86,13 +91,13 @@ abstract class _TagFormStore with Store {
     }
 
     result.fold(
-      (error) => print(error.toString()),
-      (_) => print('created done'),
+      (error) => _dbError = error.toString(),
+      (_) async {
+        await homeStore.getTags();
+        await homeStore.getGoals();
+      },
     );
 
-    await homeStore.getTags();
-    await homeStore.getGoals();
-
-    return true;
+    return _dbError.length > 0 ? false : true;
   }
 }

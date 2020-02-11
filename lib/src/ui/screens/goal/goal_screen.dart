@@ -1,6 +1,7 @@
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../data/dto.dart';
 import '../../../data/db_repository.dart';
@@ -44,17 +45,36 @@ class _GoalScreen extends StatelessWidget {
           ),
           centerTitle: true,
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              const SizedBox(height: 20.0),
-              PomodorosDisplay(),
-              const SizedBox(height: 50.0),
-              Timer(),
-              const SizedBox(height: 20.0),
-            ],
-          ),
-        ),
+        body: Observer(builder: (_) {
+          if (store.dbError.length > 0) {
+            return Container(
+              width: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    AppLocalizations.of(context).translate('dbError'),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 20.0),
+                  Text(store.dbError),
+                ],
+              ),
+            );
+          }
+
+          return SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                const SizedBox(height: 20.0),
+                PomodorosDisplay(),
+                const SizedBox(height: 50.0),
+                Timer(),
+                const SizedBox(height: 20.0),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }

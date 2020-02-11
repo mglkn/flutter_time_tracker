@@ -9,6 +9,23 @@ part of 'goal_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$GoalStore on _GoalStore, Store {
+  final _$_dbErrorAtom = Atom(name: '_GoalStore._dbError');
+
+  @override
+  String get _dbError {
+    _$_dbErrorAtom.context.enforceReadPolicy(_$_dbErrorAtom);
+    _$_dbErrorAtom.reportObserved();
+    return super._dbError;
+  }
+
+  @override
+  set _dbError(String value) {
+    _$_dbErrorAtom.context.conditionallyRunInAction(() {
+      super._dbError = value;
+      _$_dbErrorAtom.reportChanged();
+    }, _$_dbErrorAtom, name: '${_$_dbErrorAtom.name}_set');
+  }
+
   final _$_todayPomodorosCountAtom =
       Atom(name: '_GoalStore._todayPomodorosCount');
 
