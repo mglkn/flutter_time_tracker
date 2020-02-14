@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../utils/constants.dart';
+
 class AppBarTitle extends StatelessWidget {
   final String titleGoals;
   final String titleTags;
@@ -20,6 +22,7 @@ class AppBarTitle extends StatelessWidget {
             alignment: Alignment(0, yPositionGoals),
             child: Text(
               titleGoals,
+              key: Key(Constants.titleGoals),
               style: Theme.of(context).textTheme.title.copyWith(
                     letterSpacing: 12.0,
                   ),
@@ -29,6 +32,7 @@ class AppBarTitle extends StatelessWidget {
             alignment: Alignment(0, yPositionTags),
             child: Text(
               titleTags,
+              key: Key(Constants.titleTags),
               style: Theme.of(context).textTheme.title.copyWith(
                     letterSpacing: 12.0,
                   ),
