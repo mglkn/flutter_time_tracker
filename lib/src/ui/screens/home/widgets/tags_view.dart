@@ -31,7 +31,7 @@ class TagsView extends StatelessWidget {
               AppLocalizations.of(context).translate('notags'),
               style: Theme.of(context)
                   .textTheme
-                  .body1
+                  .bodyText2
                   .copyWith(fontSize: 26.0, color: Colors.grey[500]),
             ),
           );

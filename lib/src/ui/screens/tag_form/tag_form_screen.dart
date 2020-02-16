@@ -74,7 +74,7 @@ class _AppBarTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: Theme.of(context).textTheme.title.copyWith(
+      style: Theme.of(context).textTheme.subtitle2.copyWith(
             letterSpacing: 10.0,
           ),
     );

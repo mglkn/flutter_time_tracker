@@ -36,7 +36,7 @@ class _GoalsViewState extends State<GoalsView> {
               AppLocalizations.of(context).translate('nogoals'),
               style: Theme.of(context)
                   .textTheme
-                  .body1
+                  .bodyText2
                   .copyWith(fontSize: 26.0, color: Colors.grey[500]),
             ),
           );

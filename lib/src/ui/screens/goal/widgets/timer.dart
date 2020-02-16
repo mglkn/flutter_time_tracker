@@ -130,7 +130,7 @@ class _TimerClock extends StatelessWidget {
             Observer(
               builder: (_) => Text(
                 store.time,
-                style: Theme.of(context).textTheme.title.copyWith(
+                style: Theme.of(context).textTheme.headline6.copyWith(
                       color: Theme.of(context).backgroundColor,
                       fontSize: 34.0,
                       fontWeight: FontWeight.w300,
@@ -142,7 +142,7 @@ class _TimerClock extends StatelessWidget {
               AppLocalizations.of(context)
                   .translate(_getStage(store.timerStage))
                   .toUpperCase(),
-              style: Theme.of(context).textTheme.body1.copyWith(
+              style: Theme.of(context).textTheme.bodyText2.copyWith(
                     color: Theme.of(context).backgroundColor,
                     fontSize: 28.0,
                   ),

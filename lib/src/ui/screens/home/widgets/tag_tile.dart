@@ -31,7 +31,7 @@ class TagTile extends StatelessWidget {
             _PomodorosCount(tag),
             Text(
               tag.tag.label,
-              style: Theme.of(context).textTheme.title.copyWith(
+              style: Theme.of(context).textTheme.subtitle2.copyWith(
                     fontSize: 18.0,
                     color: Colors.white,
                   ),
@@ -114,7 +114,7 @@ class _PomodorosCount extends StatelessWidget {
           Center(
             child: Text(
               tag.pomodorosCount.toString(),
-              style: Theme.of(context).textTheme.subtitle.copyWith(
+              style: Theme.of(context).textTheme.subtitle2.copyWith(
                 shadows: [
                   BoxShadow(
                     color: Colors.grey[400],
