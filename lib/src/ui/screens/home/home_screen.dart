@@ -6,6 +6,7 @@ import '../../../utils/app_localization.dart';
 import '../../../store/home_store.dart';
 import '../../../routes/router.gr.dart';
 import 'widgets/widgets.dart';
+import '../../../utils/constant_keys.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -48,7 +49,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }) {
     return BottomNavigationBarItem(
       icon: Icon(icon),
-      title: Text(title),
+      title: Text(
+        title,
+        key: Key('${ConstantKeys.bottomBarItemTitle}$title'.toLowerCase()),
+      ),
     );
   }
 

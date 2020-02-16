@@ -5,7 +5,7 @@ import 'package:mockito/mockito.dart';
 
 import 'package:time_tracker/src/ui/screens/home/home_screen.dart';
 import 'package:time_tracker/src/store/home_store.dart';
-import 'package:time_tracker/src/utils/constants.dart';
+import 'package:time_tracker/src/utils/constant_keys.dart';
 import 'package:time_tracker/src/data/dto.dart';
 import 'package:time_tracker/src/data/db.dart';
 
@@ -26,8 +26,8 @@ main() {
     await tester.pumpWidget(await wrapMaterialApp(homeScreen));
     await tester.pump();
 
-    final titleGoals = find.byKey(Key(Constants.titleGoals));
-    final titleTags = find.byKey(Key(Constants.titleTags));
+    final titleGoals = find.byKey(Key(ConstantKeys.titleGoals));
+    final titleTags = find.byKey(Key(ConstantKeys.titleTags));
 
     expect(titleGoals, findsNWidgets(1));
     expect(titleTags, findsNWidgets(1));
@@ -63,5 +63,50 @@ main() {
 
     verify(repo.getGoals(false)).called(1);
     expect(goalTileTitle, findsOneWidget);
+  });
+
+  testWidgets('HomeScreen should show tags when tap TAGS button',
+      (WidgetTester tester) async {
+    final tag1 = TagWithPomodorosCount(
+      tag: Tag(
+        id: 0,
+        color: 0xff000000,
+        label: 'tag1',
+        date: DateTime.now(),
+      ),
+      pomodorosCount: 0,
+    );
+
+    final tag2 = TagWithPomodorosCount(
+      tag: Tag(
+        id: 0,
+        color: 0xff000000,
+        label: 'tag2',
+        date: DateTime.now(),
+      ),
+      pomodorosCount: 0,
+    );
+
+    final tags = [tag1, tag2];
+
+    final repo = getDBRepoWithGoalsAndTagsMocked(tags: tags);
+    final homeStore = HomeStore(repo: repo);
+
+    final homeScreen = Provider<HomeStore>(
+      create: (_) => homeStore,
+      child: HomeScreen(),
+    );
+
+    await tester.pumpWidget(await wrapMaterialApp(homeScreen));
+    await tester.pump();
+    await tester.tap(find.byKey(Key('${ConstantKeys.bottomBarItemTitle}tags')));
+    await tester.pumpAndSettle();
+
+    final tag1Title = find.text('tag1');
+    final tag2Title = find.text('tag2');
+
+    verify(repo.getTags()).called(1);
+    expect(tag1Title, findsOneWidget);
+    expect(tag2Title, findsOneWidget);
   });
 }
