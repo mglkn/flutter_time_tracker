@@ -13,15 +13,16 @@ class App extends StatelessWidget {
 
       // Localization
       supportedLocales: [
-        Locale("en", "EN"),
-        Locale("ru", "RU"),
+        Locale("en"),
+        Locale("ru"),
       ],
       localizationsDelegates: [
         AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
+        // GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      localeResolutionCallback: (locale, supportedLocales) {
+      localeResolutionCallback:
+          (Locale locale, Iterable<Locale> supportedLocales) {
         for (var supportedLocale in supportedLocales) {
           if (supportedLocale.languageCode == locale.languageCode &&
               supportedLocale.countryCode == locale.countryCode) {

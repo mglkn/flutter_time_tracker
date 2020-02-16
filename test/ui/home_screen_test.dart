@@ -8,7 +8,6 @@ import 'package:time_tracker/src/store/home_store.dart';
 import 'package:time_tracker/src/utils/constants.dart';
 import 'package:time_tracker/src/data/dto.dart';
 import 'package:time_tracker/src/data/db.dart';
-// import 'home_screen.dart';
 
 import './home_screen_helpers.dart';
 import '../helpers/mocks.dart';
@@ -24,7 +23,7 @@ main() {
       child: HomeScreen(),
     );
 
-    await tester.pumpWidget(wrapMaterialApp(homeScreen));
+    await tester.pumpWidget(await wrapMaterialApp(homeScreen));
     await tester.pump();
 
     final titleGoals = find.byKey(Key(Constants.titleGoals));
@@ -32,39 +31,7 @@ main() {
 
     expect(titleGoals, findsNWidgets(1));
     expect(titleTags, findsNWidgets(1));
-  }, skip: true);
-
-  testWidgets('some', (WidgetTester tester) async {
-    final goal = GoalWithTagsAndPomodorosCount(
-      goal: Goal(
-        id: 0,
-        label: 'goal_title',
-        isDone: false,
-        date: DateTime.now(),
-      ),
-      tags: [],
-      pomodorosCount: 0,
-    );
-
-    final goals = [goal];
-
-    final repo = getDBRepoWithGoalsAndTagsMocked(goals: goals);
-
-    final homeStore = HomeStore(repo: repo);
-
-    final homeScreen = Provider<HomeStore>(
-      create: (_) => homeStore,
-      child: HomeScreen(),
-    );
-
-    final widget = wrapMaterialApp(homeScreen);
-
-    await tester.pumpWidget(widget);
-    await tester.pump();
-
-    verify(repo.getGoals(false)).called(1);
-    expect(true, true);
-  });
+  }, skip: false);
 
   testWidgets('HomeScreen should show goals', (WidgetTester tester) async {
     final goal = GoalWithTagsAndPomodorosCount(
@@ -89,13 +56,10 @@ main() {
       child: HomeScreen(),
     );
 
-    final widget = wrapMaterialApp(homeScreen);
-
-    await tester.pumpWidget(widget);
+    await tester.pumpWidget(await wrapMaterialApp(homeScreen));
     await tester.pump();
 
     final goalTileTitle = find.text('goal_title');
-    // print(goalTileTitle);
 
     verify(repo.getGoals(false)).called(1);
     expect(goalTileTitle, findsOneWidget);

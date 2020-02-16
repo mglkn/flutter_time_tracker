@@ -15,9 +15,14 @@ class AppLocalizations {
   static const LocalizationsDelegate<AppLocalizations> delegate =
       _AppLocalizationsDelegate();
 
+  static LocalizationsDelegate<AppLocalizations> delegateTest(
+      Map<String, String> localizedStrings) {
+    return _AppLocalizationsDelegate(testData: localizedStrings);
+  }
+
   Map<String, String> _localizedStrings;
 
-  Future<bool> load() async {
+  Future load() async {
     String jsonString =
         await rootBundle.loadString("lang/${locale.languageCode}.json");
 
@@ -29,22 +34,32 @@ class AppLocalizations {
     return true;
   }
 
+  loadTest(localizedStrings) {
+    _localizedStrings = localizedStrings;
+  }
+
   String translate(String key) => _localizedStrings[key];
 }
 
 class _AppLocalizationsDelegate
     extends LocalizationsDelegate<AppLocalizations> {
-  const _AppLocalizationsDelegate();
+  final Map<String, String> testData;
+
+  const _AppLocalizationsDelegate({this.testData});
 
   @override
   bool isSupported(Locale locale) {
-    return ["en", "ru"].contains(locale.languageCode);
+    return ["en"].contains(locale.languageCode);
   }
 
   @override
   Future<AppLocalizations> load(Locale locale) async {
     AppLocalizations appLocalization = new AppLocalizations(locale);
-    await appLocalization.load();
+    if (testData != null) {
+      appLocalization.loadTest(testData);
+    } else {
+      await appLocalization.load();
+    }
     return appLocalization;
   }
 

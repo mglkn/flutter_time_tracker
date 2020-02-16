@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter/services.dart';
+import 'dart:convert';
 
-import 'package:time_tracker/src/data/db_repository.dart';
-import 'package:time_tracker/src/data/dto.dart';
-import 'package:time_tracker/src/data/db.dart';
 import 'package:time_tracker/src/store/home_store.dart';
 import 'package:time_tracker/src/utils/app_localization.dart';
 
@@ -17,28 +14,28 @@ HomeStore getHomeStoreMock() {
   return HomeStore(repo: repo);
 }
 
-Widget wrapMaterialApp(Widget child) {
-  return MaterialApp(
-    // Localization
-    supportedLocales: [
-      Locale("en", "EN"),
-      Locale("ru", "RU"),
-    ],
-    localizationsDelegates: [
-      AppLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-    ],
-    localeResolutionCallback: (locale, supportedLocales) {
-      for (var supportedLocale in supportedLocales) {
-        if (supportedLocale.languageCode == locale.languageCode &&
-            supportedLocale.countryCode == locale.countryCode) {
-          return supportedLocale;
-        }
-      }
-      return supportedLocales.first;
-    },
+var _localizedStringsCache;
+Future<Map<String, String>> _getLocalizedStrings() async {
+  if (_localizedStringsCache != null) {
+    return _localizedStringsCache;
+  }
+  final String jsonString = await rootBundle.loadString("lang/en.json");
+  final Map<String, dynamic> jsonMap = json.decode(jsonString);
+  _localizedStringsCache =
+      jsonMap.map((key, value) => MapEntry(key, value.toString()));
+  return _localizedStringsCache;
+}
 
-    home: child,
+Future<Widget> wrapMaterialApp(Widget child) async {
+  return MediaQuery(
+    data: MediaQueryData(),
+    child: MaterialApp(
+      localizationsDelegates: [
+        AppLocalizations.delegateTest(await _getLocalizedStrings()),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      home: child,
+    ),
   );
 }
