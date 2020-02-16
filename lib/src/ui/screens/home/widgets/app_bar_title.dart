@@ -16,29 +16,32 @@ class AppBarTitle extends StatelessWidget {
 
     return Container(
       height: 60.0,
-      child: Stack(
-        children: <Widget>[
-          Align(
-            alignment: Alignment(0, yPositionGoals),
-            child: Text(
-              titleGoals,
-              key: Key(ConstantKeys.titleGoals),
-              style: Theme.of(context).textTheme.headline6.copyWith(
-                    letterSpacing: 12.0,
-                  ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 15.0), // align title by center;
+        child: Stack(
+          children: <Widget>[
+            Align(
+              alignment: Alignment(0, yPositionGoals),
+              child: Text(
+                titleGoals,
+                key: Key(ConstantKeys.titleGoals),
+                style: Theme.of(context).textTheme.headline6.copyWith(
+                      letterSpacing: 12.0,
+                    ),
+              ),
             ),
-          ),
-          Align(
-            alignment: Alignment(0, yPositionTags),
-            child: Text(
-              titleTags,
-              key: Key(ConstantKeys.titleTags),
-              style: Theme.of(context).textTheme.headline6.copyWith(
-                    letterSpacing: 12.0,
-                  ),
+            Align(
+              alignment: Alignment(0, yPositionTags),
+              child: Text(
+                titleTags,
+                key: Key(ConstantKeys.titleTags),
+                style: Theme.of(context).textTheme.headline6.copyWith(
+                      letterSpacing: 12.0,
+                    ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
