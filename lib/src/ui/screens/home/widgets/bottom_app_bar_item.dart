@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_animations/simple_animations.dart';
 
 import '../../../../store/home_store.dart';
 import '../../../../utils/constant_keys.dart';
@@ -24,29 +25,51 @@ class BottomAppBarItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final HomeStore store = Provider.of<HomeStore>(context, listen: false);
     final isSelected = store.pageIndex == index;
-    final Color color =
-        isSelected ? Theme.of(context).accentColor : Colors.grey[600];
+    final accentColor = Theme.of(context).accentColor;
+    final Color color = isSelected ? accentColor : Colors.grey[600];
+
+    final tween = MultiTrackTween([
+      Track('color').add(
+        const Duration(milliseconds: 300),
+        ColorTween(begin: accentColor, end: Colors.grey[600]),
+      ),
+      Track('scale').add(
+        const Duration(milliseconds: 300),
+        Tween(begin: .8, end: 1.0),
+      ),
+    ]);
 
     return GestureDetector(
       onTap: () => selectCallback(index: index, store: store),
-      child: Container(
-        key: Key('${ConstantKeys.bottomBarItem}$title'.toLowerCase()),
-        height: 60.0,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Icon(
-              iconData,
-              color: color,
+      child: ControlledAnimation(
+        curve: Curves.easeIn,
+        duration: Duration(milliseconds: 300),
+        playback: isSelected ? Playback.PLAY_FORWARD : Playback.PLAY_REVERSE,
+        tween: tween,
+        builder: (_, animations) => Transform.scale(
+          scale: animations['scale'],
+          child: Container(
+            key: Key('${ConstantKeys.bottomBarItem}$title'.toLowerCase()),
+            height: 60.0,
+            width: 80.0,
+            color: Theme.of(context).backgroundColor,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Icon(
+                  iconData,
+                  color: color,
+                ),
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: color,
+                  ),
+                ),
+              ],
             ),
-            Text(
-              title,
-              style: TextStyle(
-                color: color,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
