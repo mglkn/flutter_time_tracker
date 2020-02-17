@@ -10,22 +10,21 @@ part 'goal_form_store.g.dart';
 class GoalFormStore = _GoalFormStore with _$GoalFormStore;
 
 abstract class _GoalFormStore with Store {
+  final DbDataRepository _repo;
   HomeStore homeStore;
-  DbDataRepository repo;
   GoalWithTagsAndPomodorosCount goal;
   Validator validator;
 
   _GoalFormStore({
     this.homeStore,
-    this.repo,
     this.goal,
     this.validator,
-  }) {
+    DbDataRepository repo,
+  }) : _repo = repo ?? DbDataRepository.db() {
     assert(homeStore != null);
-    assert(repo != null);
     assert(validator != null);
 
-    repo.getTags().then(
+    _repo.getTags().then(
           (result) => result.fold(
             (error) => _dbError = error.toString(),
             (tags) {
@@ -102,12 +101,12 @@ abstract class _GoalFormStore with Store {
     var result;
     if (goal != null) {
       final updatedGoal = goal.goal.copyWith(label: label);
-      result = await repo.updateGoal(
+      result = await _repo.updateGoal(
         goal: updatedGoal,
         tags: selectedTags.map((t) => t.tag).toList(),
       );
     } else {
-      result = await repo.createGoal(
+      result = await _repo.createGoal(
         label: label,
         tags: selectedTags.map((t) => t.tag).toList(),
       );

@@ -37,7 +37,6 @@ class GoalFormScreen extends StatelessWidget {
     final HomeStore homeStore = Provider.of<HomeStore>(context, listen: false);
     final goalFormStore = GoalFormStore(
       homeStore: homeStore,
-      repo: DbDataRepository.db(),
       goal: goal,
       validator: Validator.instance(
         db: DbDataRepository.db(),

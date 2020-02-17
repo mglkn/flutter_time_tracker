@@ -18,7 +18,6 @@ class GoalScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Provider(
       create: (_) => GoalStore(
-        db: DbDataRepository.db(),
         goal: goal.goal,
       ),
       child: _EscapePreventerWrapper(

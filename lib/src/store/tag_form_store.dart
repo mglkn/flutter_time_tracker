@@ -10,18 +10,19 @@ part 'tag_form_store.g.dart';
 class TagFormStore = _TagFormStore with _$TagFormStore;
 
 abstract class _TagFormStore with Store {
-  HomeStore homeStore;
-  DbDataRepository repo;
-  Tag tag;
-  Validator validator;
+  final DbDataRepository _repo;
+
+  final HomeStore homeStore;
+  final Tag tag;
+  final Validator validator;
 
   _TagFormStore({
     this.homeStore,
-    this.repo,
     this.tag,
     this.validator,
-  })  : assert(homeStore != null),
-        assert(repo != null),
+    DbDataRepository repo,
+  })  : _repo = repo ?? DbDataRepository.db(),
+        assert(homeStore != null),
         assert(validator != null) {
     if (tag != null) {
       _label = tag.label;
@@ -83,9 +84,9 @@ abstract class _TagFormStore with Store {
     var result;
     if (tag != null) {
       final changedTag = tag.copyWith(label: label, color: color);
-      result = await repo.updateTag(changedTag);
+      result = await _repo.updateTag(changedTag);
     } else {
-      result = await repo.createTag(
+      result = await _repo.createTag(
         Tag(label: label, color: color),
       );
     }

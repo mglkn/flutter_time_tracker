@@ -37,7 +37,6 @@ class TagFormScreen extends StatelessWidget {
     final HomeStore homeStore = Provider.of<HomeStore>(context, listen: false);
     final tagFormStore = TagFormStore(
       homeStore: homeStore,
-      repo: DbDataRepository.db(),
       tag: tag?.tag,
       validator: Validator.instance(
         db: DbDataRepository.db(),

@@ -15,9 +15,7 @@ enum EGoalStatus {
 abstract class _HomeStore with Store {
   final DbDataRepository _repo;
 
-  _HomeStore({DbDataRepository repo})
-      : _repo = repo,
-        assert(repo != null) {
+  _HomeStore({DbDataRepository repo}) : _repo = repo ?? DbDataRepository.db() {
     getGoals();
     getTags();
   }

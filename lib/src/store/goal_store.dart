@@ -36,13 +36,12 @@ abstract class _GoalStore with Store {
 
   _GoalStore({
     @required Goal goal,
-    @required DbDataRepository db,
+    DbDataRepository db,
   }) {
     assert(goal != null);
-    assert(db != null);
 
     _goal = goal;
-    _db = db;
+    _db = db ?? DbDataRepository.db();
 
     _db.getPomodorosByGoal(goal).then(
           (result) => result.fold(
