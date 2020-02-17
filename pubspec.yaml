@@ -61,7 +61,6 @@ flutter:
         - asset: assets/fonts/Fira_Sans/FiraSans-BoldItalic.ttf
         - asset: assets/fonts/Fira_Sans/FiraSans-Thin.ttf
         - asset: assets/fonts/Fira_Sans/FiraSans-ThinItalic.ttf
-          style: italic
     
     - family:  AppIcons
       fonts:
