@@ -6,7 +6,6 @@ import '../../../utils/app_localization.dart';
 import '../../../store/home_store.dart';
 import '../../../routes/router.gr.dart';
 import 'widgets/widgets.dart';
-import '../../../utils/constant_keys.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -40,19 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
       index,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
-    );
-  }
-
-  BottomNavigationBarItem _buildBottomNavBar({
-    String title,
-    IconData icon,
-  }) {
-    return BottomNavigationBarItem(
-      icon: Icon(icon),
-      title: Text(
-        title,
-        key: Key('${ConstantKeys.bottomBarItemTitle}$title'.toLowerCase()),
-      ),
     );
   }
 
@@ -132,19 +118,25 @@ class _HomeScreenState extends State<HomeScreen> {
     final String titleTags =
         AppLocalizations.of(context).translate("tags").toUpperCase();
 
-    return Observer(
-      builder: (_) => BottomNavigationBar(
-        backgroundColor: Theme.of(context).backgroundColor,
-        currentIndex: store.pageIndex,
-        onTap: (index) => _onBottomNavTapped(
-          index: index,
-          store: store,
-        ),
-        elevation: 4.0,
-        iconSize: 26.0,
-        items: [
-          _buildBottomNavBar(title: titleGoals, icon: Icons.gps_fixed),
-          _buildBottomNavBar(title: titleTags, icon: Icons.local_offer),
+    return BottomAppBar(
+      shape: CircularNotchedRectangle(),
+      color: Theme.of(context).backgroundColor,
+      elevation: 20.0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          BottomAppBarItem(
+            iconData: Icons.gps_fixed,
+            title: titleGoals,
+            selectCallback: _onBottomNavTapped,
+            index: 0,
+          ),
+          BottomAppBarItem(
+            iconData: Icons.local_offer,
+            title: titleTags,
+            selectCallback: _onBottomNavTapped,
+            index: 1,
+          ),
         ],
       ),
     );

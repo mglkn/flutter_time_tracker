@@ -99,7 +99,7 @@ main() {
 
     await tester.pumpWidget(await wrapMaterialApp(homeScreen));
     await tester.pump();
-    await tester.tap(find.byKey(Key('${ConstantKeys.bottomBarItemTitle}tags')));
+    await tester.tap(find.byKey(Key('${ConstantKeys.bottomBarItem}tags')));
     await tester.pumpAndSettle();
 
     final tag1Title = find.text('tag1');
