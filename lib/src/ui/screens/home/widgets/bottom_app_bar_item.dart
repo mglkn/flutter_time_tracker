@@ -53,25 +53,45 @@ class BottomAppBarItem extends StatelessWidget {
             height: 60.0,
             width: 80.0,
             color: Theme.of(context).backgroundColor,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Icon(
-                  iconData,
-                  color: color,
-                ),
-                Text(
-                  title,
-                  style: TextStyle(
-                    color: color,
-                  ),
-                ),
-              ],
+            child: _BottomAppBarItemData(
+              color: color,
+              iconData: iconData,
+              title: title,
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class _BottomAppBarItemData extends StatelessWidget {
+  final IconData iconData;
+  final String title;
+  final Color color;
+
+  _BottomAppBarItemData({this.iconData, this.title, this.color})
+      : assert(iconData != null),
+        assert(title != null),
+        assert(color != null);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        Icon(
+          iconData,
+          color: color,
+        ),
+        Text(
+          title,
+          style: TextStyle(
+            color: color,
+          ),
+        ),
+      ],
     );
   }
 }
