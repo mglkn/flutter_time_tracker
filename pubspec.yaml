@@ -33,7 +33,12 @@ dev_dependencies:
   moor_generator: ^2.2.0
   mobx_codegen: ^0.4.1
   mockito: ^4.1.1
+  flutter_launcher_icons: ^0.7.4
 
+flutter_icons:
+  android: "launcher_icon" 
+  ios: true
+  image_path: "assets/icon.png"
 
 flutter:
   uses-material-design: true
