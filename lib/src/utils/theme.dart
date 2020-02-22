@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const int mainColor = 0xFFc62dba;
+const int mainColor = 0xFFdb2592; //c62dba;
 const int backgroundColor = 0xFFE0E0E0;
 const int mainFontColor = 0xFF424242;
 
