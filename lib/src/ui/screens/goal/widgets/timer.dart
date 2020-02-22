@@ -101,7 +101,7 @@ class _TimerStateAction extends StatelessWidget {
           child: Observer(
             builder: (_) => Icon(
               _getIcon(store.timerState),
-              color: Theme.of(context).backgroundColor,
+              color: Colors.white,
               size: timerSize * 0.7,
             ),
           ),
@@ -131,7 +131,7 @@ class _TimerClock extends StatelessWidget {
               builder: (_) => Text(
                 store.time,
                 style: Theme.of(context).textTheme.headline6.copyWith(
-                      color: Theme.of(context).backgroundColor,
+                      color: Colors.white,
                       fontSize: 34.0,
                       fontWeight: FontWeight.w300,
                     ),
@@ -143,7 +143,7 @@ class _TimerClock extends StatelessWidget {
                   .translate(_getStage(store.timerStage))
                   .toUpperCase(),
               style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    color: Theme.of(context).backgroundColor,
+                    color: Colors.white,
                     fontSize: 28.0,
                   ),
             )
