@@ -235,6 +235,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.6"
+  flutter_modular:
+    dependency: "direct main"
+    description:
+      name: flutter_modular
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.2"
   flutter_slidable:
     dependency: "direct main"
     description:

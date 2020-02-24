@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../data/dto.dart';
 import '../../../../routes/router.gr.dart';
@@ -57,36 +57,35 @@ class _SlidableWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final edit = AppLocalizations.of(context).translate('doEdit');
     final delete = AppLocalizations.of(context).translate('doDelete');
+    final HomeStore store = Modular.get<HomeStore>();
 
-    return Consumer(
-      builder: (_, HomeStore store, __) => Slidable(
-        actionPane: SlidableBehindActionPane(),
-        actionExtentRatio: 0.2,
-        actions: <Widget>[
-          IconSlideAction(
-            caption: edit,
-            color: Colors.transparent,
-            foregroundColor: Colors.black,
-            icon: Icons.edit,
-            onTap: () {
-              AppRouter.navigator
-                  .pushNamed(AppRouter.tagFormScreen, arguments: tag);
-            },
-          ),
-        ],
-        secondaryActions: <Widget>[
-          IconSlideAction(
-            caption: delete,
-            color: Colors.transparent,
-            foregroundColor: Colors.black,
-            icon: Icons.remove_circle_outline,
-            onTap: () {
-              store.deleteTag(tag);
-            },
-          ),
-        ],
-        child: child,
-      ),
+    return Slidable(
+      actionPane: SlidableBehindActionPane(),
+      actionExtentRatio: 0.2,
+      actions: <Widget>[
+        IconSlideAction(
+          caption: edit,
+          color: Colors.transparent,
+          foregroundColor: Colors.black,
+          icon: Icons.edit,
+          onTap: () {
+            AppRouter.navigator
+                .pushNamed(AppRouter.tagFormScreen, arguments: tag);
+          },
+        ),
+      ],
+      secondaryActions: <Widget>[
+        IconSlideAction(
+          caption: delete,
+          color: Colors.transparent,
+          foregroundColor: Colors.black,
+          icon: Icons.remove_circle_outline,
+          onTap: () {
+            store.deleteTag(tag);
+          },
+        ),
+      ],
+      child: child,
     );
   }
 }

@@ -1,9 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import './routes/router.gr.dart';
 import './utils/app_localization.dart';
 import './utils/theme.dart';
+import 'ui/screens/screens.dart';
+import 'store/home_store.dart';
+
+import 'package:flutter_modular/flutter_modular.dart';
+
+class AppModule extends MainModule {
+  @override
+  List<Bind> get binds => [
+        Bind((i) => HomeStore()),
+      ];
+
+  @override
+  List<Router> get routers => [
+        Router('/', child: (_, __) => HomeScreen()),
+        Router('/goal', child: (_, __) => PlaceHolder()),
+        Router('/goalForm', child: (_, __) => PlaceHolder()),
+        Router('/tagForm', child: (_, __) => PlaceHolder()),
+      ];
+
+  @override
+  Widget get bootstrap => App();
+}
 
 class App extends StatelessWidget {
   @override
@@ -32,13 +53,23 @@ class App extends StatelessWidget {
         return supportedLocales.first;
       },
 
-      // Routes
-      onGenerateRoute: AppRouter.onGenerateRoute,
-      initialRoute: AppRouter.homeScreen,
-      navigatorKey: AppRouter.navigatorKey,
-
       // Theme
       theme: getGolbalTheme(context),
+
+      // Routes
+      initialRoute: '/',
+      onGenerateRoute: Modular.generateRoute,
+    );
+  }
+}
+
+class PlaceHolder extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text('hello there'),
+      ),
     );
   }
 }
