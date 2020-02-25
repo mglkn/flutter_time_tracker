@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:time_tracker/src/utils/app_localization.dart';
 
 import 'home_store.dart';
 import '../data/db_repository.dart';
@@ -13,16 +14,23 @@ abstract class _GoalFormStore with Store {
   final DbDataRepository _repo;
   HomeStore homeStore;
   GoalWithTagsAndPomodorosCount goal;
+
   Validator validator;
 
   _GoalFormStore({
     this.homeStore,
     this.goal,
-    this.validator,
     DbDataRepository repo,
-  }) : _repo = repo ?? DbDataRepository.db() {
-    assert(homeStore != null);
-    assert(validator != null);
+  })  : _repo = repo ?? DbDataRepository.db(),
+        assert(homeStore != null);
+
+  init({
+    AppLocalizations locale,
+    Validator customValidator,
+    GoalWithTagsAndPomodorosCount goal,
+  }) {
+    validator =
+        validator ?? customValidator ?? Validator.instance(locale: locale);
 
     _repo.getTags().then(
           (result) => result.fold(
@@ -33,13 +41,13 @@ abstract class _GoalFormStore with Store {
           ),
         );
 
-    if (goal != null) {
-      _label = goal.goal.label;
-      _selectedTags = ObservableList.of(
-        goal.tags.map((t) => TagWithPomodorosCount(tag: t, pomodorosCount: 0)),
-      );
-      return;
-    }
+    // if (goal != null) {
+    //   _label = goal.goal.label;
+    //   _selectedTags = ObservableList.of(
+    //     goal.tags.map((t) => TagWithPomodorosCount(tag: t, pomodorosCount: 0)),
+    //   );
+    //   return;
+    // }
 
     _label = '';
   }

@@ -50,8 +50,9 @@ class _HomeScreenState extends State<HomeScreen> {
       elevation: 1.0,
       onPressed: () async {
         if (store.pageIndex == 0) {
-          await AppRouter.navigator
-              .pushNamed(AppRouter.goalFormScreen, arguments: null);
+          // await AppRouter.navigator
+          //     .pushNamed(AppRouter.goalFormScreen, arguments: null);
+          await Modular.to.pushNamed('/goalForm', arguments: null);
           store.setGoalStatus(EGoalStatus.ONGOING);
           return;
         }

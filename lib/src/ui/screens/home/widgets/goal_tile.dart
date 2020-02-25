@@ -27,8 +27,7 @@ class GoalTile extends StatelessWidget {
   GoalTile(this.goal);
 
   Future _navigateToGoal(BuildContext context) async {
-    await AppRouter.navigator
-        .pushNamed(AppRouter.goalScreen, arguments: this.goal);
+    await Modular.to.pushNamed('/goal', arguments: goal);
 
     final HomeStore store = Modular.get<HomeStore>();
     await store.getGoals();

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../../utils/app_localization.dart';
@@ -15,7 +15,7 @@ class _InputGoalLabelState extends State<InputGoalLabel> {
   TextEditingController _controller;
   Timer _debounce;
 
-  GoalFormStore _store;
+  final GoalFormStore _store = Modular.get<GoalFormStore>();
 
   _onFieldChanged() {
     if (_debounce?.isActive ?? false) _debounce.cancel();
@@ -29,11 +29,10 @@ class _InputGoalLabelState extends State<InputGoalLabel> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _store = Provider.of<GoalFormStore>(context);
+  void initState() {
     _controller = TextEditingController(text: _store.label);
     _controller.addListener(_onFieldChanged);
+    super.initState();
   }
 
   @override
