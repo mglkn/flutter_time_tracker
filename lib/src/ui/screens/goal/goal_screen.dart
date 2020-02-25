@@ -1,10 +1,9 @@
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../data/dto.dart';
-import '../../../data/db_repository.dart';
 import '../../../store/goal_store.dart';
 import '../../../utils/app_localization.dart';
 import 'widgets/widgets.dart';
@@ -12,17 +11,15 @@ import 'widgets/widgets.dart';
 class GoalScreen extends StatelessWidget {
   final GoalWithTagsAndPomodorosCount goal;
 
-  GoalScreen({@required this.goal}) : assert(goal != null);
+  GoalScreen({@required this.goal}) {
+    assert(goal != null);
+    Modular.get<GoalStore>().init(goal.goal);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Provider(
-      create: (_) => GoalStore(
-        goal: goal.goal,
-      ),
-      child: _EscapePreventerWrapper(
-        child: _GoalScreen(),
-      ),
+    return _EscapePreventerWrapper(
+      child: _GoalScreen(),
     );
   }
 }
@@ -30,51 +27,50 @@ class GoalScreen extends StatelessWidget {
 class _GoalScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (_, GoalStore store, __) => Scaffold(
-        appBar: AppBar(
-          title: Hero(
-            tag: 'goal_title_${store.label}',
-            child: Text(
-              store.label,
-              style: Theme.of(context).textTheme.headline6.copyWith(
-                    fontSize: 20.0,
-                  ),
-            ),
+    final GoalStore store = Modular.get<GoalStore>();
+    return Scaffold(
+      appBar: AppBar(
+        title: Hero(
+          tag: 'goal_title_${store.label}',
+          child: Text(
+            store.label,
+            style: Theme.of(context).textTheme.headline6.copyWith(
+                  fontSize: 20.0,
+                ),
           ),
-          centerTitle: true,
         ),
-        body: Observer(builder: (_) {
-          if (store.dbError.length > 0) {
-            return Container(
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    AppLocalizations.of(context).translate('dbError'),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 20.0),
-                  Text(store.dbError),
-                ],
-              ),
-            );
-          }
-
-          return SingleChildScrollView(
+        centerTitle: true,
+      ),
+      body: Observer(builder: (_) {
+        if (store.dbError.length > 0) {
+          return Container(
+            width: double.infinity,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                const SizedBox(height: 20.0),
-                PomodorosDisplay(),
-                const SizedBox(height: 50.0),
-                Timer(),
-                const SizedBox(height: 20.0),
+                Text(
+                  AppLocalizations.of(context).translate('dbError'),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 20.0),
+                Text(store.dbError),
               ],
             ),
           );
-        }),
-      ),
+        }
+
+        return SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              const SizedBox(height: 20.0),
+              PomodorosDisplay(),
+              const SizedBox(height: 50.0),
+              Timer(),
+              const SizedBox(height: 20.0),
+            ],
+          ),
+        );
+      }),
     );
   }
 }
@@ -87,7 +83,7 @@ class _EscapePreventerWrapper extends StatelessWidget {
   }) : assert(child != null);
 
   Future<bool> _onWillPop(BuildContext context) {
-    GoalStore store = Provider.of<GoalStore>(context, listen: false);
+    final GoalStore store = Modular.get<GoalStore>();
 
     if (store.timerState != ETimerState.READY) {
       return showDialog(
