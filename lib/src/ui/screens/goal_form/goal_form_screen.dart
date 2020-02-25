@@ -19,7 +19,10 @@ class _GoalFormScreenState extends State<GoalFormScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    Modular.get<GoalFormStore>().init(locale: AppLocalizations.of(context));
+    Modular.get<GoalFormStore>().init(
+      locale: AppLocalizations.of(context),
+      goal: widget.goal,
+    );
   }
 
   Future _doneGoalHandler() async {
@@ -42,15 +45,6 @@ class _GoalFormScreenState extends State<GoalFormScreen> {
     final title =
         AppLocalizations.of(context).translate(_titleKey).toUpperCase();
 
-    // final goalFormStore = GoalFormStore(
-    //   homeStore: homeStore,
-    //   goal: goal,
-    //   validator: Validator.instance(
-    //     db: DbDataRepository.db(),
-    //     locale: AppLocalizations.of(context),
-    //   ),
-    // );
-
     return GestureDetector(
       onTap: () => _focusReset(context),
       child: Scaffold(
@@ -59,10 +53,6 @@ class _GoalFormScreenState extends State<GoalFormScreen> {
           centerTitle: true,
         ),
         body: GoalForm(),
-        // body: Provider(
-        //   create: (_) => goalFormStore,
-        //   child: GoalForm(),
-        // ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.done),
           onPressed: () => _doneGoalHandler(),

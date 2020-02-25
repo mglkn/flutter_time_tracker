@@ -41,13 +41,14 @@ abstract class _GoalFormStore with Store {
           ),
         );
 
-    // if (goal != null) {
-    //   _label = goal.goal.label;
-    //   _selectedTags = ObservableList.of(
-    //     goal.tags.map((t) => TagWithPomodorosCount(tag: t, pomodorosCount: 0)),
-    //   );
-    //   return;
-    // }
+    if (goal != null) {
+      this.goal = goal;
+      _label = goal.goal.label;
+      _selectedTags = ObservableList.of(
+        goal.tags.map((t) => TagWithPomodorosCount(tag: t, pomodorosCount: 0)),
+      );
+      return;
+    }
 
     _label = '';
   }

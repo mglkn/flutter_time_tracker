@@ -4,7 +4,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../utils/app_localization.dart';
 import '../../../store/home_store.dart';
-import '../../../routes/router.gr.dart';
 import 'widgets/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -50,13 +49,11 @@ class _HomeScreenState extends State<HomeScreen> {
       elevation: 1.0,
       onPressed: () async {
         if (store.pageIndex == 0) {
-          // await AppRouter.navigator
-          //     .pushNamed(AppRouter.goalFormScreen, arguments: null);
           await Modular.to.pushNamed('/goalForm', arguments: null);
           store.setGoalStatus(EGoalStatus.ONGOING);
           return;
         }
-        AppRouter.navigator.pushNamed(AppRouter.tagFormScreen, arguments: null);
+        await Modular.to.pushNamed('/tagForm', arguments: null);
       },
     );
   }

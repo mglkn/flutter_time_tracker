@@ -3,7 +3,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../data/dto.dart';
-import '../../../../routes/router.gr.dart';
 import '../../../../utils/theme.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_localization.dart';
@@ -69,8 +68,7 @@ class _SlidableWrapper extends StatelessWidget {
           foregroundColor: Colors.black,
           icon: Icons.edit,
           onTap: () {
-            AppRouter.navigator
-                .pushNamed(AppRouter.tagFormScreen, arguments: tag);
+            Modular.to.pushNamed('/tagForm', arguments: tag);
           },
         ),
       ],
