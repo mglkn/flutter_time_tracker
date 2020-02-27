@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'dart:convert';
 
 import 'package:time_tracker/src/store/home_store.dart';
@@ -39,3 +40,27 @@ Future<Widget> wrapMaterialApp(Widget child) async {
     ),
   );
 }
+
+// class App extends StatelessWidget {
+//   static Map<String, String> _localizedStrings;
+//   static init() async {
+//     if (_localizedStrings != null) return;
+//     _localizedStrings = await _getLocalizedStrings();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       localizationsDelegates: [
+//         AppLocalizations.delegateTest(_localizedStrings),
+//         // GlobalMaterialLocalizations.delegate,
+//         GlobalWidgetsLocalizations.delegate,
+//       ],
+
+//       // Routes
+//       initialRoute: '/',
+//       onGenerateRoute: Modular.generateRoute,
+//       navigatorKey: Modular.navigatorKey,
+//     );
+//   }
+// }

@@ -48,6 +48,9 @@ abstract class _GoalStore with Store {
             _setPomodoros,
           ),
         );
+
+    _time = 1500;
+    _timerState = ETimerState.READY;
   }
 
   @observable
