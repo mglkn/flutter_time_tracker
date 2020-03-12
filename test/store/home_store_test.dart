@@ -1,9 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:dartz/dartz.dart';
 
 import 'package:time_tracker/src/store/home_store.dart';
-import 'package:time_tracker/src/data/db_repository.dart';
 import 'package:time_tracker/src/data/dto.dart';
 import 'package:time_tracker/src/data/db.dart';
 

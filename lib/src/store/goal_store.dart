@@ -35,20 +35,22 @@ abstract class _GoalStore with Store {
   final AudioCache _player = new AudioCache(prefix: 'audio/');
 
   _GoalStore({
-    @required Goal goal,
     DbDataRepository db,
   }) {
-    assert(goal != null);
-
-    _goal = goal;
     _db = db ?? DbDataRepository.db();
+  }
 
+  init(Goal goal) {
+    _goal = goal;
     _db.getPomodorosByGoal(goal).then(
           (result) => result.fold(
             (error) => _dbError = error.toString(),
             _setPomodoros,
           ),
         );
+
+    _time = 1500;
+    _timerState = ETimerState.READY;
   }
 
   @observable

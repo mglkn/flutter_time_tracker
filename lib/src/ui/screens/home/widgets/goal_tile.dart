@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../data/dto.dart';
 import '../../../../data/db.dart';
 import '../../../../store/home_store.dart';
-import '../../../../routes/router.gr.dart';
 import '../../../../utils/theme.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_localization.dart';
@@ -27,10 +26,9 @@ class GoalTile extends StatelessWidget {
   GoalTile(this.goal);
 
   Future _navigateToGoal(BuildContext context) async {
-    await AppRouter.navigator
-        .pushNamed(AppRouter.goalScreen, arguments: this.goal);
+    await Modular.to.pushNamed('/goal', arguments: goal);
 
-    HomeStore store = Provider.of<HomeStore>(context, listen: false);
+    final HomeStore store = Modular.get<HomeStore>();
     await store.getGoals();
     await store.getTags();
   }
@@ -82,36 +80,34 @@ class _SlidableWrapper extends StatelessWidget {
     final edit = AppLocalizations.of(context).translate('doEdit');
     final done = AppLocalizations.of(context).translate('doDone');
     final resume = AppLocalizations.of(context).translate('doResume');
+    final HomeStore store = Modular.get<HomeStore>();
 
-    return Consumer(
-      builder: (_, HomeStore store, __) => Slidable(
-        actionPane: SlidableBehindActionPane(),
-        actionExtentRatio: 0.2,
-        actions: <Widget>[
-          IconSlideAction(
-            caption: edit,
-            color: Colors.transparent,
-            foregroundColor: Colors.black,
-            icon: Icons.edit,
-            onTap: () {
-              AppRouter.navigator
-                  .pushNamed(AppRouter.goalFormScreen, arguments: goal);
-            },
-          ),
-        ],
-        secondaryActions: <Widget>[
-          IconSlideAction(
-            caption: store.isGoalDone ? resume : done,
-            color: Colors.transparent,
-            foregroundColor: Colors.black,
-            icon: Icons.done,
-            onTap: () {
-              store.toggleGoalStatus(goal);
-            },
-          ),
-        ],
-        child: child,
-      ),
+    return Slidable(
+      actionPane: SlidableBehindActionPane(),
+      actionExtentRatio: 0.2,
+      actions: <Widget>[
+        IconSlideAction(
+          caption: edit,
+          color: Colors.transparent,
+          foregroundColor: Colors.black,
+          icon: Icons.edit,
+          onTap: () {
+            Modular.to.pushNamed('/goalForm', arguments: goal);
+          },
+        ),
+      ],
+      secondaryActions: <Widget>[
+        IconSlideAction(
+          caption: store.isGoalDone ? resume : done,
+          color: Colors.transparent,
+          foregroundColor: Colors.black,
+          icon: Icons.done,
+          onTap: () {
+            store.toggleGoalStatus(goal);
+          },
+        ),
+      ],
+      child: child,
     );
   }
 }
@@ -152,7 +148,7 @@ class _TilePomodorosCount extends StatelessWidget {
                 pomodoroCount.toString(),
                 style: Theme.of(context)
                     .textTheme
-                    .subtitle2
+                    .subtitle
                     .copyWith(color: Colors.white),
               ),
             ),
@@ -185,7 +181,7 @@ class _TileContent extends StatelessWidget {
             tag: 'goal_title_$label',
             child: Text(
               label,
-              style: Theme.of(context).textTheme.headline6.copyWith(
+              style: Theme.of(context).textTheme.title.copyWith(
                     fontSize: 20.0,
                     decoration: isDone ? TextDecoration.lineThrough : null,
                   ),
@@ -210,20 +206,18 @@ class _TagListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (_, HomeStore store, __) => Container(
-        padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
-        decoration: BoxDecoration(
-          color: Color(tag.color),
-          borderRadius: BorderRadius.circular(2.0),
-        ),
-        child: Text(
-          tag.label,
-          style: Theme.of(context).textTheme.subtitle2.copyWith(
-                fontSize: 11.0,
-                color: Colors.white,
-              ),
-        ),
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
+      decoration: BoxDecoration(
+        color: Color(tag.color),
+        borderRadius: BorderRadius.circular(2.0),
+      ),
+      child: Text(
+        tag.label,
+        style: Theme.of(context).textTheme.subtitle.copyWith(
+              fontSize: 11.0,
+              color: Colors.white,
+            ),
       ),
     );
   }

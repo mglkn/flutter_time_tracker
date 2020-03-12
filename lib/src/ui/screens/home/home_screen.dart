@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../utils/app_localization.dart';
 import '../../../store/home_store.dart';
-import '../../../routes/router.gr.dart';
 import 'widgets/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -43,18 +42,18 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   FloatingActionButton _buildFloatingActionButton() {
-    final HomeStore store = Provider.of<HomeStore>(context, listen: false);
+    final HomeStore store = Modular.get<HomeStore>();
+
     return FloatingActionButton(
       child: Icon(Icons.add),
       elevation: 1.0,
       onPressed: () async {
         if (store.pageIndex == 0) {
-          await AppRouter.navigator
-              .pushNamed(AppRouter.goalFormScreen, arguments: null);
+          await Modular.to.pushNamed('/goalForm', arguments: null);
           store.setGoalStatus(EGoalStatus.ONGOING);
           return;
         }
-        AppRouter.navigator.pushNamed(AppRouter.tagFormScreen, arguments: null);
+        await Modular.to.pushNamed('/tagForm', arguments: null);
       },
     );
   }
@@ -64,30 +63,29 @@ class _HomeScreenState extends State<HomeScreen> {
     final done = AppLocalizations.of(context).translate('done').toUpperCase();
     final ongoing =
         AppLocalizations.of(context).translate('ongoing').toUpperCase();
+    final HomeStore store = Modular.get<HomeStore>();
 
-    return Consumer(
-      builder: (_, HomeStore store, __) => Scaffold(
-        appBar: _buildAppBar(store),
-        bottomNavigationBar: _buildBottomNavigationBar(store),
-        floatingActionButton: _buildFloatingActionButton(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: SafeArea(
-          child: PageView(
-            controller: _pageController,
-            onPageChanged: (index) => store.setPageIndex(index),
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Observer(
-                    builder: (_) =>
-                        store.isGoalDone ? Text('$done') : Text('$ongoing'),
-                  ),
-                  Expanded(child: GoalsView()),
-                ],
-              ),
-              TagsView(),
-            ],
-          ),
+    return Scaffold(
+      appBar: _buildAppBar(store),
+      bottomNavigationBar: _buildBottomNavigationBar(store),
+      floatingActionButton: _buildFloatingActionButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      body: SafeArea(
+        child: PageView(
+          controller: _pageController,
+          onPageChanged: (index) => store.setPageIndex(index),
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                Observer(
+                  builder: (_) =>
+                      store.isGoalDone ? Text('$done') : Text('$ongoing'),
+                ),
+                Expanded(child: GoalsView()),
+              ],
+            ),
+            TagsView(),
+          ],
         ),
       ),
     );

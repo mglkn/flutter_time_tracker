@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:simple_animations/simple_animations.dart';
 
@@ -11,25 +11,25 @@ import '../../../../utils/theme.dart';
 class PomodorosDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (_, GoalStore store, __) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Observer(
-            builder: (_) => _PomodoroTile(
-              label: AppLocalizations.of(context).translate('all'),
-              pomodorosCount: store.allPomodorosCount ?? 0,
-              delay: const Duration(milliseconds: 500),
-            ),
+    final GoalStore store = Modular.get<GoalStore>();
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        Observer(
+          builder: (_) => _PomodoroTile(
+            label: AppLocalizations.of(context).translate('all'),
+            pomodorosCount: store.allPomodorosCount ?? 0,
+            delay: const Duration(milliseconds: 500),
           ),
-          Observer(
-            builder: (_) => _PomodoroTile(
-              label: AppLocalizations.of(context).translate('today'),
-              pomodorosCount: store.todayPomodorosCount ?? 0,
-            ),
+        ),
+        Observer(
+          builder: (_) => _PomodoroTile(
+            label: AppLocalizations.of(context).translate('today'),
+            pomodorosCount: store.todayPomodorosCount ?? 0,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -135,7 +135,7 @@ class _TileInfo extends StatelessWidget {
           // label
           Text(
             label.toUpperCase(),
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
+            style: Theme.of(context).textTheme.body1.copyWith(
                   fontSize: 20.0,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
@@ -164,7 +164,7 @@ class _TileInfoCount extends StatelessWidget {
         pomodorosCount.toString(),
         style: Theme.of(context)
             .textTheme
-            .subtitle2
+            .subtitle
             .copyWith(fontSize: 30.0, color: Colors.white),
       ),
     );

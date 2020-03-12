@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../utils/app_localization.dart';
-import '../../../store/home_store.dart';
 import '../../../store/tag_form_store.dart';
-import '../../../data/db_repository.dart';
-import '../../../routes/router.gr.dart';
 import '../../../data/dto.dart';
-import '../../../utils/validator.dart';
 import 'widgets/widgets.dart';
+import '../../../store/store.dart';
 
-class TagFormScreen extends StatelessWidget {
+class TagFormScreen extends StatefulWidget {
   final TagWithPomodorosCount tag;
 
   TagFormScreen({this.tag});
 
+  @override
+  _TagFormScreenState createState() => _TagFormScreenState();
+}
+
+class _TagFormScreenState extends State<TagFormScreen> {
   Future _createTagHandler(TagFormStore tagFormStore) async {
     final bool shouldReturn = await tagFormStore.doneEditing();
-    if (shouldReturn) AppRouter.navigator.pop();
+    if (shouldReturn) Modular.to.pop();
   }
 
   void _focusReset(BuildContext context) {
@@ -29,20 +31,21 @@ class TagFormScreen extends StatelessWidget {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Modular.get<TagFormStore>().init(
+      locale: AppLocalizations.of(context),
+      tag: widget.tag?.tag,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final _titleKey = tag != null ? 'editTag' : 'createTag';
+    final _titleKey = widget.tag != null ? 'editTag' : 'createTag';
     final title =
         AppLocalizations.of(context).translate(_titleKey).toUpperCase();
 
-    final HomeStore homeStore = Provider.of<HomeStore>(context, listen: false);
-    final tagFormStore = TagFormStore(
-      homeStore: homeStore,
-      tag: tag?.tag,
-      validator: Validator.instance(
-        db: DbDataRepository.db(),
-        locale: AppLocalizations.of(context),
-      ),
-    );
+    final TagFormStore tagFormStore = Modular.get<TagFormStore>();
 
     return GestureDetector(
       onTap: () => _focusReset(context),
@@ -51,10 +54,7 @@ class TagFormScreen extends StatelessWidget {
           title: _AppBarTitle(title),
           centerTitle: true,
         ),
-        body: Provider(
-          create: (_) => tagFormStore,
-          child: TagForm(),
-        ),
+        body: TagForm(),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.done),
           onPressed: () => _createTagHandler(tagFormStore),
@@ -73,7 +73,7 @@ class _AppBarTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: Theme.of(context).textTheme.headline6.copyWith(
+      style: Theme.of(context).textTheme.title.copyWith(
             letterSpacing: 10.0,
           ),
     );

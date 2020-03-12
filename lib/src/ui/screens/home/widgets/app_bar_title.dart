@@ -25,7 +25,7 @@ class AppBarTitle extends StatelessWidget {
               child: Text(
                 titleGoals,
                 key: Key(ConstantKeys.titleGoals),
-                style: Theme.of(context).textTheme.headline6.copyWith(
+                style: Theme.of(context).textTheme.title.copyWith(
                       letterSpacing: 12.0,
                     ),
               ),
@@ -35,7 +35,7 @@ class AppBarTitle extends StatelessWidget {
               child: Text(
                 titleTags,
                 key: Key(ConstantKeys.titleTags),
-                style: Theme.of(context).textTheme.headline6.copyWith(
+                style: Theme.of(context).textTheme.title.copyWith(
                       letterSpacing: 12.0,
                     ),
               ),

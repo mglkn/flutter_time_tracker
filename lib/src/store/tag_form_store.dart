@@ -4,6 +4,7 @@ import 'home_store.dart';
 import '../data/db_repository.dart';
 import '../data/db.dart';
 import '../utils/validator.dart';
+import '../utils/app_localization.dart';
 
 part 'tag_form_store.g.dart';
 
@@ -13,22 +14,31 @@ abstract class _TagFormStore with Store {
   final DbDataRepository _repo;
 
   final HomeStore homeStore;
-  final Tag tag;
-  final Validator validator;
+
+  Tag tag;
+  Validator validator;
 
   _TagFormStore({
     this.homeStore,
-    this.tag,
-    this.validator,
     DbDataRepository repo,
   })  : _repo = repo ?? DbDataRepository.db(),
-        assert(homeStore != null),
-        assert(validator != null) {
+        assert(homeStore != null);
+
+  init({
+    locale: AppLocalizations,
+    Validator customValidator,
+    Tag tag,
+  }) {
+    validator =
+        validator ?? customValidator ?? Validator.instance(locale: locale);
+
     if (tag != null) {
+      this.tag = tag;
       _label = tag.label;
       _color = tag.color;
       return;
     }
+
     _label = '';
     _color = 0xfff44336; // INITIAL RED VALUE
   }

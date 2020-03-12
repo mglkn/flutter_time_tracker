@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_modular/flutter_modular_test.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:time_tracker/src/ui/screens/home/home_screen.dart';
@@ -8,6 +9,7 @@ import 'package:time_tracker/src/store/home_store.dart';
 import 'package:time_tracker/src/utils/constant_keys.dart';
 import 'package:time_tracker/src/data/dto.dart';
 import 'package:time_tracker/src/data/db.dart';
+import 'package:time_tracker/src/app_module.dart';
 
 import './home_screen_helpers.dart';
 import '../helpers/mocks.dart';
@@ -16,22 +18,23 @@ main() {
   testWidgets('HomeScreen should show appBar title',
       (WidgetTester tester) async {
     final repo = getDBRepoWithGoalsAndTagsMocked();
-    final homeStore = HomeStore(repo: repo);
 
-    final homeScreen = Provider<HomeStore>(
-      create: (_) => homeStore,
-      child: HomeScreen(),
+    initModule(
+      AppModule(MaterialApp()),
+      changeBinds: [
+        Bind<HomeStore>((i) => HomeStore(repo: repo)),
+      ],
     );
 
-    await tester.pumpWidget(await wrapMaterialApp(homeScreen));
-    await tester.pump();
+    await tester.pumpWidget(await wrapMaterialApp(HomeScreen()));
+    await tester.pumpAndSettle();
 
     final titleGoals = find.byKey(Key(ConstantKeys.titleGoals));
     final titleTags = find.byKey(Key(ConstantKeys.titleTags));
 
     expect(titleGoals, findsNWidgets(1));
     expect(titleTags, findsNWidgets(1));
-  }, skip: false);
+  });
 
   testWidgets('HomeScreen should show goals', (WidgetTester tester) async {
     final goal = GoalWithTagsAndPomodorosCount(
@@ -49,15 +52,15 @@ main() {
 
     final repo = getDBRepoWithGoalsAndTagsMocked(goals: goals);
 
-    final homeStore = HomeStore(repo: repo);
-
-    final homeScreen = Provider<HomeStore>(
-      create: (_) => homeStore,
-      child: HomeScreen(),
+    initModule(
+      AppModule(MaterialApp()),
+      changeBinds: [
+        Bind<HomeStore>((i) => HomeStore(repo: repo)),
+      ],
     );
 
-    await tester.pumpWidget(await wrapMaterialApp(homeScreen));
-    await tester.pump();
+    await tester.pumpWidget(await wrapMaterialApp(HomeScreen()));
+    await tester.pumpAndSettle();
 
     final goalTileTitle = find.text('goal_title');
 
@@ -90,14 +93,15 @@ main() {
     final tags = [tag1, tag2];
 
     final repo = getDBRepoWithGoalsAndTagsMocked(tags: tags);
-    final homeStore = HomeStore(repo: repo);
 
-    final homeScreen = Provider<HomeStore>(
-      create: (_) => homeStore,
-      child: HomeScreen(),
+    initModule(
+      AppModule(MaterialApp()),
+      changeBinds: [
+        Bind<HomeStore>((i) => HomeStore(repo: repo)),
+      ],
     );
 
-    await tester.pumpWidget(await wrapMaterialApp(homeScreen));
+    await tester.pumpWidget(await wrapMaterialApp(HomeScreen()));
     await tester.pump();
     await tester.tap(find.byKey(Key('${ConstantKeys.bottomBarItem}tags')));
     await tester.pumpAndSettle();

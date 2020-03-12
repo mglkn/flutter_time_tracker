@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
-import './routes/router.gr.dart';
-import './utils/app_localization.dart';
-import './utils/theme.dart';
+import 'utils/app_localization.dart';
+import 'utils/theme.dart';
 
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Time tracker',
+
       debugShowCheckedModeBanner: false,
 
       // Localization
@@ -16,11 +18,13 @@ class App extends StatelessWidget {
         Locale("en"),
         Locale("ru"),
       ],
+
       localizationsDelegates: [
         AppLocalizations.delegate,
-        // GlobalMaterialLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
+
       localeResolutionCallback:
           (Locale locale, Iterable<Locale> supportedLocales) {
         for (var supportedLocale in supportedLocales) {
@@ -32,13 +36,13 @@ class App extends StatelessWidget {
         return supportedLocales.first;
       },
 
-      // Routes
-      onGenerateRoute: AppRouter.onGenerateRoute,
-      initialRoute: AppRouter.homeScreen,
-      navigatorKey: AppRouter.navigatorKey,
-
       // Theme
       theme: getGolbalTheme(context),
+
+      // Routes
+      initialRoute: '/',
+      onGenerateRoute: Modular.generateRoute,
+      navigatorKey: Modular.navigatorKey,
     );
   }
 }

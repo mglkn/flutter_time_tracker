@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../../utils/app_localization.dart';
@@ -15,7 +15,7 @@ class _InputTagLabelState extends State<InputTagLabel> {
   TextEditingController _controller;
   Timer _debounce;
 
-  TagFormStore _store;
+  TagFormStore _store = Modular.get<TagFormStore>();
 
   _onFieldChanged() {
     if (_debounce?.isActive ?? false) _debounce.cancel();
@@ -29,11 +29,10 @@ class _InputTagLabelState extends State<InputTagLabel> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _store = Provider.of<TagFormStore>(context);
+  void initState() {
     _controller = TextEditingController(text: _store.label);
     _controller.addListener(_onFieldChanged);
+    super.initState();
   }
 
   @override
@@ -49,17 +48,15 @@ class _InputTagLabelState extends State<InputTagLabel> {
 
     return Padding(
       padding: const EdgeInsets.all(5.0),
-      child: Consumer(
-        builder: (_, TagFormStore store, __) => Observer(
-          builder: (_) => TextFormField(
-            controller: _controller,
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.grey[400],
-              hintText: hintText,
-              errorText: store.errorLabel,
-            ),
+      child: Observer(
+        builder: (_) => TextFormField(
+          controller: _controller,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.grey[400],
+            hintText: hintText,
+            errorText: _store.errorLabel,
           ),
         ),
       ),

@@ -19,11 +19,10 @@ class _Validator implements Validator {
   AppLocalizations _locale;
 
   _Validator._internal({
-    @required DbDataRepository db,
     @required AppLocalizations locale,
-  })  : _db = db,
+    DbDataRepository db,
+  })  : _db = db ?? DbDataRepository.db(),
         _locale = locale,
-        assert(db != null),
         assert(locale != null);
 
   static _Validator _instance;

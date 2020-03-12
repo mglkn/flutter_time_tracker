@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:simple_animations/simple_animations.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../store/home_store.dart';
 import '../../../../utils/constant_keys.dart';
@@ -23,7 +23,7 @@ class BottomAppBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HomeStore store = Provider.of<HomeStore>(context, listen: false);
+    final HomeStore store = Modular.get<HomeStore>();
     final isSelected = store.pageIndex == index;
     final accentColor = Theme.of(context).accentColor;
     final Color color = isSelected ? accentColor : Colors.grey[600];

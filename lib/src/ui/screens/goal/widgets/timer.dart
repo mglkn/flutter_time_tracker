@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:simple_animations/simple_animations.dart';
 
@@ -28,25 +28,25 @@ class Timer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (_, GoalStore store, __) => GestureDetector(
-        onTap: store.doTimerAction,
-        child: Observer(
-          builder: (_) => ControlledAnimation(
-            playback: store.timerStage == ETimerStage.WORK
-                ? Playback.PLAY_REVERSE
-                : Playback.PLAY_FORWARD,
-            duration: const Duration(milliseconds: 300),
-            tween: tween,
-            builder: (_, animation) => Stack(
-              children: <Widget>[
-                _Timer(animation['color_main']),
-                _TimerDynamicBorder(
-                  colorDark: animation['color_dark'],
-                  colorLight: animation['color_light'],
-                ),
-              ],
-            ),
+    final GoalStore store = Modular.get<GoalStore>();
+
+    return GestureDetector(
+      onTap: store.doTimerAction,
+      child: Observer(
+        builder: (_) => ControlledAnimation(
+          playback: store.timerStage == ETimerStage.WORK
+              ? Playback.PLAY_REVERSE
+              : Playback.PLAY_FORWARD,
+          duration: const Duration(milliseconds: 300),
+          tween: tween,
+          builder: (_, animation) => Stack(
+            children: <Widget>[
+              _Timer(animation['color_main']),
+              _TimerDynamicBorder(
+                colorDark: animation['color_dark'],
+                colorLight: animation['color_light'],
+              ),
+            ],
           ),
         ),
       ),
@@ -61,22 +61,18 @@ class _Timer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (_, GoalStore store, __) => Observer(
-        builder: (_) => Container(
-          height: timerSize,
-          width: timerSize,
-          decoration: tileDecoration.copyWith(
-            color: colorMain,
-            borderRadius: BorderRadius.circular(timerSize / 2),
-          ),
-          child: Stack(
-            children: <Widget>[
-              _TimerStateAction(),
-              _TimerClock(),
-            ],
-          ),
-        ),
+    return Container(
+      height: timerSize,
+      width: timerSize,
+      decoration: tileDecoration.copyWith(
+        color: colorMain,
+        borderRadius: BorderRadius.circular(timerSize / 2),
+      ),
+      child: Stack(
+        children: <Widget>[
+          _TimerStateAction(),
+          _TimerClock(),
+        ],
       ),
     );
   }
@@ -93,17 +89,17 @@ class _TimerStateAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (_, GoalStore store, __) => Container(
-        width: timerSize,
-        height: timerSize,
-        child: Center(
-          child: Observer(
-            builder: (_) => Icon(
-              _getIcon(store.timerState),
-              color: Colors.white,
-              size: timerSize * 0.7,
-            ),
+    final GoalStore store = Modular.get<GoalStore>();
+
+    return Container(
+      width: timerSize,
+      height: timerSize,
+      child: Center(
+        child: Observer(
+          builder: (_) => Icon(
+            _getIcon(store.timerState),
+            color: Colors.white,
+            size: timerSize * 0.7,
           ),
         ),
       ),
@@ -121,34 +117,34 @@ class _TimerClock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (_, GoalStore store, __) => Container(
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Observer(
-              builder: (_) => Text(
-                store.time,
-                style: Theme.of(context).textTheme.headline6.copyWith(
-                      color: Colors.white,
-                      fontSize: 34.0,
-                      fontWeight: FontWeight.w300,
-                    ),
-              ),
-            ),
-            const SizedBox(height: 10.0),
-            Text(
-              AppLocalizations.of(context)
-                  .translate(_getStage(store.timerStage))
-                  .toUpperCase(),
-              style: Theme.of(context).textTheme.bodyText2.copyWith(
+    final GoalStore store = Modular.get<GoalStore>();
+
+    return Container(
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Observer(
+            builder: (_) => Text(
+              store.time,
+              style: Theme.of(context).textTheme.title.copyWith(
                     color: Colors.white,
-                    fontSize: 28.0,
+                    fontSize: 34.0,
+                    fontWeight: FontWeight.w300,
                   ),
-            )
-          ],
-        ),
+            ),
+          ),
+          const SizedBox(height: 10.0),
+          Text(
+            AppLocalizations.of(context)
+                .translate(_getStage(store.timerStage))
+                .toUpperCase(),
+            style: Theme.of(context).textTheme.body1.copyWith(
+                  color: Colors.white,
+                  fontSize: 28.0,
+                ),
+          )
+        ],
       ),
     );
   }
@@ -165,17 +161,17 @@ class _TimerDynamicBorder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (_, GoalStore store, __) => Container(
-        width: timerSize,
-        height: timerSize,
-        child: Observer(
-          builder: (_) => CustomPaint(
-            painter: _TimerPainter(
-              bgColor: colorDark,
-              color: colorLight,
-              tickTimer: store.ratioTime,
-            ),
+    final GoalStore store = Modular.get<GoalStore>();
+
+    return Container(
+      width: timerSize,
+      height: timerSize,
+      child: Observer(
+        builder: (_) => CustomPaint(
+          painter: _TimerPainter(
+            bgColor: colorDark,
+            color: colorLight,
+            tickTimer: store.ratioTime,
           ),
         ),
       ),

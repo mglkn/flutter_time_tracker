@@ -1,23 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:time_tracker/src/utils/validator.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../utils/app_localization.dart';
 import '../../../store/goal_form_store.dart';
-import '../../../store/home_store.dart';
-import '../../../data/db_repository.dart';
-import '../../../routes/router.gr.dart';
 import '../../../data/dto.dart';
 import 'widgets/widgets.dart';
 
-class GoalFormScreen extends StatelessWidget {
+class GoalFormScreen extends StatefulWidget {
   final GoalWithTagsAndPomodorosCount goal;
 
   GoalFormScreen({this.goal});
 
-  Future _createGoalHandler(GoalFormStore goalFormStore) async {
+  @override
+  _GoalFormScreenState createState() => _GoalFormScreenState();
+}
+
+class _GoalFormScreenState extends State<GoalFormScreen> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Modular.get<GoalFormStore>().init(
+      locale: AppLocalizations.of(context),
+      goal: widget.goal,
+    );
+  }
+
+  Future _doneGoalHandler() async {
+    final GoalFormStore goalFormStore = Modular.get<GoalFormStore>();
     final shouldReturn = await goalFormStore.doneEditing();
-    if (shouldReturn) AppRouter.navigator.pop();
+    if (shouldReturn) Modular.to.pop();
   }
 
   void _focusReset(BuildContext context) {
@@ -30,19 +41,9 @@ class GoalFormScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _titleKey = goal != null ? 'editGoal' : 'createGoal';
+    final _titleKey = widget.goal != null ? 'editGoal' : 'createGoal';
     final title =
         AppLocalizations.of(context).translate(_titleKey).toUpperCase();
-
-    final HomeStore homeStore = Provider.of<HomeStore>(context, listen: false);
-    final goalFormStore = GoalFormStore(
-      homeStore: homeStore,
-      goal: goal,
-      validator: Validator.instance(
-        db: DbDataRepository.db(),
-        locale: AppLocalizations.of(context),
-      ),
-    );
 
     return GestureDetector(
       onTap: () => _focusReset(context),
@@ -51,13 +52,10 @@ class GoalFormScreen extends StatelessWidget {
           title: _AppBarTitle(title),
           centerTitle: true,
         ),
-        body: Provider(
-          create: (_) => goalFormStore,
-          child: GoalForm(),
-        ),
+        body: GoalForm(),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.done),
-          onPressed: () => _createGoalHandler(goalFormStore),
+          onPressed: () => _doneGoalHandler(),
         ),
       ),
     );
@@ -73,7 +71,7 @@ class _AppBarTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: Theme.of(context).textTheme.headline6.copyWith(
+      style: Theme.of(context).textTheme.title.copyWith(
             letterSpacing: 10.0,
           ),
     );
