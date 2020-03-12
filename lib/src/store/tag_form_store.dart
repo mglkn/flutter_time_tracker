@@ -109,6 +109,12 @@ abstract class _TagFormStore with Store {
       },
     );
 
-    return _dbError.length > 0 ? false : true;
+    if (_dbError.length > 0) {
+      return false;
+    }
+
+    this.tag = null;
+
+    return true;
   }
 }

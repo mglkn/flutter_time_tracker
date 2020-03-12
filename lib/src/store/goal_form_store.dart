@@ -51,6 +51,7 @@ abstract class _GoalFormStore with Store {
     }
 
     _label = '';
+    _selectedTags = ObservableList.of([]);
   }
 
   @observable
@@ -131,7 +132,13 @@ abstract class _GoalFormStore with Store {
 
     await Future.delayed(const Duration(milliseconds: 100));
 
-    return _dbError.length > 0 ? false : true;
+    if (_dbError.length > 0) {
+      return false;
+    }
+
+    this.goal = null;
+
+    return true;
   }
 
   @action
