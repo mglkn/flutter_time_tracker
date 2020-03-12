@@ -9,7 +9,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="time_tracker"
+        android:label="Time Tracker"
         android:icon="@mipmap/ic_launcher">
 
         <activity
