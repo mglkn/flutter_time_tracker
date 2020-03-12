@@ -9,6 +9,8 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Time tracker',
+
       debugShowCheckedModeBanner: false,
 
       // Localization
@@ -16,11 +18,13 @@ class App extends StatelessWidget {
         Locale("en"),
         Locale("ru"),
       ],
+
       localizationsDelegates: [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
+
       localeResolutionCallback:
           (Locale locale, Iterable<Locale> supportedLocales) {
         for (var supportedLocale in supportedLocales) {
