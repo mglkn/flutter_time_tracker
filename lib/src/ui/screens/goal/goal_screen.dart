@@ -34,7 +34,7 @@ class _GoalScreen extends StatelessWidget {
           tag: 'goal_title_${store.label}',
           child: Text(
             store.label,
-            style: Theme.of(context).textTheme.headline6.copyWith(
+            style: Theme.of(context).textTheme.title.copyWith(
                   fontSize: 20.0,
                 ),
           ),
@@ -92,7 +92,7 @@ class _EscapePreventerWrapper extends StatelessWidget {
           backgroundColor: Theme.of(context).backgroundColor,
           title: Text(
             AppLocalizations.of(context).translate('escapeGoalTitle'),
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
+            style: Theme.of(context).textTheme.body1.copyWith(
                   fontWeight: FontWeight.w600,
                   fontSize: 30.0,
                 ),
@@ -104,7 +104,7 @@ class _EscapePreventerWrapper extends StatelessWidget {
             FlatButton(
               child: Text(
                 AppLocalizations.of(context).translate('yes').toUpperCase(),
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                style: Theme.of(context).textTheme.body1.copyWith(
                       fontSize: 20.0,
                     ),
               ),
@@ -116,7 +116,7 @@ class _EscapePreventerWrapper extends StatelessWidget {
             FlatButton(
               child: Text(
                 AppLocalizations.of(context).translate('no').toUpperCase(),
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                style: Theme.of(context).textTheme.body1.copyWith(
                       fontSize: 20.0,
                     ),
               ),

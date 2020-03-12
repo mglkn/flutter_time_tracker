@@ -148,7 +148,7 @@ class _TilePomodorosCount extends StatelessWidget {
                 pomodoroCount.toString(),
                 style: Theme.of(context)
                     .textTheme
-                    .subtitle2
+                    .subtitle
                     .copyWith(color: Colors.white),
               ),
             ),
@@ -181,7 +181,7 @@ class _TileContent extends StatelessWidget {
             tag: 'goal_title_$label',
             child: Text(
               label,
-              style: Theme.of(context).textTheme.headline6.copyWith(
+              style: Theme.of(context).textTheme.title.copyWith(
                     fontSize: 20.0,
                     decoration: isDone ? TextDecoration.lineThrough : null,
                   ),
@@ -214,7 +214,7 @@ class _TagListTile extends StatelessWidget {
       ),
       child: Text(
         tag.label,
-        style: Theme.of(context).textTheme.subtitle2.copyWith(
+        style: Theme.of(context).textTheme.subtitle.copyWith(
               fontSize: 11.0,
               color: Colors.white,
             ),

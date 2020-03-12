@@ -23,16 +23,16 @@ ThemeData getGolbalTheme(BuildContext context) {
     ),
     fontFamily: 'FiraSans',
     textTheme: TextTheme(
-      bodyText2: textTheme.bodyText2.copyWith(
+      body1: textTheme.body1.copyWith(
         fontFamily: 'FiraSans',
       ),
-      headline6: textTheme.headline6.copyWith(
+      title: textTheme.title.copyWith(
         fontFamily: 'FiraSans',
         fontWeight: FontWeight.w300,
         fontSize: 24.0,
         color: const Color(mainFontColor),
       ),
-      subtitle2: textTheme.subtitle2.copyWith(
+      subtitle: textTheme.subtitle.copyWith(
         fontFamily: 'FiraSans',
         fontStyle: FontStyle.italic,
         fontWeight: FontWeight.w500,

@@ -135,7 +135,7 @@ class _TileInfo extends StatelessWidget {
           // label
           Text(
             label.toUpperCase(),
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
+            style: Theme.of(context).textTheme.body1.copyWith(
                   fontSize: 20.0,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
@@ -164,7 +164,7 @@ class _TileInfoCount extends StatelessWidget {
         pomodorosCount.toString(),
         style: Theme.of(context)
             .textTheme
-            .subtitle2
+            .subtitle
             .copyWith(fontSize: 30.0, color: Colors.white),
       ),
     );
